@@ -1,0 +1,82 @@
+---
+import { SITE } from "~/data/site";
+const yearRoman = "MMXXVI"; // hardcode 2026 for now
+---
+
+<section id="hero" class="bg-bone relative min-h-[calc(100vh-4rem)] overflow-hidden">
+  <div
+    class="mx-auto grid h-full max-w-[1400px] grid-cols-1 gap-12 px-6 pt-20 pb-16 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-10 lg:pt-32 lg:pb-24"
+  >
+    <div class="flex flex-col justify-center">
+      <p class="eyebrow mb-8" data-reveal>{SITE.name} · Est. {SITE.founded}</p>
+      <h1
+        class="font-display text-ink leading-[0.92]"
+        style="font-size: var(--text-display-1)"
+        data-reveal
+      >
+        Architecture<br />of consequence.
+      </h1>
+      <p class="text-ink-3 mt-10 max-w-xl text-base leading-relaxed lg:text-lg" data-reveal>
+        {SITE.description}
+      </p>
+
+      <div class="mt-16 flex items-center gap-4" data-reveal>
+        <span class="bg-ink h-px w-12"></span>
+        <span class="text-ink-3 font-mono text-[11px] tracking-[0.2em] uppercase"> Scroll </span>
+      </div>
+    </div>
+
+    <div class="relative hidden lg:flex lg:flex-col lg:items-stretch">
+      <div class="relative flex-1" data-monolith-mount>
+        <svg
+          viewBox="0 0 200 320"
+          class="absolute inset-0 m-auto h-full w-auto max-w-full"
+          aria-hidden="true"
+          data-hero-silhouette
+        >
+          {/* Procedural stacked-slab silhouette — 9 slabs, tapered */}
+          {
+            Array.from({ length: 9 }).map((_, i) => {
+              const widthBase = 120;
+              const taper = 0.25;
+              const w = widthBase * (1 - taper * (i / 9));
+              const h = 28;
+              const x = (200 - w) / 2;
+              const y = 320 - (i + 1) * (h + 4) - 20;
+              const isAccent = i === 3 || i === 6;
+              return (
+                <rect
+                  x={x}
+                  y={y}
+                  width={w}
+                  height={h}
+                  fill={isAccent ? "var(--color-brass)" : "var(--color-ink)"}
+                  opacity={isAccent ? 0.85 : 0.92}
+                />
+              );
+            })
+          }
+          {/* ground line */}
+          <line x1="20" y1="300" x2="180" y2="300" stroke="var(--color-ink)" stroke-width="0.5"
+          ></line>
+        </svg>
+        <canvas data-hero-canvas class="absolute inset-0 block h-full w-full opacity-0"></canvas>
+      </div>
+
+      <div class="border-line-2 mt-8 grid grid-cols-3 gap-4 border-t pt-6">
+        <div>
+          <p class="eyebrow mb-1">Founded</p>
+          <p class="text-ink font-mono text-base">{SITE.founded}</p>
+        </div>
+        <div>
+          <p class="eyebrow mb-1">Built</p>
+          <p class="text-ink font-mono text-base">118</p>
+        </div>
+        <div>
+          <p class="eyebrow mb-1">Year</p>
+          <p class="text-ink font-mono text-base">{yearRoman}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

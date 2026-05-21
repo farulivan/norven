@@ -1,0 +1,78 @@
+---
+import { PROCESS } from "~/data/process";
+---
+
+<section id="process" class="bg-bone-2 py-32 lg:py-44">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+    <div class="mb-20">
+      <p class="eyebrow mb-6" data-reveal>Process</p>
+      <h2
+        class="font-display text-ink leading-[0.95]"
+        style="font-size: var(--text-display-2)"
+        data-reveal
+      >
+        Slow at the start,<br />
+        <span class="text-ink-3">unhurried throughout.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      {
+        PROCESS.map((p, i) => (
+          <article class="flex flex-col items-start" data-reveal>
+            <div class="mb-10 h-24 w-24" style="perspective: 600px;">
+              <div
+                class="relative h-full w-full"
+                style={`transform-style: preserve-3d; animation: cube-spin 14s linear infinite; animation-delay: -${i * 3}s;`}
+              >
+                <div
+                  class="border-ink absolute inset-0 border"
+                  style="transform: translateZ(48px);"
+                />
+                <div
+                  class="border-ink absolute inset-0 border"
+                  style="transform: rotateY(180deg) translateZ(48px);"
+                />
+                <div
+                  class="border-ink absolute inset-0 border"
+                  style="transform: rotateY(90deg) translateZ(48px);"
+                />
+                <div
+                  class="border-ink bg-bone absolute inset-0 border"
+                  style="transform: rotateY(-90deg) translateZ(48px);"
+                />
+                <div
+                  class="border-ink absolute inset-0 border"
+                  style="transform: rotateX(90deg) translateZ(48px);"
+                />
+                <div
+                  class="border-ink absolute inset-0 border"
+                  style="transform: rotateX(-90deg) translateZ(48px);"
+                />
+              </div>
+            </div>
+            <p class="text-ink-3 mb-2 font-mono text-xs tracking-[0.18em] uppercase">
+              Phase {p.code}
+            </p>
+            <h3 class="font-display text-ink mb-1 text-3xl">{p.title}</h3>
+            <p class="text-brass mb-6 font-mono text-[11px] tracking-[0.14em] uppercase">
+              {p.duration}
+            </p>
+            <p class="text-ink-3 text-sm leading-relaxed">{p.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  @keyframes cube-spin {
+    from {
+      transform: rotateX(-20deg) rotateY(0deg);
+    }
+    to {
+      transform: rotateX(-20deg) rotateY(360deg);
+    }
+  }
+</style>

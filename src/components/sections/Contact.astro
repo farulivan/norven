@@ -1,0 +1,59 @@
+---
+import { SITE } from "~/data/site";
+---
+
+<section id="contact" class="bg-bone py-32 lg:py-48">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+    <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
+      <div>
+        <p class="eyebrow text-brass mb-8" data-reveal>Bring us a site</p>
+        <h2
+          class="font-display text-ink leading-[0.95]"
+          style="font-size: var(--text-display-2)"
+          data-reveal
+        >
+          Bring us a site,<br />
+          a story,<br />
+          <span class="text-ink-3">a single hour of light.</span>
+        </h2>
+        <a
+          href="/contact"
+          class="border-ink text-ink hover:bg-ink hover:text-bone mt-14 inline-block border px-8 py-4 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
+          data-reveal
+        >
+          Submit a brief →
+        </a>
+      </div>
+
+      <div class="space-y-10">
+        <div data-reveal>
+          <p class="eyebrow mb-3">Direct</p>
+          <a
+            href={`mailto:${SITE.email}`}
+            class="font-display text-ink hover:text-brass block text-xl transition-colors"
+          >
+            {SITE.email}
+          </a>
+          <a
+            href={`tel:${SITE.phone.replaceAll(" ", "")}`}
+            class="text-ink-3 mt-2 block font-mono text-sm"
+          >
+            {SITE.phone}
+          </a>
+        </div>
+        <div data-reveal>
+          <p class="eyebrow mb-3">Studios</p>
+          <ul class="space-y-3 font-sans text-sm">
+            {
+              SITE.studios.map((s) => (
+                <li class="text-ink-3">
+                  <span class="text-ink">{s.city}</span> · {s.address}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

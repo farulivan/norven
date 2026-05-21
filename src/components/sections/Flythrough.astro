@@ -1,0 +1,91 @@
+---
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const cardTints: string[] = [
+  "from-[#D9D2C3] to-[#B8AE9A]",
+  "from-[#2A2823] to-[#15140F]",
+  "from-[#E9E4D7] to-[#B58A50]",
+  "from-[#D8D2C2] to-[#8B8678]",
+  "from-[#15140F] to-[#2A2823]",
+];
+---
+
+<section id="flythrough" class="bg-bone py-24 lg:py-32">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+    <div
+      class="relative min-h-[700px] lg:min-h-[800px]"
+      style="perspective: 1400px; perspective-origin: 50% 50%;"
+    >
+      <div
+        class="absolute inset-0 flex items-center justify-center"
+        style="transform-style: preserve-3d;"
+      >
+        {
+          projects.map((p, i) => {
+            const z = -i * 220;
+            const x = i % 2 === 0 ? -i * 30 : i * 30;
+            const rotY = i % 2 === 0 ? 8 : -8;
+            const isDark = i === 1 || i === 4;
+            const tint = cardTints[i] ?? cardTints[0];
+            return (
+              <a
+                href={`/projects/${p.id}`}
+                class:list={[
+                  "border-line/40 absolute h-[480px] w-[360px] overflow-hidden border bg-linear-to-br shadow-[0_8px_40px_rgba(17,17,16,0.12)] transition-transform hover:scale-105",
+                  tint,
+                ]}
+                style={`transform: translate3d(${x}px, 0, ${z}px) rotateY(${rotY}deg); z-index: ${100 - i};`}
+                data-card-idx={i}
+              >
+                <div class="relative flex h-full flex-col justify-between p-6">
+                  <div
+                    class:list={[
+                      "font-mono text-[10px] tracking-[0.18em] uppercase",
+                      isDark ? "text-bone/70" : "text-ink-3",
+                    ]}
+                  >
+                    <span>{p.data.status === "built" ? "Built" : "In Studio"}</span>
+                    <span class="mx-2">·</span>
+                    <span>{p.data.year}</span>
+                  </div>
+                  <div>
+                    <p
+                      class:list={[
+                        "mb-2 font-mono text-[10px] tracking-[0.18em] uppercase",
+                        isDark ? "text-bone/70" : "text-ink-3",
+                      ]}
+                    >
+                      {p.data.type} · {p.data.location}
+                    </p>
+                    <h3
+                      class:list={[
+                        "font-display leading-[0.95]",
+                        isDark ? "text-bone" : "text-ink",
+                      ]}
+                      style="font-size: clamp(1.75rem, 3vw, 2.5rem)"
+                    >
+                      {p.data.title}
+                    </h3>
+                  </div>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    <p
+      class="text-ink-3 mt-16 text-center font-mono text-[11px] tracking-[0.18em] uppercase"
+      data-reveal
+    >
+      → <a href="/projects" class="hover:text-ink border-b border-current pb-1 transition-colors"
+        >View all projects</a
+      >
+    </p>
+  </div>
+</section>

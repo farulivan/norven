@@ -1,19 +1,29 @@
 ---
 import PageLayout from "~/layouts/PageLayout.astro";
+import Hero from "~/components/sections/Hero.astro";
+import Manifesto from "~/components/sections/Manifesto.astro";
+import Layers from "~/components/sections/Layers.astro";
+import ProjectsIntro from "~/components/sections/ProjectsIntro.astro";
+import Flythrough from "~/components/sections/Flythrough.astro";
+import Practice from "~/components/sections/Practice.astro";
+import Process from "~/components/sections/Process.astro";
+import Stats from "~/components/sections/Stats.astro";
+import Testimonial from "~/components/sections/Testimonial.astro";
+import Contact from "~/components/sections/Contact.astro";
 ---
 
 <PageLayout
   title="Norven — Architecture of consequence."
   description="Norven is an architecture practice working on residences, cultural buildings, and landscapes across Northern Europe and beyond."
 >
-  <section class="bg-bone grid min-h-[calc(100vh-4rem)] place-items-center px-8">
-    <div class="text-center">
-      <p class="eyebrow mb-6">Norven · Est. MMIX</p>
-      <h1 class="font-display text-ink leading-[0.95]" style="font-size: var(--text-display-1)">
-        Architecture
-        <br />
-        of consequence.
-      </h1>
-    </div>
-  </section>
+  <Hero />
+  <Manifesto />
+  <Layers />
+  <ProjectsIntro />
+  <Flythrough />
+  <Practice />
+  <Process />
+  <Stats />
+  <Testimonial />
+  <Contact />
 </PageLayout>
