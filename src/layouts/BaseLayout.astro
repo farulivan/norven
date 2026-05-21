@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "~/consts";
+import { SITE } from "~/data/site";
 
 interface Props {
   title?: string;
@@ -13,6 +15,24 @@ const pageTitle = title ?? SITE_NAME;
 const pageDescription = description ?? SITE_DESCRIPTION;
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
 const ogImageURL = ogImage ? new URL(ogImage, SITE_URL) : undefined;
+
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  email: SITE.email,
+  telephone: SITE.phone,
+  foundingDate: String(SITE.founded),
+  sameAs: [SITE.social.instagram.url, SITE.social.linkedin.url],
+  address: SITE.studios.map((s) => ({
+    "@type": "PostalAddress",
+    addressLocality: s.city,
+    addressCountry: s.country,
+    streetAddress: s.address,
+  })),
+};
 ---
 
 <!doctype html>
@@ -39,8 +59,16 @@ const ogImageURL = ogImage ? new URL(ogImage, SITE_URL) : undefined;
     {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
 
     <title>{pageTitle}</title>
+    <ClientRouter />
+    <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} is:inline />
   </head>
   <body>
+    <a
+      href="#main"
+      class="bg-ink text-bone sr-only z-50 px-4 py-2 font-mono text-xs tracking-widest uppercase focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+    >
+      Skip to content
+    </a>
     <slot />
   </body>
 </html>

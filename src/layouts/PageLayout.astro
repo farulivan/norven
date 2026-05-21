@@ -1,0 +1,27 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Nav from "~/components/layout/Nav.astro";
+import Footer from "~/components/layout/Footer.astro";
+import ScrollHud from "~/components/layout/ScrollHud.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+const { title, description, ogImage } = Astro.props;
+const baseProps = {
+  ...(title !== undefined && { title }),
+  ...(description !== undefined && { description }),
+  ...(ogImage !== undefined && { ogImage }),
+};
+---
+
+<BaseLayout {...baseProps}>
+  <ScrollHud />
+  <Nav />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>

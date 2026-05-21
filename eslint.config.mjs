@@ -13,6 +13,15 @@ export default [
   ...astro.configs.recommended,
   ...astro.configs["jsx-a11y-recommended"],
   {
+    files: ["**/*.astro"],
+    languageOptions: {
+      parserOptions: {
+        parser: "@typescript-eslint/parser",
+        extraFileExtensions: [".astro"],
+      },
+    },
+  },
+  {
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     rules: {
       "no-console": ["warn", { allow: ["warn", "error"] }],
