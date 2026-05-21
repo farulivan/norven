@@ -1,7 +1,6 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import astro from "eslint-plugin-astro";
-import jsxA11y from "eslint-plugin-jsx-a11y";
 import globals from "globals";
 
 export default [
@@ -16,9 +15,15 @@ export default [
   {
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     rules: {
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+    },
+  },
+  {
+    files: ["**/*.{ts,tsx,mts,cts}"],
+    plugins: { "@typescript-eslint": tseslint.plugin },
+    rules: {
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/consistent-type-imports": "warn",
-      "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
 ];
