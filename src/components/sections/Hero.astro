@@ -1,5 +1,6 @@
 ---
 import { SITE } from "~/data/site";
+import MonolithScene from "~/components/three/MonolithScene.astro";
 const yearRoman = "MMXXVI"; // hardcode 2026 for now
 ---
 
@@ -27,41 +28,7 @@ const yearRoman = "MMXXVI"; // hardcode 2026 for now
     </div>
 
     <div class="relative hidden lg:flex lg:flex-col lg:items-stretch">
-      <div class="relative flex-1" data-monolith-mount>
-        <svg
-          viewBox="0 0 200 320"
-          class="absolute inset-0 m-auto h-full w-auto max-w-full"
-          aria-hidden="true"
-          data-hero-silhouette
-        >
-          {/* Procedural stacked-slab silhouette — 9 slabs, tapered */}
-          {
-            Array.from({ length: 9 }).map((_, i) => {
-              const widthBase = 120;
-              const taper = 0.25;
-              const w = widthBase * (1 - taper * (i / 9));
-              const h = 28;
-              const x = (200 - w) / 2;
-              const y = 320 - (i + 1) * (h + 4) - 20;
-              const isAccent = i === 3 || i === 6;
-              return (
-                <rect
-                  x={x}
-                  y={y}
-                  width={w}
-                  height={h}
-                  fill={isAccent ? "var(--color-brass)" : "var(--color-ink)"}
-                  opacity={isAccent ? 0.85 : 0.92}
-                />
-              );
-            })
-          }
-          {/* ground line */}
-          <line x1="20" y1="300" x2="180" y2="300" stroke="var(--color-ink)" stroke-width="0.5"
-          ></line>
-        </svg>
-        <canvas data-hero-canvas class="absolute inset-0 block h-full w-full opacity-0"></canvas>
-      </div>
+      <MonolithScene class="flex-1" />
 
       <div class="border-line-2 mt-8 grid grid-cols-3 gap-4 border-t pt-6">
         <div>

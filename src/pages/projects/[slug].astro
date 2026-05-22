@@ -1,6 +1,6 @@
 ---
 import PageLayout from "~/layouts/PageLayout.astro";
-import MonolithSilhouette from "~/components/three/MonolithSilhouette.astro";
+import MonolithScene from "~/components/three/MonolithScene.astro";
 import Contact from "~/components/sections/Contact.astro";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
@@ -65,11 +65,7 @@ const projectJsonLd = {
             </div>
           </dl>
         </div>
-        <div class="relative flex items-center justify-center" data-monolith-mount>
-          <MonolithSilhouette params={monolith} class="max-h-[600px]" />
-          <canvas data-project-canvas class="absolute inset-0 block h-full w-full opacity-0"
-          ></canvas>
-        </div>
+        <MonolithScene params={monolith} class="min-h-[480px] lg:min-h-[600px]" />
       </div>
     </section>
 

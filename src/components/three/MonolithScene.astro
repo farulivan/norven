@@ -1,0 +1,119 @@
+---
+import MonolithSilhouette from "~/components/three/MonolithSilhouette.astro";
+import { DEFAULT_MONOLITH, type MonolithParams } from "~/lib/three/params";
+
+interface Props {
+  params?: MonolithParams;
+  class?: string;
+}
+
+const { params = DEFAULT_MONOLITH, class: className = "" } = Astro.props;
+const paramsJson = JSON.stringify(params);
+---
+
+<div class:list={["relative", className]} data-monolith data-params={paramsJson}>
+  <div class="absolute inset-0 flex items-center justify-center" data-monolith-silhouette>
+    <MonolithSilhouette params={params} class="max-h-full max-w-full" />
+  </div>
+  <canvas
+    data-monolith-canvas
+    class="absolute inset-0 block h-full w-full opacity-0"
+    aria-hidden="true"></canvas>
+</div>
+
+<style>
+  [data-monolith-silhouette],
+  [data-monolith-canvas] {
+    transition: opacity 700ms ease;
+  }
+  [data-monolith]:has([data-monolith-canvas].ready) [data-monolith-silhouette] {
+    opacity: 0;
+  }
+  [data-monolith-canvas].ready {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { reducedMotion } from "~/lib/motion";
+  import type { MonolithParams } from "~/lib/three/params";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  type SceneAPI = {
+    update: (progress: number) => void;
+    resize: () => void;
+    destroy: () => void;
+  };
+
+  const isMobile = (): boolean => window.matchMedia("(max-width: 768px)").matches;
+
+  let teardowns: Array<() => void> = [];
+
+  async function bootMonoliths(): Promise<void> {
+    const hosts = document.querySelectorAll<HTMLElement>("[data-monolith]");
+    if (hosts.length === 0) return;
+    if (reducedMotion() || isMobile()) return;
+
+    const { init } = await import("~/lib/three/monolith");
+
+    hosts.forEach((host) => {
+      const canvas = host.querySelector<HTMLCanvasElement>("[data-monolith-canvas]");
+      if (!canvas) return;
+
+      const paramsAttr = host.getAttribute("data-params");
+      let params: MonolithParams | undefined;
+      if (paramsAttr) {
+        try {
+          params = JSON.parse(paramsAttr) as MonolithParams;
+        } catch {
+          params = undefined;
+        }
+      }
+
+      const scene: SceneAPI = init(canvas, params);
+      canvas.classList.add("ready");
+
+      const section = host.closest("section");
+      const trigger = ScrollTrigger.create({
+        trigger: section ?? host,
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.4,
+        onUpdate: (self) => scene.update(self.progress),
+      });
+
+      const onResize = (): void => scene.resize();
+      window.addEventListener("resize", onResize, { passive: true });
+
+      teardowns.push(() => {
+        trigger.kill();
+        window.removeEventListener("resize", onResize);
+        scene.destroy();
+      });
+    });
+  }
+
+  function tearDownMonoliths(): void {
+    teardowns.forEach((fn) => fn());
+    teardowns = [];
+  }
+
+  function scheduleBoot(): void {
+    const exec = (): void => {
+      void bootMonoliths();
+    };
+    if ("requestIdleCallback" in window) {
+      (window as Window & typeof globalThis).requestIdleCallback(exec, {
+        timeout: 1500,
+      });
+    } else {
+      setTimeout(exec, 600);
+    }
+  }
+
+  document.addEventListener("astro:page-load", scheduleBoot);
+  document.addEventListener("astro:before-swap", tearDownMonoliths);
+</script>
