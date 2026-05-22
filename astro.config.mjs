@@ -5,6 +5,10 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://norven.studio",
   integrations: [sitemap()],
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    build: { chunkSizeWarningLimit: 600 },
+  },
   prefetch: { defaultStrategy: "viewport" },
+  experimental: { clientPrerender: true },
 });

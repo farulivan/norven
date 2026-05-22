@@ -14,7 +14,7 @@ const { title, description, ogImage } = Astro.props;
 const pageTitle = title ?? SITE_NAME;
 const pageDescription = description ?? SITE_DESCRIPTION;
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
-const ogImageURL = ogImage ? new URL(ogImage, SITE_URL) : undefined;
+const ogImageURL = new URL(ogImage ?? "/og-image.svg", SITE_URL);
 
 const orgJsonLd = {
   "@context": "https://schema.org",
@@ -40,9 +40,11 @@ const orgJsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#F4F1EA" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F1EA" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111110" />
     <link rel="canonical" href={canonicalURL} />
 
     <meta name="description" content={pageDescription} />
@@ -51,12 +53,12 @@ const orgJsonLd = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    {ogImageURL && <meta property="og:image" content={ogImageURL} />}
+    <meta property="og:image" content={ogImageURL} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
-    {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
+    <meta name="twitter:image" content={ogImageURL} />
 
     <title>{pageTitle}</title>
     <ClientRouter />
