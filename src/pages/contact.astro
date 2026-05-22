@@ -1,0 +1,175 @@
+---
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageHero from "~/components/sections/PageHero.astro";
+import { SITE } from "~/data/site";
+
+// Each studio gets approximate dot coordinates on a 200x100 world map (lon/lat → x/y)
+const studioDots = [
+  { city: "Oslo", x: 105, y: 30 },
+  { city: "Lisbon", x: 91, y: 50 },
+  { city: "Kyoto", x: 165, y: 48 },
+];
+
+const dotCandidates = Array.from({ length: 600 }, (_, i) => {
+  const x = (i * 17) % 200;
+  const y = (i * 11) % 100;
+  const inLandRoughly = y > 18 && y < 70 && ((x > 80 && x < 175) || (x > 5 && x < 60));
+  return inLandRoughly ? { x, y } : null;
+}).filter((d): d is { x: number; y: number } => d !== null);
+---
+
+<PageLayout
+  title="Contact — Norven"
+  description="Bring us a site, a story, a single hour of light. Studios in Oslo, Lisbon, and Kyoto."
+>
+  <PageHero
+    eyebrow="Brief"
+    title={"Bring us\na site."}
+    subtitle="We accept three to five new commissions per year and read every brief carefully. Expect a personal response within fourteen days, usually sooner. Briefs from outside our usual region are welcome — distance is not a barrier; lack of intent is."
+  />
+
+  <section class="bg-bone py-20 lg:py-28">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+        <!-- FORM -->
+        <form action={`mailto:${SITE.email}`} method="post" enctype="text/plain" class="space-y-8">
+          <p class="eyebrow text-ink-3" data-reveal>
+            This form opens your mail client. No data is sent to a server.
+          </p>
+          <div data-reveal>
+            <label for="name" class="eyebrow mb-3 block">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="Name"
+              required
+              class="border-line-2 focus:border-ink bg-bone w-full border-b py-3 font-sans text-base transition-colors outline-none"
+            />
+          </div>
+          <div data-reveal>
+            <label for="email" class="eyebrow mb-3 block">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="Email"
+              required
+              class="border-line-2 focus:border-ink bg-bone w-full border-b py-3 font-sans text-base transition-colors outline-none"
+            />
+          </div>
+          <div data-reveal>
+            <label for="kind" class="eyebrow mb-3 block">Project type</label>
+            <select
+              id="kind"
+              name="Project type"
+              class="border-line-2 focus:border-ink bg-bone w-full border-b py-3 font-sans text-base transition-colors outline-none"
+            >
+              <option>Residence</option>
+              <option>Cultural</option>
+              <option>Commercial</option>
+              <option>Civic</option>
+              <option>Landscape</option>
+              <option>Research / publication</option>
+            </select>
+          </div>
+          <div data-reveal>
+            <label for="brief" class="eyebrow mb-3 block">A short brief</label>
+            <textarea
+              id="brief"
+              name="Brief"
+              rows="6"
+              required
+              class="border-line-2 focus:border-ink bg-bone w-full resize-none border-b py-3 font-sans text-base transition-colors outline-none"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="border-ink text-ink hover:bg-ink hover:text-bone border px-8 py-4 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
+          >
+            Send brief →
+          </button>
+        </form>
+
+        <!-- DETAILS -->
+        <aside class="space-y-12">
+          <div data-reveal>
+            <p class="eyebrow mb-4">Direct</p>
+            <a
+              href={`mailto:${SITE.email}`}
+              class="font-display text-ink hover:text-brass block text-2xl transition-colors"
+            >
+              {SITE.email}
+            </a>
+            <a
+              href={`tel:${SITE.phone.replaceAll(" ", "")}`}
+              class="text-ink-3 mt-2 block font-mono text-sm"
+            >
+              {SITE.phone}
+            </a>
+          </div>
+          <div data-reveal>
+            <p class="eyebrow mb-4">Studios</p>
+            <ul class="space-y-6">
+              {
+                SITE.studios.map((s) => (
+                  <li>
+                    <h3 class="font-display text-ink text-xl">{s.city}</h3>
+                    <p class="text-ink-3 mt-1 text-sm leading-relaxed">
+                      {s.address}
+                      <br />
+                      {s.country}
+                    </p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOT MAP -->
+  <section class="bg-bone-2 py-20 lg:py-28">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <p class="eyebrow mb-10 text-center" data-reveal>Three latitudes</p>
+      <svg
+        viewBox="0 0 200 100"
+        class="mx-auto block h-auto w-full max-w-3xl"
+        aria-label="Map of three studios"
+      >
+        {/* dotted continents — simplified silhouette */}
+        {
+          dotCandidates.map((d) => (
+            <circle cx={d.x} cy={d.y} r="0.3" fill="var(--color-ink-3)" opacity="0.4" />
+          ))
+        }
+        {
+          studioDots.map((d) => (
+            <>
+              <circle cx={d.x} cy={d.y} r="3" fill="var(--color-brass)" />
+              <circle
+                cx={d.x}
+                cy={d.y}
+                r="6"
+                fill="none"
+                stroke="var(--color-brass)"
+                stroke-width="0.4"
+                opacity="0.5"
+              />
+              <text
+                x={d.x}
+                y={d.y - 8}
+                text-anchor="middle"
+                font-size="3.5"
+                font-family="monospace"
+                fill="var(--color-ink)"
+              >
+                {d.city.toUpperCase()}
+              </text>
+            </>
+          ))
+        }
+      </svg>
+    </div>
+  </section>
+</PageLayout>

@@ -1,0 +1,22 @@
+---
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageHero from "~/components/sections/PageHero.astro";
+import ProjectGrid from "~/components/sections/ProjectGrid.astro";
+import Contact from "~/components/sections/Contact.astro";
+import { getCollection } from "astro:content";
+
+const projects = await getCollection("projects");
+---
+
+<PageLayout
+  title="Selected work — Norven"
+  description="A selection of residences, cultural buildings, and landscapes built and in studio by Norven."
+>
+  <PageHero
+    eyebrow={`Index · 0${projects.length} / 118 built`}
+    title={"Selected\nwork."}
+    subtitle="Five projects below stand for the wider practice. Each entry includes a brief, the full project narrative, and key dimensions. The studio has built one hundred eighteen buildings since founding; another twenty-six are in current development."
+  />
+  <ProjectGrid projects={projects} />
+  <Contact />
+</PageLayout>

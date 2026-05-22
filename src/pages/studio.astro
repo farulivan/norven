@@ -1,0 +1,169 @@
+---
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageHero from "~/components/sections/PageHero.astro";
+import Practice from "~/components/sections/Practice.astro";
+import Contact from "~/components/sections/Contact.astro";
+import { SITE } from "~/data/site";
+
+const principals = [
+  {
+    name: "Astrid Lien",
+    role: "Founding Partner",
+    base: "Oslo",
+    bio: "Trained at AHO and the ETH Zürich. Founded the practice in 2009 after seven years at Snøhetta. Carries every Norven project from first site visit to handover.",
+  },
+  {
+    name: "Pedro Carvalho",
+    role: "Partner, Practice Director",
+    base: "Lisbon",
+    bio: "Joined in 2014, partner since 2018. Leads the Iberian and southern-European practice. Background in adaptive reuse with Aires Mateus, FAUP graduate 2008.",
+  },
+  {
+    name: "Yuki Sato",
+    role: "Partner, Research & Publication",
+    base: "Kyoto",
+    bio: "Joined in 2017, partner since 2022. Runs the Kyoto studio and the studio's three published monographs. Doctorate in tectonic theory from Kyoto University.",
+  },
+];
+
+const recognition = [
+  { year: 2024, title: "Mies van der Rohe Award", detail: "Nominee · Obsidian Pavilion" },
+  { year: 2023, title: "Iceland Architecture Prize", detail: "Winner · Obsidian Pavilion" },
+  { year: 2023, title: "AR House Awards", detail: "Cover feature · Salt House" },
+  { year: 2022, title: "Wallpaper* Design Awards", detail: "Finalist · Holm Chapel" },
+  { year: 2020, title: "DETAIL Prize", detail: "Honourable mention · Holm Chapel" },
+  {
+    year: 2018,
+    title: "Slow Architectures 2009–2018",
+    detail: "Monograph · Lars Müller Publishers",
+  },
+];
+---
+
+<PageLayout
+  title="Studio — Norven"
+  description="A small architecture practice across Oslo, Lisbon, and Kyoto. Founded 2009 by Astrid Lien."
+>
+  <PageHero
+    eyebrow="Studio"
+    title={"A small practice.\nThree latitudes."}
+    subtitle="Founded in Oslo in 2009 and shaped by the careful, decade-long addition of partners in Lisbon and Kyoto. Norven has built one hundred eighteen buildings, with a team that has never exceeded thirty-six. The same architect who walks your site at the brief is present on the day the keys are handed over."
+  />
+
+  <!-- PHILOSOPHY -->
+  <section class="bg-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p class="eyebrow mb-12" data-reveal>Philosophy</p>
+      <div class="space-y-12">
+        <div data-reveal>
+          <h2 class="font-display text-ink mb-6 text-2xl">Listen before drawing.</h2>
+          <p class="text-ink-3 text-base leading-relaxed lg:text-lg">
+            The first eight weeks of every project are spent on the ground. We measure, photograph,
+            and visit at dawn and dusk. We meet the people who will use the building. We do not draw
+            anything in this phase — drawing is an act of commitment, and we want commitment to
+            follow understanding, not precede it.
+          </p>
+        </div>
+        <div data-reveal>
+          <h2 class="font-display text-ink mb-6 text-2xl">Continuity through the build.</h2>
+          <p class="text-ink-3 text-base leading-relaxed lg:text-lg">
+            The architect who first walked your site is on site again the week we pour foundations,
+            the week we hang doors, and the week the building is handed over. We do not pass
+            projects between teams. Our fee structure reflects this: we work on fewer projects, more
+            slowly, with more presence.
+          </p>
+        </div>
+        <div data-reveal>
+          <h2 class="font-display text-ink mb-6 text-2xl">Three studios as one practice.</h2>
+          <p class="text-ink-3 text-base leading-relaxed lg:text-lg">
+            Oslo, Lisbon, Kyoto. The studios share a single method but draw on three sets of
+            climatic intuitions. Norwegian rigour about insulation and rain; Portuguese
+            understanding of shade and stone; Japanese discipline about joinery and silence. Every
+            project benefits from at least two of the three.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Practice />
+
+  <!-- PRINCIPALS -->
+  <section class="bg-bone-2 py-24 lg:py-32">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <p class="eyebrow mb-12" data-reveal>Principals</p>
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
+        {
+          principals.map((p) => (
+            <article data-reveal>
+              <div class="bg-bone-3 border-line-2 mb-8 aspect-3/4 border">
+                {/* Abstract portrait placeholder — diagonal brass divisions */}
+                <svg viewBox="0 0 200 280" class="block h-full w-full" aria-hidden="true">
+                  <rect width="200" height="280" fill="var(--color-bone-3)" />
+                  <polygon
+                    points="0,180 200,80 200,280 0,280"
+                    fill="var(--color-ink)"
+                    opacity="0.85"
+                  />
+                  <circle cx="100" cy="110" r="42" fill="var(--color-bone-2)" />
+                  <rect x="0" y="180" width="200" height="4" fill="var(--color-brass)" />
+                </svg>
+              </div>
+              <p class="text-ink-3 mb-2 font-mono text-[10px] tracking-[0.18em] uppercase">
+                {p.role} · {p.base}
+              </p>
+              <h3 class="font-display text-ink mb-4 text-2xl">{p.name}</h3>
+              <p class="text-ink-3 text-sm leading-relaxed">{p.bio}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOGNITION -->
+  <section class="bg-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <p class="eyebrow mb-12" data-reveal>Recognition</p>
+      <ul class="divide-line-2 divide-y">
+        {
+          recognition.map((r) => (
+            <li class="grid grid-cols-[80px_1fr_auto] items-baseline gap-6 py-6" data-reveal>
+              <span class="text-ink-3 font-mono text-sm">{r.year}</span>
+              <span class="font-display text-ink text-xl">{r.title}</span>
+              <span class="text-ink-3 text-right font-mono text-xs lg:text-sm">{r.detail}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="bg-ink text-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <p class="text-bone/60 mb-12 font-mono text-[11px] tracking-[0.18em] uppercase" data-reveal>
+        Studios
+      </p>
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
+        {
+          SITE.studios.map((s) => (
+            <article data-reveal>
+              <h3 class="font-display text-bone mb-6 text-3xl lg:text-4xl">{s.city}</h3>
+              <p class="text-bone/70 text-sm leading-relaxed">
+                {s.address}
+                <br />
+                {s.country}
+              </p>
+              <p class="text-bone/50 mt-6 font-mono text-xs tracking-[0.14em] uppercase">
+                Mon–Fri · By appointment
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Contact />
+</PageLayout>
