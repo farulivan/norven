@@ -16,19 +16,13 @@ const cardTints: string[] = [
 
 <section id="flythrough" class="bg-bone py-24 lg:py-32">
   <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-    <div
-      class="relative min-h-[700px] lg:min-h-[800px]"
-      style="perspective: 1400px; perspective-origin: 50% 50%;"
-    >
+    <div class="relative min-h-100vh" style="perspective: 1400px; perspective-origin: 50% 50%;">
       <div
         class="absolute inset-0 flex items-center justify-center"
         style="transform-style: preserve-3d;"
       >
         {
           projects.map((p, i) => {
-            const z = -i * 220;
-            const x = i % 2 === 0 ? -i * 30 : i * 30;
-            const rotY = i % 2 === 0 ? 8 : -8;
             const isDark = i === 1 || i === 4;
             const tint = cardTints[i] ?? cardTints[0];
             return (
@@ -38,7 +32,7 @@ const cardTints: string[] = [
                   "border-line/40 absolute h-[480px] w-[360px] overflow-hidden border bg-linear-to-br shadow-[0_8px_40px_rgba(17,17,16,0.12)] transition-transform hover:scale-105",
                   tint,
                 ]}
-                style={`transform: translate3d(${x}px, 0, ${z}px) rotateY(${rotY}deg); z-index: ${100 - i};`}
+                style={`z-index: ${100 - i};`}
                 data-card-idx={i}
               >
                 <div class="relative flex h-full flex-col justify-between p-6">
@@ -89,3 +83,65 @@ const cardTints: string[] = [
     </p>
   </div>
 </section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { reducedMotion } from "~/lib/motion";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initFlythrough(): void {
+    const section = document.getElementById("flythrough");
+    if (!section) return;
+    const cards = gsap.utils.toArray<HTMLElement>("[data-card-idx]");
+    if (cards.length === 0) return;
+    if (reducedMotion()) {
+      // leave cards in DOM order, fan them out subtly so all are visible
+      cards.forEach((card, i) => {
+        gsap.set(card, {
+          x: (i - (cards.length - 1) / 2) * 40,
+          y: i * 8,
+          rotateY: i % 2 === 0 ? 6 : -6,
+          opacity: 1,
+        });
+      });
+      return;
+    }
+
+    const total = cards.length;
+    const stride = 900;
+
+    // initial state: all cards stacked behind the camera
+    cards.forEach((card, i) => {
+      gsap.set(card, {
+        x: 0,
+        translateZ: -i * stride,
+        rotateY: i % 2 === 0 ? 12 : -12,
+        opacity: 0,
+        force3D: true,
+      });
+    });
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: `+=${total * 100}%`,
+      pin: true,
+      scrub: 0.5,
+      onUpdate: (self) => {
+        const progress = self.progress; // 0..1
+        cards.forEach((card, i) => {
+          const startZ = -i * stride;
+          const endZ = (total - i) * stride;
+          const z = startZ + (endZ - startZ) * progress;
+          const opacity = Math.max(0, 1 - Math.abs(z) / 2200);
+          const xOffset = (i % 2 === 0 ? 1 : -1) * Math.max(0, 1 - Math.abs(z) / 1000) * 60;
+          gsap.set(card, { translateZ: z, opacity, x: xOffset });
+        });
+      },
+    });
+  }
+
+  document.addEventListener("astro:page-load", initFlythrough);
+</script>

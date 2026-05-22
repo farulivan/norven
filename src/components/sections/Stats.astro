@@ -21,3 +21,45 @@ import { STATS } from "~/data/stats";
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { reducedMotion } from "~/lib/motion";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initStats(): void {
+    const counters = gsap.utils.toArray<HTMLElement>("[data-count]");
+    if (counters.length === 0) return;
+    if (reducedMotion()) {
+      counters.forEach((el) => {
+        const target = Number(el.getAttribute("data-count") ?? "0");
+        el.textContent = target.toLocaleString();
+      });
+      return;
+    }
+    counters.forEach((el) => {
+      const target = Number(el.getAttribute("data-count") ?? "0");
+      el.textContent = "0";
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 82%",
+        once: true,
+        onEnter: () => {
+          const proxy = { n: 0 };
+          gsap.to(proxy, {
+            n: target,
+            duration: 1.6,
+            ease: "power3.out",
+            onUpdate: () => {
+              el.textContent = Math.round(proxy.n).toLocaleString();
+            },
+          });
+        },
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initStats);
+</script>

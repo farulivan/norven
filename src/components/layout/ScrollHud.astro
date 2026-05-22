@@ -5,3 +5,26 @@
 <div class="bg-line-2 fixed top-0 right-0 left-0 z-50 h-px" aria-hidden="true">
   <div class="bg-brass h-full w-0 origin-left" data-scroll-progress style="width: 0%"></div>
 </div>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { reducedMotion } from "~/lib/motion";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initScrollHud(): void {
+    if (reducedMotion()) return;
+    const bar = document.querySelector<HTMLElement>("[data-scroll-progress]");
+    if (!bar) return;
+    ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: (self) => {
+        bar.style.width = `${(self.progress * 100).toFixed(2)}%`;
+      },
+    });
+  }
+
+  document.addEventListener("astro:page-load", initScrollHud);
+</script>
