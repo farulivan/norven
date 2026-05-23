@@ -87,16 +87,14 @@ const cardTints: string[] = [
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { reducedMotion } from "~/lib/motion";
+  import { scrollEffect } from "~/lib/motion";
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  function initFlythrough(): void {
+  scrollEffect((ctx) => {
     const section = document.getElementById("flythrough");
     if (!section) return;
     const cards = gsap.utils.toArray<HTMLElement>("[data-card-idx]");
     if (cards.length === 0) return;
-    if (reducedMotion()) {
+    if (ctx.reduced) {
       // leave cards in DOM order, fan them out subtly so all are visible
       cards.forEach((card, i) => {
         gsap.set(card, {
@@ -123,7 +121,7 @@ const cardTints: string[] = [
       });
     });
 
-    ScrollTrigger.create({
+    const trigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
       end: `+=${total * 100}%`,
@@ -141,7 +139,7 @@ const cardTints: string[] = [
         });
       },
     });
-  }
 
-  document.addEventListener("astro:page-load", initFlythrough);
+    return () => trigger.kill();
+  });
 </script>

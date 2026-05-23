@@ -25,41 +25,41 @@ import { STATS } from "~/data/stats";
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { reducedMotion } from "~/lib/motion";
+  import { scrollEffect } from "~/lib/motion";
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  function initStats(): void {
+  scrollEffect((ctx) => {
     const counters = gsap.utils.toArray<HTMLElement>("[data-count]");
     if (counters.length === 0) return;
-    if (reducedMotion()) {
+    if (ctx.reduced) {
       counters.forEach((el) => {
         const target = Number(el.getAttribute("data-count") ?? "0");
         el.textContent = target.toLocaleString();
       });
       return;
     }
+    const triggers: ScrollTrigger[] = [];
     counters.forEach((el) => {
       const target = Number(el.getAttribute("data-count") ?? "0");
       el.textContent = "0";
-      ScrollTrigger.create({
-        trigger: el,
-        start: "top 82%",
-        once: true,
-        onEnter: () => {
-          const proxy = { n: 0 };
-          gsap.to(proxy, {
-            n: target,
-            duration: 1.6,
-            ease: "power3.out",
-            onUpdate: () => {
-              el.textContent = Math.round(proxy.n).toLocaleString();
-            },
-          });
-        },
-      });
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 82%",
+          once: true,
+          onEnter: () => {
+            const proxy = { n: 0 };
+            gsap.to(proxy, {
+              n: target,
+              duration: 1.6,
+              ease: "power3.out",
+              onUpdate: () => {
+                el.textContent = Math.round(proxy.n).toLocaleString();
+              },
+            });
+          },
+        }),
+      );
     });
-  }
-
-  document.addEventListener("astro:page-load", initStats);
+    return () => triggers.forEach((t) => t.kill());
+  });
 </script>

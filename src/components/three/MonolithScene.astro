@@ -35,12 +35,9 @@ const paramsJson = JSON.stringify(params);
 </style>
 
 <script>
-  import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { reducedMotion } from "~/lib/motion";
+  import { scrollEffect } from "~/lib/motion";
   import type { MonolithParams } from "~/lib/three/params";
-
-  gsap.registerPlugin(ScrollTrigger);
 
   type SceneAPI = {
     update: (progress: number) => void;
@@ -50,14 +47,27 @@ const paramsJson = JSON.stringify(params);
 
   const isMobile = (): boolean => window.matchMedia("(max-width: 768px)").matches;
 
-  let teardowns: Array<() => void> = [];
+  // Defer the heavy three.js load until the browser is idle.
+  const whenIdle = (): Promise<void> =>
+    new Promise((resolve) => {
+      if ("requestIdleCallback" in window) {
+        (window as Window & typeof globalThis).requestIdleCallback(() => resolve(), {
+          timeout: 1500,
+        });
+      } else {
+        setTimeout(resolve, 600);
+      }
+    });
 
-  async function bootMonoliths(): Promise<void> {
+  scrollEffect(async (ctx) => {
+    if (ctx.reduced || isMobile()) return; // SVG silhouette stays as the render
+
+    await whenIdle();
     const hosts = document.querySelectorAll<HTMLElement>("[data-monolith]");
     if (hosts.length === 0) return;
-    if (reducedMotion() || isMobile()) return;
 
     const { init } = await import("~/lib/three/monolith");
+    const teardowns: Array<() => void> = [];
 
     hosts.forEach((host) => {
       const canvas = host.querySelector<HTMLCanvasElement>("[data-monolith-canvas]");
@@ -94,26 +104,11 @@ const paramsJson = JSON.stringify(params);
         scene.destroy();
       });
     });
-  }
 
-  function tearDownMonoliths(): void {
-    teardowns.forEach((fn) => fn());
-    teardowns = [];
-  }
+    // Late async registration: recompute trigger positions after pinned
+    // sections (e.g. Flythrough) have changed the page's scroll length.
+    ctx.refresh();
 
-  function scheduleBoot(): void {
-    const exec = (): void => {
-      void bootMonoliths();
-    };
-    if ("requestIdleCallback" in window) {
-      (window as Window & typeof globalThis).requestIdleCallback(exec, {
-        timeout: 1500,
-      });
-    } else {
-      setTimeout(exec, 600);
-    }
-  }
-
-  document.addEventListener("astro:page-load", scheduleBoot);
-  document.addEventListener("astro:before-swap", tearDownMonoliths);
+    return () => teardowns.forEach((fn) => fn());
+  });
 </script>

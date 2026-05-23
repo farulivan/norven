@@ -14,7 +14,9 @@
     "lint:fix": "pnpm lint --fix",
     "format": "prettier --write \"**/*.{js,mjs,ts,astro,css,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,mjs,ts,astro,css,json,md}\"",
-    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm build"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
@@ -41,6 +43,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.59.4",
+    "vitest": "^4.1.7"
   }
 }
