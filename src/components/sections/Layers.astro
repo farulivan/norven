@@ -76,18 +76,15 @@ import { LAYERS } from "~/data/layers";
 
 <script>
   import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { reducedMotion } from "~/lib/motion";
+  import { scrollEffect } from "~/lib/motion";
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  function initLayers(): void {
+  scrollEffect((ctx) => {
     const section = document.getElementById("layers");
     const tower = document.getElementById("layers-tower");
     if (!section || !tower) return;
     const plates = gsap.utils.toArray<HTMLElement>("[data-plate-idx]");
     if (plates.length === 0) return;
-    if (reducedMotion()) return; // leave static layout in place
+    if (ctx.reduced) return; // leave static layout in place
 
     gsap.set(plates, { opacity: 0, y: 40 });
 
@@ -105,7 +102,10 @@ import { LAYERS } from "~/data/layers";
     plates.forEach((plate, i) => {
       tl.to(plate, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, i * 0.25);
     });
-  }
 
-  document.addEventListener("astro:page-load", initLayers);
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  });
 </script>

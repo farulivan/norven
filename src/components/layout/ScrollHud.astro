@@ -7,24 +7,20 @@
 </div>
 
 <script>
-  import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { reducedMotion } from "~/lib/motion";
+  import { scrollEffect } from "~/lib/motion";
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  function initScrollHud(): void {
-    if (reducedMotion()) return;
+  scrollEffect((ctx) => {
+    if (ctx.reduced) return;
     const bar = document.querySelector<HTMLElement>("[data-scroll-progress]");
     if (!bar) return;
-    ScrollTrigger.create({
+    const trigger = ScrollTrigger.create({
       start: 0,
       end: "max",
       onUpdate: (self) => {
         bar.style.width = `${(self.progress * 100).toFixed(2)}%`;
       },
     });
-  }
-
-  document.addEventListener("astro:page-load", initScrollHud);
+    return () => trigger.kill();
+  });
 </script>
