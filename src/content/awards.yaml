@@ -1,0 +1,30 @@
+mies-2024:
+  order: 1
+  year: 2024
+  title: "Mies van der Rohe Award"
+  detail: "Nominee · Obsidian Pavilion"
+iceland-2023:
+  order: 2
+  year: 2023
+  title: "Iceland Architecture Prize"
+  detail: "Winner · Obsidian Pavilion"
+ar-house-2023:
+  order: 3
+  year: 2023
+  title: "AR House Awards"
+  detail: "Cover feature · Salt House"
+wallpaper-2022:
+  order: 4
+  year: 2022
+  title: "Wallpaper* Design Awards"
+  detail: "Finalist · Holm Chapel"
+detail-2020:
+  order: 5
+  year: 2020
+  title: "DETAIL Prize"
+  detail: "Honourable mention · Holm Chapel"
+monograph-2018:
+  order: 6
+  year: 2018
+  title: "Slow Architectures 2009–2018"
+  detail: "Monograph · Lars Müller Publishers"

@@ -1,5 +1,5 @@
 import { defineCollection, reference } from "astro:content";
-import { glob } from "astro/loaders";
+import { glob, file } from "astro/loaders";
 import { z } from "zod";
 
 const projects = defineCollection({
@@ -51,4 +51,15 @@ const team = defineCollection({
     }),
 });
 
-export const collections = { projects, team };
+const awards = defineCollection({
+  loader: file("./src/content/awards.yaml"),
+  schema: z.object({
+    order: z.number().int(),
+    year: z.number().int(),
+    title: z.string(),
+    detail: z.string(),
+    project: reference("projects").optional(),
+  }),
+});
+
+export const collections = { projects, team, awards };

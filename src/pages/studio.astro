@@ -8,19 +8,7 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
 const team = (await getCollection("team")).sort((a, b) => a.data.order - b.data.order);
-
-const recognition = [
-  { year: 2024, title: "Mies van der Rohe Award", detail: "Nominee · Obsidian Pavilion" },
-  { year: 2023, title: "Iceland Architecture Prize", detail: "Winner · Obsidian Pavilion" },
-  { year: 2023, title: "AR House Awards", detail: "Cover feature · Salt House" },
-  { year: 2022, title: "Wallpaper* Design Awards", detail: "Finalist · Holm Chapel" },
-  { year: 2020, title: "DETAIL Prize", detail: "Honourable mention · Holm Chapel" },
-  {
-    year: 2018,
-    title: "Slow Architectures 2009–2018",
-    detail: "Monograph · Lars Müller Publishers",
-  },
-];
+const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <PageLayout
@@ -119,11 +107,13 @@ const recognition = [
       <p class="eyebrow mb-12" data-reveal>Recognition</p>
       <ul class="divide-line-2 divide-y">
         {
-          recognition.map((r) => (
+          awards.map((r) => (
             <li class="grid grid-cols-[80px_1fr_auto] items-baseline gap-6 py-6" data-reveal>
-              <span class="text-ink-3 font-mono text-sm">{r.year}</span>
-              <span class="font-display text-ink text-xl">{r.title}</span>
-              <span class="text-ink-3 text-right font-mono text-xs lg:text-sm">{r.detail}</span>
+              <span class="text-ink-3 font-mono text-sm">{r.data.year}</span>
+              <span class="font-display text-ink text-xl">{r.data.title}</span>
+              <span class="text-ink-3 text-right font-mono text-xs lg:text-sm">
+                {r.data.detail}
+              </span>
             </li>
           ))
         }
