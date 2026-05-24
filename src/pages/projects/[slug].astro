@@ -5,15 +5,14 @@ import Contact from "~/components/sections/Contact.astro";
 import ProjectGallery from "~/components/sections/ProjectGallery.astro";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
+import { withNeighbors } from "~/lib/projects/order";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
-  const sorted = projects.sort((a, b) => a.data.order - b.data.order);
-  return sorted.map((entry, i) => {
-    const prev = sorted[(i - 1 + sorted.length) % sorted.length];
-    const next = sorted[(i + 1) % sorted.length];
-    return { params: { slug: entry.id }, props: { entry, prev, next } };
-  });
+  return withNeighbors(projects).map(({ entry, prev, next }) => ({
+    params: { slug: entry.id },
+    props: { entry, prev, next },
+  }));
 }) satisfies GetStaticPaths;
 
 const { entry, prev, next } = Astro.props;
