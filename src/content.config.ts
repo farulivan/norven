@@ -3,7 +3,11 @@ import { glob } from "astro/loaders";
 import { z } from "zod";
 
 const projects = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
+  loader: glob({
+    pattern: "*/index.md",
+    base: "./src/content/projects",
+    generateId: ({ entry }) => entry.split("/")[0]!,
+  }),
   schema: z.object({
     title: z.string(),
     year: z.number().int().min(2000).max(2100),
