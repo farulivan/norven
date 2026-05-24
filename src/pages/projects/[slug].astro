@@ -2,6 +2,7 @@
 import PageLayout from "~/layouts/PageLayout.astro";
 import MonolithScene from "~/components/three/MonolithScene.astro";
 import Contact from "~/components/sections/Contact.astro";
+import ProjectGallery from "~/components/sections/ProjectGallery.astro";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
@@ -17,7 +18,7 @@ export const getStaticPaths = (async () => {
 
 const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
-const { title, year, type, location, area, status, brief, monolith } = entry.data;
+const { title, year, type, location, area, status, brief, monolith, gallery } = entry.data;
 
 const projectJsonLd = {
   "@context": "https://schema.org",
@@ -219,6 +220,8 @@ const projectJsonLd = {
         </div>
       </div>
     </section>
+
+    <ProjectGallery gallery={gallery} />
 
     <!-- PREV/NEXT -->
     <nav class="bg-bone border-line-2 border-t py-16" aria-label="Project navigation">
