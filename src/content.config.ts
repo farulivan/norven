@@ -1,4 +1,4 @@
-import { defineCollection } from "astro:content";
+import { defineCollection, reference } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "zod";
 
@@ -28,9 +28,27 @@ const projects = defineCollection({
         rotation: z.number().default(0),
         accentSlabs: z.array(z.number().int()).default([]),
       }),
+      credits: z.array(reference("team")).default([]),
       order: z.number().int(),
       featured: z.boolean().default(false),
     }),
 });
 
-export const collections = { projects };
+const team = defineCollection({
+  loader: glob({
+    pattern: "*/index.md",
+    base: "./src/content/team",
+    generateId: ({ entry }) => entry.split("/")[0]!,
+  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      role: z.string(),
+      base: z.enum(["Oslo", "Lisbon", "Kyoto"]),
+      portrait: image().optional(),
+      bio: z.string(),
+      order: z.number().int(),
+    }),
+});
+
+export const collections = { projects, team };

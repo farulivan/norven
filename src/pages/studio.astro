@@ -4,27 +4,10 @@ import PageHero from "~/components/sections/PageHero.astro";
 import Practice from "~/components/sections/Practice.astro";
 import Contact from "~/components/sections/Contact.astro";
 import { SITE } from "~/data/site";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
-const principals = [
-  {
-    name: "Astrid Lien",
-    role: "Founding Partner",
-    base: "Oslo",
-    bio: "Trained at AHO and the ETH Zürich. Founded the practice in 2009 after seven years at Snøhetta. Carries every Norven project from first site visit to handover.",
-  },
-  {
-    name: "Pedro Carvalho",
-    role: "Partner, Practice Director",
-    base: "Lisbon",
-    bio: "Joined in 2014, partner since 2018. Leads the Iberian and southern-European practice. Background in adaptive reuse with Aires Mateus, FAUP graduate 2008.",
-  },
-  {
-    name: "Yuki Sato",
-    role: "Partner, Research & Publication",
-    base: "Kyoto",
-    bio: "Joined in 2017, partner since 2022. Runs the Kyoto studio and the studio's three published monographs. Doctorate in tectonic theory from Kyoto University.",
-  },
-];
+const team = (await getCollection("team")).sort((a, b) => a.data.order - b.data.order);
 
 const recognition = [
   { year: 2024, title: "Mies van der Rohe Award", detail: "Nominee · Obsidian Pavilion" },
@@ -94,26 +77,35 @@ const recognition = [
       <p class="eyebrow mb-12" data-reveal>Principals</p>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
         {
-          principals.map((p) => (
+          team.map((p) => (
             <article data-reveal>
-              <div class="bg-bone-3 border-line-2 mb-8 aspect-3/4 border">
-                {/* Abstract portrait placeholder — diagonal brass divisions */}
-                <svg viewBox="0 0 200 280" class="block h-full w-full" aria-hidden="true">
-                  <rect width="200" height="280" fill="var(--color-bone-3)" />
-                  <polygon
-                    points="0,180 200,80 200,280 0,280"
-                    fill="var(--color-ink)"
-                    opacity="0.85"
+              <div class="bg-bone-3 border-line-2 mb-8 aspect-3/4 overflow-hidden border">
+                {p.data.portrait ? (
+                  <Image
+                    src={p.data.portrait}
+                    alt={p.data.name}
+                    widths={[300, 600]}
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    class="block h-full w-full object-cover"
                   />
-                  <circle cx="100" cy="110" r="42" fill="var(--color-bone-2)" />
-                  <rect x="0" y="180" width="200" height="4" fill="var(--color-brass)" />
-                </svg>
+                ) : (
+                  <svg viewBox="0 0 200 280" class="block h-full w-full" aria-hidden="true">
+                    <rect width="200" height="280" fill="var(--color-bone-3)" />
+                    <polygon
+                      points="0,180 200,80 200,280 0,280"
+                      fill="var(--color-ink)"
+                      opacity="0.85"
+                    />
+                    <circle cx="100" cy="110" r="42" fill="var(--color-bone-2)" />
+                    <rect x="0" y="180" width="200" height="4" fill="var(--color-brass)" />
+                  </svg>
+                )}
               </div>
               <p class="text-ink-3 mb-2 font-mono text-[10px] tracking-[0.18em] uppercase">
-                {p.role} · {p.base}
+                {p.data.role} · {p.data.base}
               </p>
-              <h3 class="font-display text-ink mb-4 text-2xl">{p.name}</h3>
-              <p class="text-ink-3 text-sm leading-relaxed">{p.bio}</p>
+              <h3 class="font-display text-ink mb-4 text-2xl">{p.data.name}</h3>
+              <p class="text-ink-3 text-sm leading-relaxed">{p.data.bio}</p>
             </article>
           ))
         }
