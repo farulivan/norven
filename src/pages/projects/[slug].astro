@@ -2,22 +2,22 @@
 import PageLayout from "~/layouts/PageLayout.astro";
 import MonolithScene from "~/components/three/MonolithScene.astro";
 import Contact from "~/components/sections/Contact.astro";
+import ProjectGallery from "~/components/sections/ProjectGallery.astro";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
+import { withNeighbors } from "~/lib/projects/order";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
-  const sorted = projects.sort((a, b) => a.data.order - b.data.order);
-  return sorted.map((entry, i) => {
-    const prev = sorted[(i - 1 + sorted.length) % sorted.length];
-    const next = sorted[(i + 1) % sorted.length];
-    return { params: { slug: entry.id }, props: { entry, prev, next } };
-  });
+  return withNeighbors(projects).map(({ entry, prev, next }) => ({
+    params: { slug: entry.id },
+    props: { entry, prev, next },
+  }));
 }) satisfies GetStaticPaths;
 
 const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
-const { title, year, type, location, area, status, brief, monolith } = entry.data;
+const { title, year, type, location, area, status, brief, monolith, gallery } = entry.data;
 
 const projectJsonLd = {
   "@context": "https://schema.org",
@@ -219,6 +219,8 @@ const projectJsonLd = {
         </div>
       </div>
     </section>
+
+    <ProjectGallery gallery={gallery} />
 
     <!-- PREV/NEXT -->
     <nav class="bg-bone border-line-2 border-t py-16" aria-label="Project navigation">
