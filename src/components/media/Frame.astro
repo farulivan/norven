@@ -11,6 +11,7 @@ interface Props {
   ratio?: string; // aspect-ratio, e.g. "4/3", "3/4", "16/9"
   seed?: number; // varies the placeholder gradient
   parallax?: boolean; // gentle vertical drift (handled by the motion runtime)
+  fill?: boolean; // fill a fixed-height parent (object-cover), instead of using aspect-ratio
   widths?: number[];
   sizes?: string;
 }
@@ -22,13 +23,17 @@ const {
   ratio = "4/3",
   seed = 0,
   parallax = false,
+  fill = false,
   widths = [400, 800, 1200, 1600],
   sizes = "(min-width: 1024px) 50vw, 100vw",
 } = Astro.props;
 ---
 
-<figure class:list={["m-0", className]}>
-  <div class="bg-bone-2 relative overflow-hidden" style={`aspect-ratio: ${ratio};`}>
+<figure class:list={["m-0", fill && "absolute inset-0", className]}>
+  <div
+    class:list={["bg-bone-2 relative overflow-hidden", fill && "h-full w-full"]}
+    style={fill ? undefined : `aspect-ratio: ${ratio};`}
+  >
     <div
       class:list={["absolute inset-0", parallax && "-top-10% h-[120%]"]}
       data-parallax={parallax ? "8" : undefined}
