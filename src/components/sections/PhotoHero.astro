@@ -1,0 +1,102 @@
+---
+import Frame from "~/components/media/Frame.astro";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  eyebrow?: string | undefined;
+  title: string; // may contain <br>
+  subtitle?: string | undefined;
+  src?: ImageMetadata | undefined;
+  seed?: number;
+  titlePlacement?: "overlay" | "below";
+}
+const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = Astro.props;
+---
+
+<section class="bg-bone">
+  <div class:list={["relative", titlePlacement === "overlay" && "min-h-[88vh]"]} data-hero-scale>
+    <Frame
+      src={src}
+      alt={eyebrow
+        ? `${eyebrow} — ${title.replace(/<[^>]+>/g, " ")}`
+        : title.replace(/<[^>]+>/g, " ")}
+      ratio={titlePlacement === "overlay" ? "16/10" : "16/9"}
+      seed={seed}
+      parallax={titlePlacement === "below"}
+      fill={titlePlacement === "overlay"}
+      sizes="100vw"
+      widths={[800, 1200, 1600, 2000]}
+    />
+    {
+      titlePlacement === "overlay" && (
+        <div class="from-ink/70 via-ink/10 absolute inset-0 bg-linear-to-t to-transparent" />
+      )
+    }
+    {
+      titlePlacement === "overlay" && (
+        <div class="absolute inset-0 mx-auto flex max-w-[1400px] flex-col justify-end px-6 pb-16 lg:px-10 lg:pb-24">
+          {eyebrow && (
+            <p
+              class="text-bone/80 mb-6 font-mono text-[11px] tracking-[0.18em] uppercase"
+              data-reveal
+            >
+              {eyebrow}
+            </p>
+          )}
+          <h1
+            class="font-display text-bone leading-[0.92]"
+            style="font-size: var(--text-display-1)"
+            data-reveal
+            set:html={title}
+          />
+          {subtitle && (
+            <p class="text-bone/85 mt-8 max-w-xl text-base leading-relaxed lg:text-lg" data-reveal>
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )
+    }
+  </div>
+  {
+    titlePlacement === "below" && (
+      <div class="mx-auto max-w-[1400px] px-6 pt-12 lg:px-10 lg:pt-16">
+        {eyebrow && (
+          <p class="eyebrow text-brass mb-6" data-reveal>
+            {eyebrow}
+          </p>
+        )}
+        <h1
+          class="font-display text-ink leading-[0.92]"
+          style="font-size: var(--text-display-1)"
+          data-reveal
+          set:html={title}
+        />
+        {subtitle && (
+          <p class="text-ink-3 mt-8 max-w-2xl text-base leading-relaxed lg:text-lg" data-reveal>
+            {subtitle}
+          </p>
+        )}
+      </div>
+    )
+  }
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { scrollEffect } from "~/lib/motion";
+  scrollEffect((ctx) => {
+    const el = document.querySelector<HTMLElement>("[data-hero-scale]");
+    if (!el || ctx.reduced) return;
+    const t = gsap.fromTo(
+      el,
+      { scale: 1 },
+      {
+        scale: 1.06,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true },
+      },
+    );
+    return () => t.scrollTrigger?.kill();
+  });
+</script>

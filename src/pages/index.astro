@@ -1,28 +1,32 @@
 ---
 import PageLayout from "~/layouts/PageLayout.astro";
-import Hero from "~/components/sections/Hero.astro";
-import Manifesto from "~/components/sections/Manifesto.astro";
-import Layers from "~/components/sections/Layers.astro";
-import ProjectsIntro from "~/components/sections/ProjectsIntro.astro";
-import Flythrough from "~/components/sections/Flythrough.astro";
-import Practice from "~/components/sections/Practice.astro";
-import Process from "~/components/sections/Process.astro";
+import PhotoHero from "~/components/sections/PhotoHero.astro";
+import Statement from "~/components/sections/Statement.astro";
+import FeaturedProjects from "~/components/sections/FeaturedProjects.astro";
 import Stats from "~/components/sections/Stats.astro";
 import Testimonial from "~/components/sections/Testimonial.astro";
 import Contact from "~/components/sections/Contact.astro";
+import { SITE } from "~/data/site";
+import { getCollection } from "astro:content";
+
+const featured = (await getCollection("projects"))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <PageLayout
   title="Norven — Architecture of consequence."
   description="Norven is an architecture practice working on residences, cultural buildings, and landscapes across Northern Europe and beyond."
 >
-  <Hero />
-  <Manifesto />
-  <Layers />
-  <ProjectsIntro />
-  <Flythrough />
-  <Practice />
-  <Process />
+  <PhotoHero
+    titlePlacement="overlay"
+    eyebrow={`${SITE.name} · Est. ${SITE.founded}`}
+    title={"Architecture<br>of consequence."}
+    subtitle={SITE.description}
+    seed={2}
+  />
+  <Statement />
+  <FeaturedProjects projects={featured} />
   <Stats />
   <Testimonial />
   <Contact />
