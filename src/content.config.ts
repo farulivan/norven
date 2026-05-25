@@ -19,7 +19,9 @@ const projects = defineCollection({
       brief: z.string(),
       cover: image().optional(), // OG / grid thumbnail (wired later, see Follow-ups)
       gallery: z
-        .array(z.object({ src: image(), alt: z.string(), caption: z.string().optional() }))
+        .array(
+          z.object({ src: image().optional(), alt: z.string(), caption: z.string().optional() }),
+        )
         .default([]), // alt required → a11y enforced by schema
       monolith: z.object({
         slabCount: z.number().int().min(3).max(20),
@@ -29,6 +31,7 @@ const projects = defineCollection({
         accentSlabs: z.array(z.number().int()).default([]),
       }),
       credits: z.array(reference("team")).default([]),
+      testimonial: z.object({ quote: z.string(), author: z.string(), role: z.string() }).optional(),
       order: z.number().int(),
       featured: z.boolean().default(false),
     }),
