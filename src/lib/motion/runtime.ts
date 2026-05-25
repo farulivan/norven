@@ -83,10 +83,30 @@ function bindReveals(): void {
   });
 }
 
+// --- [data-parallax] gentle non-pinning parallax (runtime built-in) ---
+function bindParallax(): void {
+  if (reducedMotion()) return;
+  const els = gsap.utils.toArray<HTMLElement>("[data-parallax]");
+  if (els.length === 0) return;
+  els.forEach((el) => {
+    const amount = Number(el.dataset.parallax || "8"); // % of own height
+    gsap.fromTo(
+      el,
+      { yPercent: -amount },
+      {
+        yPercent: amount,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
+      },
+    );
+  });
+}
+
 // --- view-transition lifecycle ---
 function boot(): void {
   initLenis();
   bindReveals();
+  bindParallax();
   core.runAll();
   // Refresh after reveals + effect triggers have been created.
   requestAnimationFrame(() => ScrollTrigger.refresh());
