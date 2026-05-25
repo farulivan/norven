@@ -1,0 +1,67 @@
+---
+import Frame from "~/components/media/Frame.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+const { projects } = Astro.props;
+---
+
+<section class="bg-bone py-24 lg:py-32">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+    <p class="eyebrow mb-16" data-reveal>Selected work</p>
+    <div class="flex flex-col gap-24 lg:gap-40">
+      {
+        projects.map((p, i) => {
+          const flip = i % 2 === 1;
+          return (
+            <article class="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+              <a
+                href={`/projects/${p.id}`}
+                class:list={["block", flip && "lg:order-2"]}
+                data-reveal
+              >
+                <Frame
+                  src={p.data.cover}
+                  alt={p.data.title}
+                  ratio="4/3"
+                  seed={i}
+                  parallax
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </a>
+              <div
+                class:list={["lg:sticky lg:top-32 lg:self-start", flip && "lg:order-1"]}
+                data-reveal
+              >
+                <p class="eyebrow text-brass mb-5">
+                  {p.data.type} · {p.data.year} ·{" "}
+                  {p.data.status === "built" ? "Built" : "In Studio"}
+                </p>
+                <h3
+                  class="font-display text-ink leading-[0.98]"
+                  style="font-size: var(--text-display-3)"
+                >
+                  <a href={`/projects/${p.id}`} class="hover:text-brass transition-colors">
+                    {p.data.title}
+                  </a>
+                </h3>
+                <p class="text-ink-3 mt-4 font-mono text-xs tracking-[0.14em] uppercase">
+                  {p.data.location} · {p.data.area}
+                </p>
+                <p class="text-ink-3 mt-8 max-w-md text-base leading-relaxed">{p.data.brief}</p>
+                <a
+                  href={`/projects/${p.id}`}
+                  class="text-ink hover:text-brass mt-10 inline-block border-b border-current pb-1 font-mono text-[11px] tracking-[0.18em] uppercase transition-colors"
+                >
+                  View project →
+                </a>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
