@@ -14,6 +14,15 @@ monolith:
   accentSlabs: [4, 8]
 order: 2
 featured: true
+gallery:
+  - alt: "Obsidian Pavilion — exterior, cast-basalt stack at Þingvellir" # TODO: add src: ./photo-1.jpg
+    caption: "Exterior · approach"
+  - alt: "Obsidian Pavilion — interior shaft, ash reading bench" # TODO: add src: ./photo-2.jpg
+    caption: "Interior · main volume"
+  - alt: "Obsidian Pavilion — light slot detail, winter solstice angle" # TODO: add src: ./photo-3.jpg
+    caption: "Detail · materials"
+  - alt: "Obsidian Pavilion — site at the Almannagjá fault, Iceland" # TODO: add src: ./photo-4.jpg
+    caption: "Site · context"
 ---
 
 Þingvellir is a rift valley: two tectonic plates separating at 2.5 cm per year, the ground literally tearing in slow time. The Icelandic Heritage Council commissioned a structure that would register this condition without explaining it, placed at the edge of the Almannagjá fault. Silence is the primary material at the site; wind from the north comes across open water and arrives unchanged. The brief asked for a reading room and an orientation space, nothing more.

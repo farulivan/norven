@@ -14,6 +14,19 @@ monolith:
   accentSlabs: [1]
 order: 1
 featured: true
+gallery:
+  - alt: "Salt House — exterior, approach from the fishermen's path" # TODO: add src: ./photo-1.jpg
+    caption: "Exterior · approach"
+  - alt: "Salt House — primary interior volume, oak stair" # TODO: add src: ./photo-2.jpg
+    caption: "Interior · main volume"
+  - alt: "Salt House — cedar rainscreen and copper roof detail" # TODO: add src: ./photo-3.jpg
+    caption: "Detail · materials"
+  - alt: "Salt House — site above the Skagerrak, Tjøme" # TODO: add src: ./photo-4.jpg
+    caption: "Site · context"
+testimonial:
+  quote: "We asked for a house that would earn its place on the rock, and they gave us one that seems to have always been there. Every season it looks more itself."
+  author: "Client name" # TODO: real attribution
+  role: "Owner, Salt House"
 ---
 
 The site is a granite shelf 14 metres above the Skagerrak, exposed to prevailing south-west wind and the salt spray that follows it. A fishermen's path cuts diagonally across the rock, bending around a jutting boss at mid-slope. The building does not interrupt the path. It settles below it, into three cuts in the shelf, each volume occupying the natural terrace the rock already offered.
