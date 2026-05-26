@@ -1,135 +1,39 @@
 ---
+import Frame from "~/components/media/Frame.astro";
 import type { CollectionEntry } from "astro:content";
-import MonolithSilhouette from "~/components/three/MonolithSilhouette.astro";
 
 interface Props {
   projects: CollectionEntry<"projects">[];
 }
 const { projects } = Astro.props;
-
-const sorted = [...projects].sort((a, b) => b.data.year - a.data.year);
-const types = Array.from(new Set(sorted.map((p) => p.data.type))).sort();
+const sorted = [...projects].sort((a, b) => a.data.order - b.data.order);
 ---
 
-<section class="bg-bone py-20 lg:py-28">
+<section class="bg-bone py-16 lg:py-24">
   <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-    <fieldset class="mb-14 border-0">
-      <legend class="sr-only">Filter projects</legend>
-      <div class="flex flex-wrap items-center gap-3">
-        <input type="radio" name="project-filter" id="filter-all" checked class="sr-only" />
-        <label for="filter-all" class="filter-chip">All ({sorted.length})</label>
-
-        <input type="radio" name="project-filter" id="filter-built" class="sr-only" />
-        <label for="filter-built" class="filter-chip">
-          Built ({sorted.filter((p) => p.data.status === "built").length})
-        </label>
-
-        <input type="radio" name="project-filter" id="filter-instudio" class="sr-only" />
-        <label for="filter-instudio" class="filter-chip">
-          In Studio ({sorted.filter((p) => p.data.status === "in-studio").length})
-        </label>
-
-        {
-          types.map((t) => (
-            <>
-              <input
-                type="radio"
-                name="project-filter"
-                id={`filter-type-${t.toLowerCase()}`}
-                class="sr-only"
-              />
-              <label for={`filter-type-${t.toLowerCase()}`} class="filter-chip">
-                {t}
-              </label>
-            </>
-          ))
-        }
-      </div>
-    </fieldset>
-
-    <ul class="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3" data-project-grid>
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
       {
-        sorted.map((p) => (
-          <li data-card data-status={p.data.status} data-type={p.data.type} data-reveal>
-            <a href={`/projects/${p.id}`} class="group block">
-              <div class="bg-bone-2 border-line-2 group-hover:border-line relative aspect-4/5 overflow-hidden border transition-colors">
-                <div class="absolute inset-0 flex items-center justify-center p-8">
-                  <MonolithSilhouette params={p.data.monolith} />
-                </div>
-                <span
-                  class:list={[
-                    "absolute top-4 left-4 px-2 py-1 font-mono text-[9px] tracking-[0.18em] uppercase",
-                    p.data.status === "built"
-                      ? "bg-ink text-bone"
-                      : "border-ink text-ink border bg-transparent",
-                  ]}
-                >
-                  {p.data.status === "built" ? "Built" : "In Studio"}
-                </span>
-              </div>
-              <div class="mt-5 flex items-baseline justify-between">
-                <h3 class="font-display text-ink group-hover:text-brass text-2xl transition-colors">
-                  {p.data.title}
-                </h3>
-                <span class="text-ink-3 font-mono text-xs">{p.data.year}</span>
-              </div>
-              <p class="text-ink-3 mt-2 font-mono text-[11px] tracking-[0.14em] uppercase">
-                {p.data.type} · {p.data.location}
-              </p>
-            </a>
-          </li>
+        sorted.map((p, i) => (
+          <a href={`/projects/${p.id}`} class="group block" data-reveal>
+            <Frame
+              src={p.data.cover}
+              alt={p.data.title}
+              ratio="4/3"
+              seed={i}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            />
+            <p class="eyebrow text-brass mt-5">
+              {p.data.type} · {p.data.year}
+            </p>
+            <h3 class="font-display text-ink group-hover:text-brass mt-1 text-2xl transition-colors">
+              {p.data.title}
+            </h3>
+            <p class="text-ink-3 mt-1 font-mono text-xs tracking-[0.14em] uppercase">
+              {p.data.location}
+            </p>
+          </a>
         ))
       }
-    </ul>
+    </div>
   </div>
 </section>
-
-<style is:global>
-  .filter-chip {
-    display: inline-block;
-    cursor: pointer;
-    border: 1px solid var(--color-line-2);
-    padding: 0.5rem 1rem;
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-ink-3);
-    transition-property: color, border-color, background-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-  .filter-chip:hover {
-    color: var(--color-ink);
-    border-color: var(--color-ink);
-  }
-  input[name="project-filter"]:checked + .filter-chip {
-    background-color: var(--color-ink);
-    color: var(--color-bone);
-    border-color: var(--color-ink);
-  }
-  /* Built filter */
-  body:has(#filter-built:checked) [data-card][data-status="in-studio"] {
-    display: none;
-  }
-  /* In-studio filter */
-  body:has(#filter-instudio:checked) [data-card][data-status="built"] {
-    display: none;
-  }
-  /* Type filters */
-  body:has(#filter-type-residence:checked) [data-card]:not([data-type="Residence"]) {
-    display: none;
-  }
-  body:has(#filter-type-cultural:checked) [data-card]:not([data-type="Cultural"]) {
-    display: none;
-  }
-  body:has(#filter-type-commercial:checked) [data-card]:not([data-type="Commercial"]) {
-    display: none;
-  }
-  body:has(#filter-type-civic:checked) [data-card]:not([data-type="Civic"]) {
-    display: none;
-  }
-  body:has(#filter-type-landscape:checked) [data-card]:not([data-type="Landscape"]) {
-    display: none;
-  }
-</style>
