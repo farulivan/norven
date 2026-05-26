@@ -23,13 +23,6 @@ const projects = defineCollection({
           z.object({ src: image().optional(), alt: z.string(), caption: z.string().optional() }),
         )
         .default([]), // alt required → a11y enforced by schema
-      monolith: z.object({
-        slabCount: z.number().int().min(3).max(20),
-        heightUnit: z.number().positive(),
-        taper: z.number().min(0).max(1),
-        rotation: z.number().default(0),
-        accentSlabs: z.array(z.number().int()).default([]),
-      }),
       credits: z.array(reference("team")).default([]),
       testimonial: z.object({ quote: z.string(), author: z.string(), role: z.string() }).optional(),
       order: z.number().int(),

@@ -6,12 +6,6 @@ location: "Reykjavík"
 area: "6,800 m²"
 status: "in-studio"
 brief: "A vertical archive and exhibition tower for the Nordic Council. Sixteen plates stacked around a central daylight void, sequenced by epoch."
-monolith:
-  slabCount: 16
-  heightUnit: 0.4
-  taper: 0.4
-  rotation: 0
-  accentSlabs: [3, 7, 11, 15]
 order: 5
 featured: true
 gallery:

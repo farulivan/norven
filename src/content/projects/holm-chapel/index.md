@@ -6,12 +6,6 @@ location: "Higashiyama, Kyoto"
 area: "180 m²"
 status: "built"
 brief: "A non-denominational chapel for a small university campus. One room, one bench, one light cut down through three storeys of rammed earth."
-monolith:
-  slabCount: 4
-  heightUnit: 1.2
-  taper: 0.55
-  rotation: 0
-  accentSlabs: [3]
 order: 4
 featured: true
 gallery:
