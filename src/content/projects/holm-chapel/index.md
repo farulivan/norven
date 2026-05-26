@@ -14,6 +14,19 @@ monolith:
   accentSlabs: [3]
 order: 4
 featured: true
+gallery:
+  - alt: "Holm Chapel — exterior, rammed earth mass at Higashiyama" # TODO: add src: ./photo-1.jpg
+    caption: "Exterior · approach"
+  - alt: "Holm Chapel — interior, zelkova bench under the oculus light cut" # TODO: add src: ./photo-2.jpg
+    caption: "Interior · main volume"
+  - alt: "Holm Chapel — rammed earth striations, 38 horizontal lifts in detail" # TODO: add src: ./photo-3.jpg
+    caption: "Detail · materials"
+  - alt: "Holm Chapel — site within the university campus, Kyoto" # TODO: add src: ./photo-4.jpg
+    caption: "Site · context"
+testimonial:
+  quote: "It is the quietest room I have ever entered. Students walk past it all week and then, one day, they come inside. That is exactly what we hoped for."
+  author: "Client name" # TODO: real attribution
+  role: "Owner, Holm Chapel"
 ---
 
 The commission came from the chaplaincy of a private university after a five-year selection process. The brief stipulated non-denominational use, a maximum footprint of 12 × 15 metres, and no objects, fixtures, or iconography that would resolve the room toward a specific tradition. The building was to be one room. The client's words were: a place to sit and not be asked anything.

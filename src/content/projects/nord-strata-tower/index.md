@@ -14,6 +14,15 @@ monolith:
   accentSlabs: [3, 7, 11, 15]
 order: 5
 featured: true
+gallery:
+  - alt: "Nord-Strata Tower — exterior render, sixteen cantilevered plates, Reykjavík" # TODO: add src: ./photo-1.jpg
+    caption: "Exterior · approach"
+  - alt: "Nord-Strata Tower — interior central daylight void, exhibition floor" # TODO: add src: ./photo-2.jpg
+    caption: "Interior · main volume"
+  - alt: "Nord-Strata Tower — chamfered concrete plate edge and laitance aggregate detail" # TODO: add src: ./photo-3.jpg
+    caption: "Detail · materials"
+  - alt: "Nord-Strata Tower — site model, Reykjavík harbour context" # TODO: add src: ./photo-4.jpg
+    caption: "Site · context"
 ---
 
 The Nordic Council commissioned a vertical archive for material culture spanning the ninth century to the present, one storey per century, accessed via a continuous external ramp that winds the full height of the building. Each floor is a single room exhibiting a curated selection of objects, textiles, tools, and documents from one hundred years of Nordic life. The programme requires 6,800 m² of conditioned floor area, a conservation storage sub-level, and a public observation room at the crown.

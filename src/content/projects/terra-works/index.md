@@ -14,6 +14,15 @@ monolith:
   accentSlabs: [2, 5]
 order: 3
 featured: true
+gallery:
+  - alt: "Terra Works — exterior, south facade of the 1937 ceramic warehouse, Marvila" # TODO: add src: ./photo-1.jpg
+    caption: "Exterior · approach"
+  - alt: "Terra Works — interior CLT armature, exposed oiled glulam beams" # TODO: add src: ./photo-2.jpg
+    caption: "Interior · main volume"
+  - alt: "Terra Works — air gap between timber insert and historic brick wall" # TODO: add src: ./photo-3.jpg
+    caption: "Detail · materials"
+  - alt: "Terra Works — courtyard shallow pool and covered ground-floor corridor" # TODO: add src: ./photo-4.jpg
+    caption: "Site · context"
 ---
 
 The warehouse was built in 1937 for a tile manufacturer and stood dormant for 24 years following the factory's closure in 2001. The Lisbon city authority placed a preservation order on the brick shell; the client required 4,200 m² of leasable creative studios without suspended ceilings, without the warehouse's proportions being domesticated. The brief also asked that the intervention be structurally reversible: the building should be returnable to its original condition within a defined number of decades.
