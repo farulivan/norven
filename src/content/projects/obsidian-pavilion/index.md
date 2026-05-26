@@ -6,12 +6,6 @@ location: "Þingvellir, Iceland"
 area: "640 m²"
 status: "built"
 brief: "A reading room and lava-field interpretive structure at the seam between the North American and Eurasian plates. Vertical, narrow, deliberately weightless."
-monolith:
-  slabCount: 12
-  heightUnit: 0.45
-  taper: 0.35
-  rotation: 0.2
-  accentSlabs: [4, 8]
 order: 2
 featured: true
 gallery:

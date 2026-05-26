@@ -6,12 +6,6 @@ location: "Marvila, Lisbon"
 area: "4,200 m²"
 status: "built"
 brief: "Adaptive reuse of a 1937 ceramics warehouse into studio offices for nine creative tenants. Original shell retained; programme built as freestanding timber inserts."
-monolith:
-  slabCount: 8
-  heightUnit: 0.6
-  taper: 0
-  rotation: 0
-  accentSlabs: [2, 5]
 order: 3
 featured: true
 gallery:

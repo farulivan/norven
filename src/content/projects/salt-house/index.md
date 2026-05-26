@@ -6,12 +6,6 @@ location: "Tjøme, Norway"
 area: "280 m²"
 status: "built"
 brief: "A coastal residence cut into a granite shelf above the Skagerrak. Three volumes stepped down the slope, a single oak stair binding them."
-monolith:
-  slabCount: 5
-  heightUnit: 0.9
-  taper: 0.08
-  rotation: 0
-  accentSlabs: [1]
 order: 1
 featured: true
 gallery:

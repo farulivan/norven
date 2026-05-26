@@ -5,7 +5,8 @@ import Practice from "~/components/sections/Practice.astro";
 import Contact from "~/components/sections/Contact.astro";
 import { SITE } from "~/data/site";
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
+import Process from "~/components/sections/Process.astro";
+import Frame from "~/components/media/Frame.astro";
 
 const team = (await getCollection("team")).sort((a, b) => a.data.order - b.data.order);
 const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.data.order);
@@ -58,6 +59,7 @@ const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.d
   </section>
 
   <Practice />
+  <Process />
 
   <!-- PRINCIPALS -->
   <section class="bg-bone-2 py-24 lg:py-32">
@@ -65,29 +67,16 @@ const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.d
       <p class="eyebrow mb-12" data-reveal>Principals</p>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
         {
-          team.map((p) => (
+          team.map((p, i) => (
             <article data-reveal>
-              <div class="bg-bone-3 border-line-2 mb-8 aspect-3/4 overflow-hidden border">
-                {p.data.portrait ? (
-                  <Image
-                    src={p.data.portrait}
-                    alt={p.data.name}
-                    widths={[300, 600]}
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    class="block h-full w-full object-cover"
-                  />
-                ) : (
-                  <svg viewBox="0 0 200 280" class="block h-full w-full" aria-hidden="true">
-                    <rect width="200" height="280" fill="var(--color-bone-3)" />
-                    <polygon
-                      points="0,180 200,80 200,280 0,280"
-                      fill="var(--color-ink)"
-                      opacity="0.85"
-                    />
-                    <circle cx="100" cy="110" r="42" fill="var(--color-bone-2)" />
-                    <rect x="0" y="180" width="200" height="4" fill="var(--color-brass)" />
-                  </svg>
-                )}
+              <div class="mb-8">
+                <Frame
+                  src={p.data.portrait}
+                  alt={p.data.name}
+                  ratio="3/4"
+                  seed={i}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
               </div>
               <p class="text-ink-3 mb-2 font-mono text-[10px] tracking-[0.18em] uppercase">
                 {p.data.role} · {p.data.base}
