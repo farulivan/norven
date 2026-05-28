@@ -57,4 +57,16 @@
       will-change: opacity, transform;
     }
   }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal-lift] {
+      overflow: hidden;
+    }
+    [data-reveal-lift]:not(.is-in) {
+      opacity: 0;
+    }
+    .reveal-lift__inner {
+      display: inline-block;
+      will-change: transform;
+    }
+  }
 }

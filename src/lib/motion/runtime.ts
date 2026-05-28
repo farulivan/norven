@@ -78,6 +78,46 @@ function bindReveals(): void {
   });
 }
 
+// --- [data-reveal-lift] clip-mask reveal (runtime built-in) ---
+function wrapLiftInner(el: HTMLElement): HTMLElement {
+  const existing = el.querySelector<HTMLElement>(":scope > .reveal-lift__inner");
+  if (existing) return existing;
+  const inner = document.createElement("span");
+  inner.className = "reveal-lift__inner";
+  while (el.firstChild) inner.appendChild(el.firstChild);
+  el.appendChild(inner);
+  return inner;
+}
+
+function bindLifts(): void {
+  const els = gsap.utils.toArray<HTMLElement>("[data-reveal-lift]");
+  if (els.length === 0) return;
+  const inners = els.map(wrapLiftInner);
+  if (reducedMotion()) {
+    els.forEach((el) => el.classList.add("is-in"));
+    inners.forEach((inner) => (inner.style.transform = "none"));
+    return;
+  }
+  gsap.set(inners, { yPercent: 110 });
+  ScrollTrigger.batch(els, {
+    start: "top 88%",
+    onEnter: (batch) => {
+      batch.forEach((el) => el.classList.add("is-in"));
+      const matched = batch
+        .map((el) => el.querySelector<HTMLElement>(":scope > .reveal-lift__inner"))
+        .filter((x): x is HTMLElement => x !== null);
+      gsap.to(matched, {
+        yPercent: 0,
+        duration: 1.1,
+        ease: "cubic-bezier(0.2, 0.7, 0.2, 1)",
+        stagger: 0.08,
+        overwrite: true,
+      });
+    },
+    once: true,
+  });
+}
+
 // --- [data-parallax] gentle non-pinning parallax (runtime built-in) ---
 function bindParallax(): void {
   if (reducedMotion()) return;
@@ -101,6 +141,7 @@ function bindParallax(): void {
 function boot(): void {
   initLenis();
   bindReveals();
+  bindLifts();
   bindParallax();
   core.runAll();
   // Refresh after reveals + effect triggers have been created.
