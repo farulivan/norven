@@ -68,5 +68,12 @@
       display: inline-block;
       will-change: transform;
     }
+    img.image-fade:not(.is-loaded) {
+      opacity: 0;
+    }
+    img.image-fade.is-loaded {
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
   }
 }

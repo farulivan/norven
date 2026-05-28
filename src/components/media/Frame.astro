@@ -37,6 +37,9 @@ const {
     <div
       class:list={["absolute inset-0", parallax && "-top-10% h-[120%]"]}
       data-parallax={parallax ? "8" : undefined}
+      style={`background: ${placeholderGradient(seed)};`}
+      role={src ? undefined : "img"}
+      aria-label={src ? undefined : alt}
     >
       {
         src ? (
@@ -45,21 +48,14 @@ const {
             alt={alt}
             widths={widths}
             sizes={sizes}
-            class="block h-full w-full object-cover"
+            class="image-fade block h-full w-full object-cover"
           />
         ) : (
-          <div
-            class="h-full w-full"
-            style={`background: ${placeholderGradient(seed)};`}
-            role="img"
-            aria-label={alt}
-          >
-            {import.meta.env.DEV && (
-              <span class="text-ink/70 absolute bottom-2 left-2 font-mono text-[10px] tracking-[0.14em] uppercase">
-                TODO: photo — {alt}
-              </span>
-            )}
-          </div>
+          import.meta.env.DEV && (
+            <span class="text-ink/70 absolute bottom-2 left-2 font-mono text-[10px] tracking-[0.14em] uppercase">
+              TODO: photo — {alt}
+            </span>
+          )
         )
       }
     </div>

@@ -118,6 +118,21 @@ function bindLifts(): void {
   });
 }
 
+// --- img.image-fade fade-on-load (runtime built-in) ---
+function bindImageFades(): void {
+  const imgs = document.querySelectorAll<HTMLImageElement>("img.image-fade");
+  if (imgs.length === 0) return;
+  imgs.forEach((img) => {
+    if (img.complete && img.naturalHeight !== 0) {
+      img.classList.add("is-loaded");
+      return;
+    }
+    const onSettled = (): void => img.classList.add("is-loaded");
+    img.addEventListener("load", onSettled, { once: true });
+    img.addEventListener("error", onSettled, { once: true });
+  });
+}
+
 // --- [data-parallax] gentle non-pinning parallax (runtime built-in) ---
 function bindParallax(): void {
   if (reducedMotion()) return;
@@ -142,6 +157,7 @@ function boot(): void {
   initLenis();
   bindReveals();
   bindLifts();
+  bindImageFades();
   bindParallax();
   core.runAll();
   // Refresh after reveals + effect triggers have been created.
