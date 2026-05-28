@@ -50,4 +50,11 @@
   .hairline {
     @apply border-line border-t;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal]:not(.is-in) {
+      opacity: 0;
+      transform: translateY(40px);
+      will-change: opacity, transform;
+    }
+  }
 }
