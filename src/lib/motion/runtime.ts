@@ -63,17 +63,20 @@ function bindReveals(): void {
   }
   ScrollTrigger.batch(els, {
     start: "top 88%",
-    onEnter: (batch) => {
-      batch.forEach((el) => el.classList.add("is-in"));
-      gsap.to(batch, {
-        y: 0,
-        autoAlpha: 1,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger: 0.08,
-        overwrite: true,
-      });
-    },
+    onEnter: (batch) =>
+      gsap.fromTo(
+        batch,
+        { y: 40, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.08,
+          overwrite: true,
+          onComplete: () => batch.forEach((el) => el.classList.add("is-in")),
+        },
+      ),
     once: true,
   });
 }
