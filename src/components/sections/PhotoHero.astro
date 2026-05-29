@@ -38,7 +38,7 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
           {eyebrow && (
             <p
               class="text-bone/80 mb-6 font-mono text-[11px] tracking-[0.18em] uppercase"
-              data-reveal
+              data-reveal-lift
             >
               {eyebrow}
             </p>
@@ -46,11 +46,14 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
           <h1
             class="font-display text-bone leading-[0.92]"
             style="font-size: var(--text-display-1)"
-            data-reveal
+            data-reveal-lift
             set:html={title}
           />
           {subtitle && (
-            <p class="text-bone/85 mt-8 max-w-xl text-base leading-relaxed lg:text-lg" data-reveal>
+            <p
+              class="text-bone/85 mt-8 max-w-xl text-base leading-relaxed lg:text-lg"
+              data-reveal-lift
+            >
               {subtitle}
             </p>
           )}
@@ -62,18 +65,21 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
     titlePlacement === "below" && (
       <div class="mx-auto max-w-[1400px] px-6 pt-12 lg:px-10 lg:pt-16">
         {eyebrow && (
-          <p class="eyebrow text-brass mb-6" data-reveal>
+          <p class="eyebrow text-brass mb-6" data-reveal-lift>
             {eyebrow}
           </p>
         )}
         <h1
           class="font-display text-ink leading-[0.92]"
           style="font-size: var(--text-display-1)"
-          data-reveal
+          data-reveal-lift
           set:html={title}
         />
         {subtitle && (
-          <p class="text-ink-3 mt-8 max-w-2xl text-base leading-relaxed lg:text-lg" data-reveal>
+          <p
+            class="text-ink-3 mt-8 max-w-2xl text-base leading-relaxed lg:text-lg"
+            data-reveal-lift
+          >
             {subtitle}
           </p>
         )}

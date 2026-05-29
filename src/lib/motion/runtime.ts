@@ -58,10 +58,7 @@ function bindReveals(): void {
   const els = gsap.utils.toArray<HTMLElement>("[data-reveal]");
   if (els.length === 0) return;
   if (reducedMotion()) {
-    els.forEach((el) => {
-      el.classList.add("is-in");
-      gsap.set(el, { clearProps: "all" });
-    });
+    els.forEach((el) => el.classList.add("is-in"));
     return;
   }
   ScrollTrigger.batch(els, {
@@ -77,9 +74,65 @@ function bindReveals(): void {
           ease: "power3.out",
           stagger: 0.08,
           overwrite: true,
+          onComplete: () => batch.forEach((el) => el.classList.add("is-in")),
         },
       ),
     once: true,
+  });
+}
+
+// --- [data-reveal-lift] clip-mask reveal (runtime built-in) ---
+function wrapLiftInner(el: HTMLElement): HTMLElement {
+  const existing = el.querySelector<HTMLElement>(":scope > .reveal-lift__inner");
+  if (existing) return existing;
+  const inner = document.createElement("span");
+  inner.className = "reveal-lift__inner";
+  while (el.firstChild) inner.appendChild(el.firstChild);
+  el.appendChild(inner);
+  return inner;
+}
+
+function bindLifts(): void {
+  const els = gsap.utils.toArray<HTMLElement>("[data-reveal-lift]");
+  if (els.length === 0) return;
+  const inners = els.map(wrapLiftInner);
+  if (reducedMotion()) {
+    els.forEach((el) => el.classList.add("is-in"));
+    inners.forEach((inner) => (inner.style.transform = "none"));
+    return;
+  }
+  gsap.set(inners, { yPercent: 110 });
+  ScrollTrigger.batch(els, {
+    start: "top 88%",
+    onEnter: (batch) => {
+      batch.forEach((el) => el.classList.add("is-in"));
+      const matched = batch
+        .map((el) => el.querySelector<HTMLElement>(":scope > .reveal-lift__inner"))
+        .filter((x): x is HTMLElement => x !== null);
+      gsap.to(matched, {
+        yPercent: 0,
+        duration: 1.1,
+        ease: "cubic-bezier(0.2, 0.7, 0.2, 1)",
+        stagger: 0.08,
+        overwrite: true,
+      });
+    },
+    once: true,
+  });
+}
+
+// --- img.image-fade fade-on-load (runtime built-in) ---
+function bindImageFades(): void {
+  const imgs = document.querySelectorAll<HTMLImageElement>("img.image-fade");
+  if (imgs.length === 0) return;
+  imgs.forEach((img) => {
+    if (img.complete && img.naturalHeight !== 0) {
+      img.classList.add("is-loaded");
+      return;
+    }
+    const onSettled = (): void => img.classList.add("is-loaded");
+    img.addEventListener("load", onSettled, { once: true });
+    img.addEventListener("error", onSettled, { once: true });
   });
 }
 
@@ -106,6 +159,8 @@ function bindParallax(): void {
 function boot(): void {
   initLenis();
   bindReveals();
+  bindLifts();
+  bindImageFades();
   bindParallax();
   core.runAll();
   // Refresh after reveals + effect triggers have been created.

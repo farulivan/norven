@@ -10,11 +10,11 @@ const lines = title.split("\n");
 
 <section class="bg-bone relative pt-32 pb-20 lg:pt-44 lg:pb-28">
   <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-    <p class="eyebrow text-brass mb-10" data-reveal>{eyebrow}</p>
+    <p class="eyebrow text-brass mb-10" data-reveal-lift>{eyebrow}</p>
     <h1
       class="font-display text-ink leading-[0.92]"
       style="font-size: var(--text-display-1)"
-      data-reveal
+      data-reveal-lift
     >
       {
         lines.map((line, i) => (
@@ -27,7 +27,7 @@ const lines = title.split("\n");
     </h1>
     {
       subtitle && (
-        <p class="text-ink-3 mt-12 max-w-2xl text-lg leading-relaxed lg:text-xl" data-reveal>
+        <p class="text-ink-3 mt-12 max-w-2xl text-lg leading-relaxed lg:text-xl" data-reveal-lift>
           {subtitle}
         </p>
       )

@@ -50,4 +50,30 @@
   .hairline {
     @apply border-line border-t;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal]:not(.is-in) {
+      opacity: 0;
+      transform: translateY(40px);
+      will-change: opacity, transform;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal-lift] {
+      overflow: hidden;
+    }
+    [data-reveal-lift]:not(.is-in) {
+      opacity: 0;
+    }
+    .reveal-lift__inner {
+      display: inline-block;
+      will-change: transform;
+    }
+    img.image-fade:not(.is-loaded) {
+      opacity: 0;
+    }
+    img.image-fade.is-loaded {
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+  }
 }
