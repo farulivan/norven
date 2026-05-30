@@ -8,14 +8,19 @@ status: "built"
 brief: "A non-denominational chapel for a small university campus. One room, one bench, one light cut down through three storeys of rammed earth."
 order: 4
 featured: true
+cover: ./cover.jpg
 gallery:
-  - alt: "Holm Chapel — exterior, rammed earth mass at Higashiyama" # TODO: add src: ./photo-1.jpg
+  - src: ./photo-1.jpg
+    alt: "Holm Chapel — exterior, rammed earth mass at Higashiyama"
     caption: "Exterior · approach"
-  - alt: "Holm Chapel — interior, zelkova bench under the oculus light cut" # TODO: add src: ./photo-2.jpg
+  - src: ./photo-2.jpg
+    alt: "Holm Chapel — interior, zelkova bench under the oculus light cut"
     caption: "Interior · main volume"
-  - alt: "Holm Chapel — rammed earth striations, 38 horizontal lifts in detail" # TODO: add src: ./photo-3.jpg
+  - src: ./photo-3.jpg
+    alt: "Holm Chapel — rammed earth striations, 38 horizontal lifts in detail"
     caption: "Detail · materials"
-  - alt: "Holm Chapel — site within the university campus, Kyoto" # TODO: add src: ./photo-4.jpg
+  - src: ./photo-4.jpg
+    alt: "Holm Chapel — site within the university campus, Kyoto"
     caption: "Site · context"
 testimonial:
   quote: "It is the quietest room I have ever entered. Students walk past it all week and then, one day, they come inside. That is exactly what we hoped for."
