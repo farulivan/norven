@@ -8,14 +8,19 @@ status: "in-studio"
 brief: "A vertical archive and exhibition tower for the Nordic Council. Sixteen plates stacked around a central daylight void, sequenced by epoch."
 order: 5
 featured: true
+cover: ./cover.jpg
 gallery:
-  - alt: "Nord-Strata Tower — exterior render, sixteen cantilevered plates, Reykjavík" # TODO: add src: ./photo-1.jpg
+  - src: ./photo-1.jpg
+    alt: "Nord-Strata Tower — exterior render, sixteen cantilevered plates, Reykjavík"
     caption: "Exterior · approach"
-  - alt: "Nord-Strata Tower — interior central daylight void, exhibition floor" # TODO: add src: ./photo-2.jpg
+  - src: ./photo-2.jpg
+    alt: "Nord-Strata Tower — interior central daylight void, exhibition floor"
     caption: "Interior · main volume"
-  - alt: "Nord-Strata Tower — chamfered concrete plate edge and laitance aggregate detail" # TODO: add src: ./photo-3.jpg
+  - src: ./photo-3.jpg
+    alt: "Nord-Strata Tower — chamfered concrete plate edge and laitance aggregate detail"
     caption: "Detail · materials"
-  - alt: "Nord-Strata Tower — site model, Reykjavík harbour context" # TODO: add src: ./photo-4.jpg
+  - src: ./photo-4.jpg
+    alt: "Nord-Strata Tower — site model, Reykjavík harbour context"
     caption: "Site · context"
 ---
 
