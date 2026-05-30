@@ -8,14 +8,19 @@ status: "built"
 brief: "A coastal residence cut into a granite shelf above the Skagerrak. Three volumes stepped down the slope, a single oak stair binding them."
 order: 1
 featured: true
+cover: ./cover.jpg
 gallery:
-  - alt: "Salt House — exterior, approach from the fishermen's path" # TODO: add src: ./photo-1.jpg
+  - src: ./photo-1.jpg
+    alt: "Salt House — exterior, approach from the fishermen's path"
     caption: "Exterior · approach"
-  - alt: "Salt House — primary interior volume, oak stair" # TODO: add src: ./photo-2.jpg
+  - src: ./photo-2.jpg
+    alt: "Salt House — primary interior volume, oak stair"
     caption: "Interior · main volume"
-  - alt: "Salt House — cedar rainscreen and copper roof detail" # TODO: add src: ./photo-3.jpg
+  - src: ./photo-3.jpg
+    alt: "Salt House — cedar rainscreen and copper roof detail"
     caption: "Detail · materials"
-  - alt: "Salt House — site above the Skagerrak, Tjøme" # TODO: add src: ./photo-4.jpg
+  - src: ./photo-4.jpg
+    alt: "Salt House — site above the Skagerrak, Tjøme"
     caption: "Site · context"
 testimonial:
   quote: "We asked for a house that would earn its place on the rock, and they gave us one that seems to have always been there. Every season it looks more itself."
