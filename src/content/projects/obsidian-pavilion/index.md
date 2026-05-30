@@ -8,14 +8,19 @@ status: "built"
 brief: "A reading room and lava-field interpretive structure at the seam between the North American and Eurasian plates. Vertical, narrow, deliberately weightless."
 order: 2
 featured: true
+cover: ./cover.jpg
 gallery:
-  - alt: "Obsidian Pavilion — exterior, cast-basalt stack at Þingvellir" # TODO: add src: ./photo-1.jpg
+  - src: ./photo-1.jpg
+    alt: "Obsidian Pavilion — exterior, cast-basalt stack at Þingvellir"
     caption: "Exterior · approach"
-  - alt: "Obsidian Pavilion — interior shaft, ash reading bench" # TODO: add src: ./photo-2.jpg
+  - src: ./photo-2.jpg
+    alt: "Obsidian Pavilion — interior shaft, ash reading bench"
     caption: "Interior · main volume"
-  - alt: "Obsidian Pavilion — light slot detail, winter solstice angle" # TODO: add src: ./photo-3.jpg
+  - src: ./photo-3.jpg
+    alt: "Obsidian Pavilion — light slot detail, winter solstice angle"
     caption: "Detail · materials"
-  - alt: "Obsidian Pavilion — site at the Almannagjá fault, Iceland" # TODO: add src: ./photo-4.jpg
+  - src: ./photo-4.jpg
+    alt: "Obsidian Pavilion — site at the Almannagjá fault, Iceland"
     caption: "Site · context"
 ---
 
