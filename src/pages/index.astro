@@ -8,6 +8,7 @@ import Testimonial from "~/components/sections/Testimonial.astro";
 import Contact from "~/components/sections/Contact.astro";
 import { SITE } from "~/data/site";
 import { getCollection } from "astro:content";
+import hero from "~/assets/hero.jpg";
 
 const featured = (await getCollection("projects"))
   .filter((p) => p.data.featured)
@@ -23,6 +24,7 @@ const featured = (await getCollection("projects"))
     eyebrow={`${SITE.name} · Est. ${SITE.founded}`}
     title={"Architecture<br>of consequence."}
     subtitle={SITE.description}
+    src={hero}
     seed={2}
   />
   <Statement />
