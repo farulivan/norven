@@ -8,14 +8,19 @@ status: "built"
 brief: "Adaptive reuse of a 1937 ceramics warehouse into studio offices for nine creative tenants. Original shell retained; programme built as freestanding timber inserts."
 order: 3
 featured: true
+cover: ./cover.jpg
 gallery:
-  - alt: "Terra Works — exterior, south facade of the 1937 ceramic warehouse, Marvila" # TODO: add src: ./photo-1.jpg
+  - src: ./photo-1.jpg
+    alt: "Terra Works — exterior, south facade of the 1937 ceramic warehouse, Marvila"
     caption: "Exterior · approach"
-  - alt: "Terra Works — interior CLT armature, exposed oiled glulam beams" # TODO: add src: ./photo-2.jpg
+  - src: ./photo-2.jpg
+    alt: "Terra Works — interior CLT armature, exposed oiled glulam beams"
     caption: "Interior · main volume"
-  - alt: "Terra Works — air gap between timber insert and historic brick wall" # TODO: add src: ./photo-3.jpg
+  - src: ./photo-3.jpg
+    alt: "Terra Works — air gap between timber insert and historic brick wall"
     caption: "Detail · materials"
-  - alt: "Terra Works — courtyard shallow pool and covered ground-floor corridor" # TODO: add src: ./photo-4.jpg
+  - src: ./photo-4.jpg
+    alt: "Terra Works — courtyard shallow pool and covered ground-floor corridor"
     caption: "Site · context"
 ---
 
