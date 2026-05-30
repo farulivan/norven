@@ -14,7 +14,8 @@ const { title, description, ogImage } = Astro.props;
 const pageTitle = title ?? SITE_NAME;
 const pageDescription = description ?? SITE_DESCRIPTION;
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
-const ogImageURL = new URL(ogImage ?? "/og-image.svg", SITE_URL);
+const ogImageURL = new URL(ogImage ?? "/og-image.jpg", SITE_URL);
+const ogImageAlt = `${SITE.name} — ${SITE.tagline}`;
 
 const orgJsonLd = {
   "@context": "https://schema.org",
@@ -41,6 +42,31 @@ const orgJsonLd = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      // Progressive enhancement gate: reveal animations hide content via CSS only when
+      // `html.js` is present, so a no-JS / failed-JS load still shows everything. The
+      // failsafe reveals content if the motion runtime never marks itself ready.
+      (function () {
+        const root = document.documentElement;
+        root.classList.add("js");
+        function revealAll() {
+          if (root.hasAttribute("data-motion-ready")) return;
+          document
+            .querySelectorAll("[data-reveal]:not(.is-in),[data-reveal-lift]:not(.is-in)")
+            .forEach(function (el) {
+              el.classList.add("is-in");
+            });
+          document.querySelectorAll("img.image-fade:not(.is-loaded)").forEach(function (img) {
+            img.classList.add("is-loaded");
+          });
+        }
+        function arm() {
+          setTimeout(revealAll, 2500);
+        }
+        window.addEventListener("load", arm);
+        document.addEventListener("astro:page-load", arm);
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F1EA" />
@@ -54,11 +80,18 @@ const orgJsonLd = {
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <title>{pageTitle}</title>
     <ClientRouter />

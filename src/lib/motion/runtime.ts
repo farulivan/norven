@@ -157,6 +157,9 @@ function bindParallax(): void {
 
 // --- view-transition lifecycle ---
 function boot(): void {
+  // Signals the BaseLayout head failsafe that the runtime booted; if this never
+  // runs (e.g. the chunk fails to load), the failsafe reveals content instead.
+  document.documentElement.setAttribute("data-motion-ready", "");
   initLenis();
   bindReveals();
   bindLifts();
