@@ -5,8 +5,6 @@ const isActive = (href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 ---
 
-<input id="nav-toggle" type="checkbox" class="peer sr-only" aria-hidden="true" />
-
 <header class="bg-bone/80 border-line-2 sticky top-0 z-40 border-b backdrop-blur-md" data-nav>
   <div class="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 lg:px-10">
     <a href="/" class="font-display text-ink text-2xl leading-none tracking-tight"> Norven </a>
@@ -40,24 +38,27 @@ const isActive = (href: string) =>
   </div>
 </header>
 
-<label
-  for="nav-toggle"
+<button
+  type="button"
+  id="nav-button"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  aria-label="Open menu"
   class:list={[
     "text-ink fixed top-3 right-4 z-80 flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1.5 md:hidden",
-    "peer-checked:[&>span:nth-child(1)]:translate-y-[7px] peer-checked:[&>span:nth-child(1)]:rotate-45",
-    "peer-checked:[&>span:nth-child(2)]:opacity-0",
-    "peer-checked:[&>span:nth-child(3)]:translate-y-[-7px] peer-checked:[&>span:nth-child(3)]:-rotate-45",
+    "aria-expanded:[&>span:nth-child(1)]:translate-y-[7px] aria-expanded:[&>span:nth-child(1)]:rotate-45",
+    "aria-expanded:[&>span:nth-child(2)]:opacity-0",
+    "aria-expanded:[&>span:nth-child(3)]:translate-y-[-7px] aria-expanded:[&>span:nth-child(3)]:-rotate-45",
   ]}
-  aria-label="Toggle menu"
 >
   <span class="bg-ink h-px w-6 transition-all duration-300"></span>
   <span class="bg-ink h-px w-6 transition-all duration-300"></span>
   <span class="bg-ink h-px w-6 transition-all duration-300"></span>
-</label>
+</button>
 
 <div
-  class="bg-bone invisible fixed inset-0 z-70 flex flex-col items-center justify-center gap-10 opacity-0 transition-opacity duration-300 peer-checked:visible peer-checked:opacity-100 md:hidden"
-  aria-hidden="true"
+  id="mobile-menu"
+  class="bg-bone invisible fixed inset-0 z-70 flex flex-col items-center justify-center gap-10 opacity-0 transition-opacity duration-300 data-open:visible data-open:opacity-100 md:hidden"
 >
   {
     SITE.nav.map((item) => (
@@ -81,15 +82,56 @@ const isActive = (href: string) =>
 </div>
 
 <style is:global>
-  html:has(#nav-toggle:checked) {
+  html.nav-open {
     overflow: hidden;
   }
 </style>
 
 <script>
-  const reset = () => {
-    const t = document.getElementById("nav-toggle");
-    if (t instanceof HTMLInputElement) t.checked = false;
-  };
-  document.addEventListener("astro:after-swap", reset);
+  function setupNav() {
+    const button = document.getElementById("nav-button");
+    const menu = document.getElementById("mobile-menu");
+    if (!button || !menu) return;
+
+    // Clear any stale scroll lock after a navigation; the swapped-in DOM starts closed.
+    document.documentElement.classList.remove("nav-open");
+
+    const setOpen = (open: boolean) => {
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      if (open) menu.setAttribute("data-open", "");
+      else menu.removeAttribute("data-open");
+      document.documentElement.classList.toggle("nav-open", open);
+    };
+
+    button.addEventListener("click", () => {
+      const wasOpen = button.getAttribute("aria-expanded") === "true";
+      setOpen(!wasOpen);
+      if (wasOpen) {
+        button.focus();
+      } else {
+        const firstLink = menu.querySelector("a");
+        if (firstLink instanceof HTMLElement) firstLink.focus();
+      }
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+  }
+
+  function onKeydown(event: KeyboardEvent) {
+    if (event.key !== "Escape") return;
+    const button = document.getElementById("nav-button");
+    const menu = document.getElementById("mobile-menu");
+    if (!button || !menu || button.getAttribute("aria-expanded") !== "true") return;
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-label", "Open menu");
+    menu.removeAttribute("data-open");
+    document.documentElement.classList.remove("nav-open");
+    button.focus();
+  }
+
+  document.addEventListener("keydown", onKeydown);
+  document.addEventListener("astro:page-load", setupNav);
 </script>
