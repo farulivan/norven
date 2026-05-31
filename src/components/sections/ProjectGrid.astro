@@ -11,6 +11,7 @@ const sorted = [...projects].sort((a, b) => a.data.order - b.data.order);
 
 <section class="bg-bone py-16 lg:py-24">
   <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+    <h2 class="sr-only">Selected projects</h2>
     <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
       {
         sorted.map((p, i) => (
