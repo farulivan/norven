@@ -64,7 +64,7 @@ const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.d
   <!-- PRINCIPALS -->
   <section class="bg-bone-2 py-24 lg:py-32">
     <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-      <p class="eyebrow mb-12" data-reveal>Principals</p>
+      <h2 class="eyebrow mb-12" data-reveal>Principals</h2>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
         {
           team.map((p, i) => (
@@ -93,7 +93,7 @@ const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.d
   <!-- RECOGNITION -->
   <section class="bg-bone py-24 lg:py-32">
     <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-      <p class="eyebrow mb-12" data-reveal>Recognition</p>
+      <h2 class="eyebrow mb-12" data-reveal>Recognition</h2>
       <ul class="divide-line-2 divide-y">
         {
           awards.map((r) => (
@@ -113,9 +113,9 @@ const awards = (await getCollection("awards")).sort((a, b) => a.data.order - b.d
   <!-- LOCATIONS -->
   <section class="bg-ink text-bone py-24 lg:py-32">
     <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-      <p class="text-bone/60 mb-12 font-mono text-[11px] tracking-[0.18em] uppercase" data-reveal>
+      <h2 class="text-bone/60 mb-12 font-mono text-[11px] tracking-[0.18em] uppercase" data-reveal>
         Studios
-      </p>
+      </h2>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
         {
           SITE.studios.map((s) => (
