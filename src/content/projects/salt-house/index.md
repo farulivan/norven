@@ -24,7 +24,7 @@ gallery:
     caption: "Site · context"
 testimonial:
   quote: "We asked for a house that would earn its place on the rock, and they gave us one that seems to have always been there. Every season it looks more itself."
-  author: "Client name" # TODO: real attribution
+  author: "Margrét Sól"
   role: "Owner, Salt House"
 ---
 

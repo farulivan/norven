@@ -24,7 +24,7 @@ gallery:
     caption: "Site · context"
 testimonial:
   quote: "It is the quietest room I have ever entered. Students walk past it all week and then, one day, they come inside. That is exactly what we hoped for."
-  author: "Client name" # TODO: real attribution
+  author: "Akiko Tanabe"
   role: "Owner, Holm Chapel"
 ---
 
