@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" role="img" aria-label="Norven emblem">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M54 42V178" stroke-width="8.5"></path>
+    <path d="M146 42V178" stroke-width="8.5"></path>
+    <path d="M54 42L146 178" stroke-width="4.2"></path>
+    <path d="M54 42L94 166Q100 180 106 166L146 42" stroke-width="4.2"></path>
+  </g>
+</svg>
