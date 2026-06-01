@@ -53,7 +53,12 @@ function destroyLenis(): void {
   }
 }
 
-// --- [data-reveal] batch fade-in (runtime built-in) ---
+// --- [data-reveal] scroll-driven fade-in (runtime built-in) ---
+// Scrub-driven so opacity tracks scroll position — fast scrolls can never
+// outrun a fixed-duration tween and leave the element flashing through
+// the viewport at low opacity. Each element gets its own trigger spanning
+// "just entering" → "comfortably in view"; the trigger disables itself on
+// first leave so scrolling back up doesn't reverse the reveal.
 function bindReveals(): void {
   const els = gsap.utils.toArray<HTMLElement>("[data-reveal]");
   if (els.length === 0) return;
@@ -61,23 +66,26 @@ function bindReveals(): void {
     els.forEach((el) => el.classList.add("is-in"));
     return;
   }
-  ScrollTrigger.batch(els, {
-    start: "top 88%",
-    onEnter: (batch) =>
-      gsap.fromTo(
-        batch,
-        { y: 40, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.08,
-          overwrite: true,
-          onComplete: () => batch.forEach((el) => el.classList.add("is-in")),
+  els.forEach((el) => {
+    gsap.fromTo(
+      el,
+      { autoAlpha: 0, y: 40 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          start: "top bottom",
+          end: "top 88%",
+          scrub: true,
+          onLeave: (self) => {
+            el.classList.add("is-in");
+            self.disable(false);
+          },
         },
-      ),
-    once: true,
+      },
+    );
   });
 }
 
