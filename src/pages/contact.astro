@@ -3,6 +3,10 @@ import PageLayout from "~/layouts/PageLayout.astro";
 import PageHero from "~/components/sections/PageHero.astro";
 import { SITE } from "~/data/site";
 
+// Web3Forms access key (https://web3forms.com) — set PUBLIC_WEB3FORMS_ACCESS_KEY in .env.
+// It only authorises posting to your form, so it is safe to expose to the client.
+const WEB3FORMS_ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? "";
+
 // Each studio gets approximate dot coordinates on a 200x100 world map (lon/lat → x/y)
 const studioDots = [
   { city: "Oslo", x: 105, y: 30 },
@@ -32,10 +36,27 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
     <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
       <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
         <!-- FORM -->
-        <form action={`mailto:${SITE.email}`} method="post" enctype="text/plain" class="space-y-8">
-          <p class="eyebrow text-ink-3" data-reveal>
-            This form opens your mail client. No data is sent to a server.
-          </p>
+        <form
+          id="contact-form"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          data-contact-email={SITE.email}
+          class="space-y-8"
+        >
+          <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+          <input type="hidden" name="subject" value={`New brief — ${SITE.name}`} />
+          <input type="hidden" name="from_name" value={`${SITE.name} website`} />
+          {/* Honeypot: invisible to people; bots that fill every field get rejected. */}
+          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" />
+
+          {
+            import.meta.env.DEV && !WEB3FORMS_ACCESS_KEY && (
+              <p class="border-ink/40 text-ink-3 border border-dashed px-4 py-3 font-mono text-[11px] leading-relaxed tracking-[0.14em] uppercase">
+                Dev notice — set PUBLIC_WEB3FORMS_ACCESS_KEY in .env to enable delivery.
+              </p>
+            )
+          }
+
           <div data-reveal>
             <label for="name" class="eyebrow mb-3 block">Name</label>
             <input
@@ -43,6 +64,7 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
               id="name"
               name="Name"
               required
+              autocomplete="name"
               class="border-line-2 focus:border-ink bg-bone w-full border-b py-3 font-sans text-base transition-colors outline-none"
             />
           </div>
@@ -53,6 +75,7 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
               id="email"
               name="Email"
               required
+              autocomplete="email"
               class="border-line-2 focus:border-ink bg-bone w-full border-b py-3 font-sans text-base transition-colors outline-none"
             />
           </div>
@@ -83,10 +106,18 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
           </div>
           <button
             type="submit"
-            class="border-ink text-ink hover:bg-ink hover:text-bone border px-8 py-4 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
+            data-form-submit
+            class="border-ink text-ink hover:bg-ink hover:text-bone border px-8 py-4 font-mono text-xs tracking-[0.18em] uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             Send brief →
           </button>
+          <p
+            data-form-status
+            role="status"
+            aria-live="polite"
+            class="font-mono text-sm leading-relaxed tracking-[0.02em]"
+          >
+          </p>
         </form>
 
         <!-- DETAILS -->
@@ -172,4 +203,80 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
       </svg>
     </div>
   </section>
+
+  <style>
+    /* Live region only takes up space once it carries a message. */
+    [data-form-status]:empty {
+      display: none;
+    }
+    [data-form-status][data-state="success"] {
+      color: var(--color-brass);
+    }
+    [data-form-status][data-state="error"] {
+      color: #b42318;
+    }
+  </style>
+
+  <script>
+    // Progressive enhancement: without JS the form posts natively to Web3Forms.
+    // With JS we intercept, submit via fetch, and surface inline status — no reload.
+    function setupContactForm() {
+      const form = document.getElementById("contact-form");
+      if (!(form instanceof HTMLFormElement) || form.dataset.enhanced === "true") return;
+      form.dataset.enhanced = "true";
+
+      const status = form.querySelector<HTMLElement>("[data-form-status]");
+      const submitButton = form.querySelector<HTMLButtonElement>("[data-form-submit]");
+      const defaultLabel = submitButton?.textContent?.trim() ?? "Send brief →";
+      const contactEmail = form.dataset.contactEmail ?? "the studio";
+
+      const setStatus = (message: string, state: "success" | "error") => {
+        if (!status) return;
+        status.textContent = message;
+        status.setAttribute("data-state", state);
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!submitButton) return;
+
+        submitButton.disabled = true;
+        submitButton.setAttribute("aria-busy", "true");
+        submitButton.textContent = "Sending…";
+        status?.removeAttribute("data-state");
+        if (status) status.textContent = "";
+
+        try {
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: { Accept: "application/json" },
+            body: new FormData(form),
+          });
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            form.reset();
+            setStatus(
+              "Thank you — your brief has reached the studio. We reply within fourteen days.",
+              "success",
+            );
+            submitButton.textContent = "Sent ✓";
+            submitButton.removeAttribute("aria-busy");
+            return;
+          }
+
+          throw new Error(
+            typeof result.message === "string" ? result.message : "Submission failed",
+          );
+        } catch {
+          setStatus(`Something went wrong. Please email ${contactEmail} directly.`, "error");
+          submitButton.disabled = false;
+          submitButton.removeAttribute("aria-busy");
+          submitButton.textContent = defaultLabel;
+        }
+      });
+    }
+
+    document.addEventListener("astro:page-load", setupContactForm);
+  </script>
 </PageLayout>
