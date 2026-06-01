@@ -4,6 +4,8 @@ export const SITE = {
   description:
     "Norven is an architecture practice working on residences, cultural buildings, and landscapes across Northern Europe and beyond.",
   url: "https://norven.studio",
+  // Demo data — Norven is a fictional studio. The contact details below (email, phone,
+  // and studio addresses) are placeholders for the portfolio demo, not real endpoints.
   email: "studio@norven.studio",
   phone: "+47 22 00 00 00",
   founded: 2009,
