@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://norven.studio",
+  site: "https://norven.farulivan.com",
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
