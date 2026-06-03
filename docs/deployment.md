@@ -34,17 +34,13 @@ graph LR
     end
 
     subgraph ORIGIN[Origin · AWS ap-southeast-1]
-      direction TB
-      S3a[S3 bucket<br/>norven origin<br/>static website hosting]
-      S3b[S3 bucket<br/>main origin<br/>static website hosting]
+      S3[S3 bucket<br/>static website hosting]
     end
 
-    CF -->|HTTP origin pull<br/>restricted to CF IP ranges| S3a
-    CF -->|HTTP origin pull<br/>restricted to CF IP ranges| S3b
+    CF -->|HTTP origin pull<br/>restricted to CF IP ranges| S3
 
     Deploy[IAM deploy user<br/>least-privilege]
-    Deploy -.->|aws s3 sync| S3a
-    Deploy -.->|aws s3 sync| S3b
+    Deploy -.->|aws s3 sync| S3
 
     Reg[Domain registrar]
     Reg -.->|NS delegation| CF
@@ -57,7 +53,7 @@ graph LR
 | Registrar       | Third-party                              | Nameserver delegation only — no DNS records hosted there                                                                                          |
 | DNS · Edge      | Cloudflare (Free tier)                   | Authoritative DNS, reverse proxy, TLS termination, edge cache across ~300 PoPs, WAF, redirect rules, HTTPS upgrade                                |
 | Origin          | AWS S3 — Static Website Hosting endpoint | Static asset storage with native `index.html` resolution for directory URLs                                                                       |
-| Access control  | S3 bucket policy + IAM                   | Bucket policy allows `s3:GetObject` only from Cloudflare IP ranges; deploy IAM user has least-privilege access scoped to two specific bucket ARNs |
+| Access control  | S3 bucket policy + IAM                   | Bucket policy allows `s3:GetObject` only from Cloudflare IP ranges; deploy IAM user has least-privilege access scoped to the site bucket's ARN    |
 | Cost guardrails | AWS Budgets + CloudWatch billing alarm   | $5/mo budget alert, plus belt-and-suspenders alarm in `us-east-1` (the only region that emits billing metrics)                                    |
 
 ## Request lifecycle
@@ -155,9 +151,9 @@ Route 53 hosted zones cost $0.50/mo per zone. Cloudflare hosts DNS for free as p
 
 Single DNS plane. $6/yr saved.
 
-### Why the deploy IAM user is scoped to specific bucket ARNs
+### Why the deploy IAM user is scoped to a specific bucket ARN
 
-The deploy user can read, write, and delete objects in the two site buckets — and nothing else. No `IAM:*`, no `S3:DeleteBucket`, no access to other buckets, no billing, no read access to logs, no ability to spin up expensive resources.
+The deploy user can read, write, and delete objects in the site bucket — and nothing else. No `IAM:*`, no `S3:DeleteBucket`, no access to other buckets, no billing, no read access to logs, no ability to spin up expensive resources.
 
 If those credentials leak (laptop stolen, accidental commit, supply-chain compromise), the worst possible outcome is the site contents are altered — recoverable with a `git checkout` and a redeploy. The credentials cannot exfiltrate data from elsewhere in the AWS account or run up a bill on EC2/RDS/SageMaker.
 
@@ -173,7 +169,7 @@ Pairing this with the AWS Budget alarm means even a breach is bounded financiall
 | Origin IP discovery (reconnaissance for targeted DDoS) | Cloudflare proxy hides the origin behind anycast IPs; visitors never resolve to S3 directly                                    |
 | L3/L4/L7 DDoS                                          | Cloudflare free-tier DDoS protection (unmetered)                                                                               |
 | HTTP downgrade / mixed content                         | "Always Use HTTPS" 301s all HTTP to HTTPS; "Automatic HTTPS Rewrites" rewrites inline HTTP refs                                |
-| Stolen deploy credentials                              | IAM policy scoped to two bucket ARNs; cannot escalate, list other buckets, alter billing, or touch other AWS resources         |
+| Stolen deploy credentials                              | IAM policy scoped to the site bucket ARN; cannot escalate, list other buckets, alter billing, or touch other AWS resources     |
 | Surprise AWS bill                                      | $5/mo Budget alert plus CloudWatch billing alarm; least-privilege user can't provision expensive resources even if compromised |
 | Public bucket listing / path enumeration               | `s3:ListBucket` not granted to `Principal: "*"`; only `s3:GetObject` — paths must be known to retrieve                         |
 
