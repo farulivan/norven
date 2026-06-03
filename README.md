@@ -29,7 +29,7 @@ Node `>=22.12.0`. Package manager is `pnpm`.
 
 ## Deployment
 
-Static Astro build served from a per-hostname S3 bucket behind Cloudflare (DNS, TLS, CDN, WAF). Single-CDN design, IP-allowlisted origin, two-tier cache strategy. Free under steady-state portfolio traffic; bounded under ~$5/mo at sustained 1 TB/mo.
+Static Astro build served from a per-hostname S3 bucket behind Cloudflare (DNS, TLS, CDN, WAF). Single-CDN design, IP-allowlisted origin, differentiated cache headers, and OIDC-authenticated CI/CD via GitHub Actions on push to `main`. Free under steady-state portfolio traffic; bounded under ~$5/mo at sustained 1 TB/mo.
 
 Full architecture, design decisions, security model, cost analysis, and operational runbook live in **[docs/deployment.md](./docs/deployment.md)**.
 
