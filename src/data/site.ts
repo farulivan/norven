@@ -6,8 +6,8 @@ export const SITE = {
   url: "https://norven.farulivan.com",
   // Demo data — Norven is a fictional studio. The contact details below (email, phone,
   // and studio addresses) are placeholders for the portfolio demo, not real endpoints.
-  email: "studio@norven.studio",
-  phone: "+47 22 00 00 00",
+  email: "farulivan@gmail.com",
+  phone: "+62 00 00 00 00",
   founded: 2009,
   studios: [
     { city: "Oslo", address: "Akersgata 12, 0158", country: "Norway" },
