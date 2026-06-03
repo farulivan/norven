@@ -48,13 +48,13 @@ graph LR
 
 ### Components
 
-| Layer           | Service                                  | Responsibility                                                                                                                                    |
-| --------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Registrar       | Third-party                              | Nameserver delegation only — no DNS records hosted there                                                                                          |
-| DNS · Edge      | Cloudflare (Free tier)                   | Authoritative DNS, reverse proxy, TLS termination, edge cache across ~300 PoPs, WAF, redirect rules, HTTPS upgrade                                |
-| Origin          | AWS S3 — Static Website Hosting endpoint | Static asset storage with native `index.html` resolution for directory URLs                                                                       |
-| Access control  | S3 bucket policy + IAM                   | Bucket policy allows `s3:GetObject` only from Cloudflare IP ranges; deploy IAM user has least-privilege access scoped to the site bucket's ARN    |
-| Cost guardrails | AWS Budgets + CloudWatch billing alarm   | $5/mo budget alert, plus belt-and-suspenders alarm in `us-east-1` (the only region that emits billing metrics)                                    |
+| Layer           | Service                                  | Responsibility                                                                                                                                 |
+| --------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Registrar       | Third-party                              | Nameserver delegation only — no DNS records hosted there                                                                                       |
+| DNS · Edge      | Cloudflare (Free tier)                   | Authoritative DNS, reverse proxy, TLS termination, edge cache across ~300 PoPs, WAF, redirect rules, HTTPS upgrade                             |
+| Origin          | AWS S3 — Static Website Hosting endpoint | Static asset storage with native `index.html` resolution for directory URLs                                                                    |
+| Access control  | S3 bucket policy + IAM                   | Bucket policy allows `s3:GetObject` only from Cloudflare IP ranges; deploy IAM user has least-privilege access scoped to the site bucket's ARN |
+| Cost guardrails | AWS Budgets + CloudWatch billing alarm   | $5/mo budget alert, plus belt-and-suspenders alarm in `us-east-1` (the only region that emits billing metrics)                                 |
 
 ## Request lifecycle
 
