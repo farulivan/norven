@@ -1,43 +1,38 @@
-# Astro Starter Kit: Minimal
+# Norven
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+Marketing/portfolio site for a fictional architecture studio. Static Astro site with a restrained scroll-driven motion system, deployed to AWS S3 behind Cloudflare.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+**Live**: [norven.farulivan.com](https://norven.farulivan.com)
 
-## 🚀 Project Structure
+## Stack
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Astro 6** — static output, MPA with View Transitions
+- **TypeScript** `strictest`
+- **Tailwind v4** — CSS-first, no `tailwind.config.js`
+- **GSAP + ScrollTrigger + Lenis** — scroll-driven motion via a single scoped runtime (`src/lib/motion/`)
+- **Vitest** — unit tests for the motion core
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Node `>=22.12.0`. Package manager is `pnpm`.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command                             | Action                                                      |
+| ----------------------------------- | ----------------------------------------------------------- |
+| `pnpm dev`                          | Dev server at `localhost:4321`                              |
+| `pnpm build`                        | Static build to `dist/`                                     |
+| `pnpm preview`                      | Preview the build                                           |
+| `pnpm check`                        | `astro check` — typecheck + diagnostics                     |
+| `pnpm lint` / `pnpm lint:fix`       | ESLint                                                      |
+| `pnpm format` / `pnpm format:check` | Prettier                                                    |
+| `pnpm test` / `pnpm test:watch`     | Vitest                                                      |
+| `pnpm verify`                       | Full gate: `format:check && lint && check && test && build` |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Deployment
 
-## 🧞 Commands
+Static Astro build served from a per-hostname S3 bucket behind Cloudflare (DNS, TLS, CDN, WAF). Single-CDN design, IP-allowlisted origin, two-tier cache strategy. Free under steady-state portfolio traffic; bounded under ~$5/mo at sustained 1 TB/mo.
 
-All commands are run from the root of the project, from a terminal:
+Full architecture, design decisions, security model, cost analysis, and operational runbook live in **[docs/deployment.md](./docs/deployment.md)**.
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## License
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This is a personal portfolio piece. Code is provided for reference; please don't reuse the brand identity (Norven name, copy, imagery).
