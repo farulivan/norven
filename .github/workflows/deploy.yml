@@ -1,0 +1,65 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Verify and deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://norven.farulivan.com
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify (format, lint, typecheck, test, build)
+        run: pnpm verify
+        env:
+          PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ vars.AWS_ROLE_NAME }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Deploy assets (immutable long-cache)
+        run: |
+          aws s3 sync dist/ s3://${{ vars.S3_BUCKET }}/ \
+            --delete \
+            --exclude "*.html" \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Deploy HTML (short cache, revalidate)
+        run: |
+          aws s3 sync dist/ s3://${{ vars.S3_BUCKET }}/ \
+            --exclude "*" \
+            --include "*.html" \
+            --cache-control "public, max-age=0, s-maxage=600, must-revalidate"
