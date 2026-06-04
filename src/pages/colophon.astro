@@ -1,0 +1,275 @@
+---
+import PageLayout from "~/layouts/PageLayout.astro";
+import PageHero from "~/components/sections/PageHero.astro";
+import { REPO_URL } from "~/consts";
+import { AUTHOR } from "~/data/site";
+
+const stack = [
+  {
+    name: "Astro 6",
+    why: "Static MPA with island hydration where it's actually needed, View Transitions out of the box.",
+  },
+  {
+    name: "TypeScript (strictest)",
+    why: "Astro's strictest preset catches the most at compile time without runtime cost.",
+  },
+  {
+    name: "Tailwind v4",
+    why: "CSS-first config (no tailwind.config.js), small bundle, design tokens in @theme.",
+  },
+  {
+    name: "GSAP + ScrollTrigger + Lenis",
+    why: "Restrained scroll-driven motion behind one scrollEffect runtime. See ADR-0001.",
+  },
+  {
+    name: "Vitest",
+    why: "Unit tests for the pure motion core and helpers; the gsap-bound effects are not unit-tested.",
+  },
+  {
+    name: "Playwright + axe-core",
+    why: "E2E smoke + WCAG AA gates on every PR (chromium only, ~3s runs).",
+  },
+  {
+    name: "Lighthouse CI",
+    why: "Per-page performance, a11y, best-practices, and SEO budgets enforced on every PR.",
+  },
+  {
+    name: "Sharp",
+    why: "Build-time image processing via astro:assets — AVIF + WebP, no third-party CDN.",
+  },
+  {
+    name: "S3 + Cloudflare",
+    why: "Single-CDN edge over the cheapest static origin. See ADR-0003 and docs/deployment.md.",
+  },
+  {
+    name: "GitHub Actions + OIDC",
+    why: "Deploy on push to main with no long-lived AWS credentials anywhere.",
+  },
+];
+
+const decisions = [
+  {
+    id: "0001",
+    title: "Motion runtime: one deep module behind scrollEffect",
+    href: `${REPO_URL}/blob/main/docs/adr/0001-motion-runtime.md`,
+    note: "Every gsap effect runs through one runtime so the lifecycle contract lives in one place.",
+  },
+  {
+    id: "0002",
+    title: "Photography-led redesign: retire the generative monolith",
+    href: `${REPO_URL}/blob/main/docs/adr/0002-photography-led-redesign.md`,
+    note: "Earlier WebGL identity replaced with photography + restrained motion. Bone/ink/brass palette kept.",
+  },
+  {
+    id: "0003",
+    title: "Static hosting: single-CDN S3 + Cloudflare, no managed platform",
+    href: `${REPO_URL}/blob/main/docs/adr/0003-static-hosting-pipeline.md`,
+    note: "Why every managed alternative was rejected, and how the edge does every job AWS would otherwise charge for.",
+  },
+];
+---
+
+<PageLayout
+  title="Colophon — Norven"
+  description="About this build: stack, decisions, deployment, and the person behind it. Norven is a fictional architecture studio used as a portfolio piece."
+>
+  <PageHero
+    eyebrow="About this build"
+    title={"Colophon."}
+    subtitle="Norven is a fictional architecture studio. This site is a portfolio piece built by a real engineer, with the same discipline a production marketing site would receive. The shape, the decisions, and the operational story are the point."
+  />
+
+  <!-- The fiction -->
+  <section class="bg-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p class="eyebrow mb-8" data-reveal>The fiction</p>
+      <h2
+        class="font-display text-ink mb-10 leading-[1.05]"
+        style="font-size: var(--text-display-3)"
+        data-reveal
+      >
+        Norven is a studio that doesn't exist.
+      </h2>
+      <div class="prose-body text-ink-3 space-y-6 text-base leading-relaxed lg:text-lg" data-reveal>
+        <p>
+          The studio, its three offices in Oslo, Lisbon, and Kyoto, the one hundred eighteen built
+          projects, the team, the testimonials, the awards — invented, end to end. They exist to
+          give the architecture serious enough subject matter that the build's craft is visible.
+        </p>
+        <p>
+          The contact details rendered as the studio's (<code class="font-mono text-sm"
+            >studio@norven.example</code
+          >, a Norwegian dialling code) are intentional non-deliverable placeholders, so nobody is
+          misled into mailing a real-looking address. The form posts to a real endpoint configured
+          by the author — submissions reach the author, not a fictional studio inbox.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The author -->
+  <section class="bg-bone-2 py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p class="eyebrow mb-8" data-reveal>The author</p>
+      <h2
+        class="font-display text-ink mb-10 leading-[1.05]"
+        style="font-size: var(--text-display-3)"
+        data-reveal
+      >
+        Built by {AUTHOR.name}.
+      </h2>
+      <div class="space-y-3" data-reveal>
+        <p class="text-ink-3 text-base leading-relaxed lg:text-lg">
+          Reach out for engineering work, collaboration, or just to talk through any choice made on
+          this site.
+        </p>
+        <ul class="space-y-2 pt-4 font-mono text-sm">
+          <li>
+            <span class="text-ink-3">email · </span>
+            <a
+              href={`mailto:${AUTHOR.email}`}
+              class="text-ink hover:text-brass-2 underline-offset-4 transition-colors hover:underline"
+            >
+              {AUTHOR.email}
+            </a>
+          </li>
+          <li>
+            <span class="text-ink-3">github · </span>
+            <a
+              href={AUTHOR.url}
+              target="_blank"
+              rel="noopener"
+              class="text-ink hover:text-brass-2 underline-offset-4 transition-colors hover:underline"
+            >
+              {AUTHOR.url.replace("https://", "")}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="bg-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p class="eyebrow mb-8" data-reveal>Stack</p>
+      <h2
+        class="font-display text-ink mb-12 leading-[1.05]"
+        style="font-size: var(--text-display-3)"
+        data-reveal
+      >
+        What it's built with.
+      </h2>
+      <dl class="divide-line-2 divide-y" data-reveal>
+        {
+          stack.map((item) => (
+            <div class="grid grid-cols-1 gap-2 py-5 md:grid-cols-[260px_1fr] md:gap-8">
+              <dt class="font-display text-ink text-xl">{item.name}</dt>
+              <dd class="text-ink-3 text-sm leading-relaxed lg:text-base">{item.why}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Decisions -->
+  <section class="bg-bone-2 py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p class="eyebrow mb-8" data-reveal>Decisions</p>
+      <h2
+        class="font-display text-ink mb-12 leading-[1.05]"
+        style="font-size: var(--text-display-3)"
+        data-reveal
+      >
+        Why it's shaped this way.
+      </h2>
+      <ul class="space-y-10" data-reveal>
+        {
+          decisions.map((d) => (
+            <li>
+              <a href={d.href} target="_blank" rel="noopener" class="group block">
+                <p class="text-ink-3 mb-2 font-mono text-xs tracking-[0.18em] uppercase">
+                  ADR-{d.id}
+                </p>
+                <h3 class="font-display text-ink group-hover:text-brass-2 text-2xl transition-colors lg:text-3xl">
+                  {d.title}
+                </h3>
+                <p class="text-ink-3 mt-3 text-sm leading-relaxed lg:text-base">{d.note}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Deployment -->
+  <section class="bg-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p class="eyebrow mb-8" data-reveal>Deployment</p>
+      <h2
+        class="font-display text-ink mb-10 leading-[1.05]"
+        style="font-size: var(--text-display-3)"
+        data-reveal
+      >
+        S3 behind Cloudflare. One CDN, no managed platform.
+      </h2>
+      <div class="prose-body text-ink-3 space-y-6 text-base leading-relaxed lg:text-lg" data-reveal>
+        <p>
+          Static build deployed to S3 (<code class="font-mono text-sm">ap-southeast-1</code>) on
+          every push to <code class="font-mono text-sm">main</code>, fronted by Cloudflare for DNS,
+          TLS, CDN, WAF, and rate-limiting. GitHub Actions authenticates to AWS via OIDC — no
+          long-lived deploy credentials anywhere. AWS Budget at $5/mo caps cost exposure even in the
+          failure case. Steady-state spend reads ~$0.02/mo.
+        </p>
+        <p>
+          The full architecture diagram, security model, cost analysis, and operational runbook live
+          in
+          <a
+            href={`${REPO_URL}/blob/main/docs/deployment.md`}
+            target="_blank"
+            rel="noopener"
+            class="text-ink hover:text-brass-2 underline underline-offset-4 transition-colors"
+          >
+            docs/deployment.md
+          </a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Source -->
+  <section class="bg-ink text-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+      <p
+        class="text-bone/60 mb-8 font-mono text-[11px] tracking-[0.18em] uppercase"
+        data-reveal-lift
+      >
+        Source
+      </p>
+      <h2
+        class="font-display text-bone mb-10 leading-[1.05]"
+        style="font-size: var(--text-display-3)"
+        data-reveal-lift
+      >
+        The repo is open.
+      </h2>
+      <div class="space-y-6" data-reveal>
+        <p class="text-bone/80 text-base leading-relaxed lg:text-lg">
+          Code is MIT-licensed (with brand and content reserved). Issues and PRs are welcome, but
+          this is a personal portfolio piece, not an actively maintained library — reviews happen
+          asynchronously.
+        </p>
+        <a
+          href={REPO_URL}
+          target="_blank"
+          rel="noopener"
+          class="border-bone text-bone hover:bg-bone hover:text-ink inline-block border px-8 py-4 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
+        >
+          View on GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+</PageLayout>

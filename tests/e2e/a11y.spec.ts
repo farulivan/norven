@@ -7,7 +7,8 @@ import { type Page, expect, test } from "@playwright/test";
 //   - "/projects/holm-chapel/"     project detail (Frame parallax + gallery)
 //   - "/studio/"                   PageHero + philosophy + team + awards + dark section
 //   - "/contact/"                  PageHero + form + dot map
-const pages = ["/", "/projects/", "/projects/holm-chapel/", "/studio/", "/contact/"];
+//   - "/colophon/"                 PageHero + multi-section narrative + dark Source block
+const pages = ["/", "/projects/", "/projects/holm-chapel/", "/studio/", "/contact/", "/colophon/"];
 
 // Every a11y test runs under prefers-reduced-motion: reduce so the motion
 // runtime's reducedMotion() short-circuit fires (just adds `.is-in`, no GSAP
