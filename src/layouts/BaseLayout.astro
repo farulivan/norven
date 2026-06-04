@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "~/consts";
-import { SITE } from "~/data/site";
+import { SITE, AUTHOR } from "~/data/site";
 
 interface Props {
   title?: string;
@@ -76,6 +76,8 @@ const orgJsonLd = {
     <link rel="canonical" href={canonicalURL} />
 
     <meta name="description" content={pageDescription} />
+    <meta name="portfolio-of" content={AUTHOR.name} />
+    <link rel="author" href={AUTHOR.url} />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
