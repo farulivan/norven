@@ -27,6 +27,9 @@ export const SITE = {
     { label: "Work", href: "/projects" },
     { label: "Studio", href: "/studio" },
     { label: "Contact", href: "/contact" },
+    // Colophon is a deliberate portfolio signal in primary nav — a real
+    // studio site wouldn't have it, which is exactly the point.
+    { label: "Colophon", href: "/colophon" },
   ],
 } as const;
 

@@ -13,6 +13,11 @@ interface Props {
 const { title, description, ogImage } = Astro.props;
 const pageTitle = title ?? SITE_NAME;
 const pageDescription = description ?? SITE_DESCRIPTION;
+// Share previews get an explicit portfolio mark appended so anyone linking the
+// site sees the framing in the OG card. The on-page meta description is left
+// alone — search engines render it on the SERP, where the colophon link in
+// the page itself is the better disclosure channel.
+const sharingDescription = `${pageDescription} · Portfolio piece by ${AUTHOR.name}.`;
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
 const ogImageURL = new URL(ogImage ?? "/og-image.jpg", SITE_URL);
 const ogImageAlt = `${SITE.name} — ${SITE.tagline}`;
@@ -82,7 +87,7 @@ const orgJsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={pageDescription} />
+    <meta property="og:description" content={sharingDescription} />
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
@@ -93,7 +98,7 @@ const orgJsonLd = {
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
-    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:description" content={sharingDescription} />
     <meta name="twitter:image" content={ogImageURL} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
 

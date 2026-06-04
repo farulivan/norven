@@ -49,6 +49,17 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
           {/* Honeypot: invisible to people; bots that fill every field get rejected. */}
           <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" />
 
+          <p
+            class="border-brass-3/60 bg-brass-2/5 text-ink-2 mb-2 border-l-2 px-5 py-4 font-mono text-[11px] leading-relaxed tracking-[0.04em]"
+            data-reveal
+          >
+            <span class="text-brass-3 font-medium tracking-[0.18em] uppercase"
+              >Portfolio note —
+            </span>
+            Norven is a fictional studio used for portfolio demonstration. Submissions reach the author
+            (Farul Ivan), not a real architecture firm.
+          </p>
+
           {
             import.meta.env.DEV && !WEB3FORMS_ACCESS_KEY && (
               <p class="border-ink/40 text-ink-3 border border-dashed px-4 py-3 font-mono text-[11px] leading-relaxed tracking-[0.14em] uppercase">
