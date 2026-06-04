@@ -16,6 +16,8 @@
     "format:check": "prettier --check \"**/*.{js,mjs,ts,astro,css,json,md}\"",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "pnpm build && playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium",
     "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build"
   },
   "dependencies": {
@@ -33,7 +35,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
     "eslint": "^10.4.0",
     "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
