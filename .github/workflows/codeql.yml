@@ -1,0 +1,55 @@
+name: CodeQL
+
+# Static analysis for JS/TS via GitHub-native CodeQL. Free for public repos,
+# results land in the Security → Code scanning tab.
+#
+# Rejected sonarcloud / semgrep / snyk here: each adds an external account, paid
+# tier above trivial usage, and another login to maintain — for one small static
+# site CodeQL covers the same ground with no new vendor.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  # Weekly catches new CodeQL rule packs that flag existing code we'd otherwise
+  # miss between PRs. Mondays 06:00 UTC = before the work-week starts in EU/SEA.
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+# Multiple pushes/PRs in flight don't need to queue — only the latest matters.
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    # Keep CodeQL OUT of branch-protection required checks until it's been green
+    # for a few cycles — first runs can take 5–10 min and would slow PR merges
+    # for no proportional safety win on a static portfolio site. Treat findings
+    # as informational; promote to required when comfortable.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          # Inline config keeps the workflow self-contained — no separate
+          # .github/codeql/config.yml file to discover.
+          config: |
+            paths-ignore:
+              - dist
+              - .astro
+              - node_modules
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
