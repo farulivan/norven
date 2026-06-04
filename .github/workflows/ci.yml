@@ -29,6 +29,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # commitlint needs git history back to the PR base. fetch-depth: 0
+          # is the simplest path; the repo is small so the cost is negligible.
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -43,6 +47,13 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Lint commit messages
+        # Validates every commit between origin/main and HEAD against the
+        # Conventional Commits ruleset. Catches PRs where a contributor used
+        # `git commit --no-verify` to bypass the local lefthook hook.
+        if: github.event_name == 'pull_request'
+        run: pnpm exec commitlint --from=origin/${{ github.event.pull_request.base.ref }} --to=HEAD
 
       - name: Audit dependencies
         # Scans the already-installed dep tree for known CVEs at moderate severity

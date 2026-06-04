@@ -1,0 +1,20 @@
+# Git hooks. Installed automatically by lefthook's npm postinstall — and
+# explicitly by `pnpm prepare` so a fresh clone wires them in too.
+# Bypassed locally with `git commit --no-verify` if ever needed; the CI side
+# of ci.yml runs commitlint independently so bypassing locally still gates
+# at PR time.
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm exec commitlint --edit {1}
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: prettier
+      glob: "*.{js,mjs,ts,astro,css,json,md}"
+      run: pnpm exec prettier --check {staged_files}
+    - name: eslint
+      glob: "*.{js,mjs,ts,astro}"
+      run: pnpm exec eslint --max-warnings 0 {staged_files}
