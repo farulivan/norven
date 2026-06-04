@@ -295,10 +295,4 @@ The AWS Budget at $5/mo means any cost anomaly produces an alert before it produ
 
 ## Roadmap
 
-In rough priority order:
-
-1. **Per-PR preview deploys** — extend the GitHub Actions workflow to deploy PR builds to scoped bucket prefixes, with auto-cleanup on PR close
-2. **Cloudflare Cache Rule for HTML** — force edge caching of HTML on the Free plan to reduce origin GET counts at the cost of 10-min global deploy propagation. Trade-off currently rejected (instant deploys preferred at portfolio scale).
-3. **Subresource Integrity** for inline-loaded assets — small XSS defense-in-depth
-4. **Authenticated Origin Pulls** — only if a future deployment serves non-public content. Mutual TLS between Cloudflare and origin; needs a small Lambda proxy since S3 doesn't natively validate client certs
-5. **Documented R2 migration path** — if egress costs ever become a constraint, R2's zero-egress model is a single-evening migration via the S3-compatible API
+Deferred items (PR previews, HTML edge caching, R2 migration, Authenticated Origin Pulls, SRI, plus the cross-cutting CSP reporting endpoint and Cloudflare Web Analytics) live in [docs/roadmap.md](./roadmap.md). Each carries a one-line _why deferred_ so the next "should we ship X?" conversation starts with the trade-off, not the question.
