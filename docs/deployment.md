@@ -206,6 +206,12 @@ Pairing this with the AWS Budget alarm means even a breach is bounded financiall
 
 For a content site with no users, no PII, and no payments, this posture is appropriate. Higher-stakes workloads would upgrade to Authenticated Origin Pulls or migrate origin to Cloudflare R2 with native authenticated access.
 
+### Response headers
+
+CSP, HSTS, Permissions-Policy and the rest are applied at the edge by Cloudflare **Modify Response Header** Transform Rules — not by code — so they apply uniformly to HTML, hashed assets, redirects, and errors, and survive an origin migration (S3 → R2) with no re-implementation. The exact rule set, each header's rationale, the dashboard click-path to add them, and a verification command live in **[docs/security-headers.md](./security-headers.md)**.
+
+One consequence for code review: any change to inline `<script>` or `<style>` in `src/layouts/BaseLayout.astro` (or any new inline tag anywhere) requires a re-read of the CSP section, because that's the only header whose value depends on what the HTML contains.
+
 ## Operations
 
 ### Deploy (CI/CD)
