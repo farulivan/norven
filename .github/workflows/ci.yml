@@ -54,7 +54,7 @@ jobs:
         continue-on-error: true
         run: pnpm audit --audit-level=moderate
 
-      - name: Verify (format, lint, typecheck, test, build)
+      - name: Verify (format, lint, typecheck, test, build, bundle budget)
         # PUBLIC_WEB3FORMS_ACCESS_KEY is intentionally unset: the build reads it as ""
         # via the `?? ""` fallback in src/pages/contact.astro and produces a working
         # bundle. The contact form's POST won't have a usable key in PR builds, but

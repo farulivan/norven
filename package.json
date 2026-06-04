@@ -18,7 +18,8 @@
     "test:watch": "vitest",
     "test:e2e": "pnpm build && playwright test",
     "test:e2e:install": "playwright install --with-deps chromium",
-    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build"
+    "check:bundle": "node scripts/check-bundle-budget.mjs",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build && pnpm check:bundle"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
