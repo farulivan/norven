@@ -1,9 +1,11 @@
+import { SITE_URL } from "~/consts";
+
 export const SITE = {
   name: "Norven",
   tagline: "Architecture of consequence.",
   description:
     "Norven is an architecture practice working on residences, cultural buildings, and landscapes across Northern Europe and beyond.",
-  url: "https://norven.farulivan.com",
+  url: SITE_URL,
   // Demo data — Norven is a fictional studio. The contact details below (email, phone,
   // and studio addresses) are placeholders for the portfolio demo, not real endpoints.
   email: "farulivan@gmail.com",
