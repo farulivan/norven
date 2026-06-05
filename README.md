@@ -4,8 +4,7 @@ A photography-led marketing site for a fictional architecture studio, built as a
 
 **Live**: <https://norven.farulivan.com> · **About this build**: <https://norven.farulivan.com/colophon>
 
-<!-- Hero screenshot: capture 1600×900 from `pnpm dev` and save as docs/screenshots/hero.png, then uncomment the line below. -->
-<!-- ![Norven home page](./docs/screenshots/hero.png) -->
+![Norven home page](./docs/screenshots/hero.png)
 
 [![CI](https://github.com/farulivan/norven/actions/workflows/ci.yml/badge.svg)](https://github.com/farulivan/norven/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/farulivan/norven/actions/workflows/codeql.yml/badge.svg)](https://github.com/farulivan/norven/actions/workflows/codeql.yml)
