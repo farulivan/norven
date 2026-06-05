@@ -10,9 +10,25 @@ const isActive = (href: string) =>
 <header class="bg-bone/80 border-line-2 sticky top-0 z-40 border-b backdrop-blur-md" data-nav>
   <div class="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 lg:px-10">
     <a href="/" aria-label="Norven — home" class="text-ink inline-flex items-center">
-      <span class="block md:hidden [&>svg]:h-8 [&>svg]:w-auto" set:html={emblem} />
-      <span class="hidden md:block lg:hidden [&>svg]:h-6 [&>svg]:w-auto" set:html={wordmark} />
-      <span class="hidden lg:inline-flex lg:items-center lg:gap-3">
+      {
+        /*
+        SVG holders are aria-hidden so their internal <text>NORVEN</text> and
+        role="img" don't fight the parent link's aria-label. Without this,
+        Lighthouse / axe report `label-content-name-mismatch` because the
+        visible glyph text and the accessible link name don't align case-wise.
+      */
+      }
+      <span
+        class="block md:hidden [&>svg]:h-8 [&>svg]:w-auto"
+        set:html={emblem}
+        aria-hidden="true"
+      />
+      <span
+        class="hidden md:block lg:hidden [&>svg]:h-6 [&>svg]:w-auto"
+        set:html={wordmark}
+        aria-hidden="true"
+      />
+      <span class="hidden lg:inline-flex lg:items-center lg:gap-3" aria-hidden="true">
         <span class="[&>svg]:h-8 [&>svg]:w-auto" set:html={emblem} />
         <span class="[&>svg]:h-6 [&>svg]:w-auto" set:html={wordmark} />
       </span>

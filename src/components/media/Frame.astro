@@ -14,6 +14,10 @@ interface Props {
   fill?: boolean; // fill a fixed-height parent (object-cover), instead of using aspect-ratio
   widths?: number[];
   sizes?: string;
+  // Mark above-the-fold / hero images so the browser fetches them eagerly with
+  // high priority. Without this the default loading="lazy" + fetchpriority=auto
+  // delays the LCP and Lighthouse flags `lcp-lazy-loaded` + `lcp-discovery-insight`.
+  priority?: boolean;
 }
 const {
   src,
@@ -26,6 +30,7 @@ const {
   fill = false,
   widths = [400, 800, 1200, 1600],
   sizes = "(min-width: 1024px) 50vw, 100vw",
+  priority = false,
 } = Astro.props;
 ---
 
@@ -48,6 +53,8 @@ const {
             alt={alt}
             widths={widths}
             sizes={sizes}
+            loading={priority ? "eager" : "lazy"}
+            fetchpriority={priority ? "high" : "auto"}
             class="image-fade block h-full w-full object-cover"
           />
         ) : (
