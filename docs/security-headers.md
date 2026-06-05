@@ -1,9 +1,17 @@
 # Security headers
 
 Production response headers for `norven.farulivan.com`. Owned at the edge by Cloudflare
-**Modify Response Header** Transform Rules — committed here so the configuration is
-reviewable in code review, reproducible if the zone is ever rebuilt, and survives any
-future origin migration (R2, MinIO, etc.) without re-implementation.
+and committed here so the configuration is reviewable in code review, reproducible if
+the zone is ever rebuilt, and survives any future origin migration (R2, MinIO, etc.)
+without re-implementation.
+
+Two places in the Cloudflare dashboard set these:
+
+- **SSL/TLS → Edge Certificates → HSTS** — the only home for `Strict-Transport-Security`.
+  Configured zone-wide so apex (`farulivan.com`) is also protected, not just `norven`.
+- **Rules → Transform Rules → Modify Response Header** — every other header below,
+  bundled into a single "Security Headers" rule with one action per header, scoped to
+  `(http.host eq "norven.farulivan.com")`.
 
 Headers are deliberately edge-managed, not code-injected, for three reasons:
 
@@ -70,8 +78,16 @@ max-age=31536000; includeSubDomains; preload
 ```
 
 One-year max-age, covers all subdomains, opt-in to the HSTS preload list.
-**Warning**: submitting to the preload list is one-way and persistent — only do so once
-no http-only subdomain is needed under `farulivan.com`.
+
+**Configured via the Cloudflare SSL/TLS panel, not a Transform Rule** — see the
+click-path section below. The Transform Rule approach would scope HSTS to `norven`
+only; configuring zone-wide via the SSL/TLS panel covers apex `farulivan.com` and
+every other subdomain in one place, which is the safer default. Keeping HSTS out
+of the Transform Rule also avoids a "duplicate Strict-Transport-Security header"
+warning from `securityheaders.com` when both sources would otherwise fire.
+
+**Warning**: submitting to the preload list is one-way and persistent — only do so
+once no http-only subdomain is needed under `farulivan.com`.
 
 ### X-Content-Type-Options
 
@@ -137,35 +153,73 @@ The site doesn't intentionally serve assets to be loaded by other origins.
 
 ## Cloudflare dashboard click-path
 
-For each header above, create one **Modify Response Header** Transform Rule:
+`norven.farulivan.com` is a subdomain of `farulivan.com`, so everything is configured
+in the parent **`farulivan.com` zone**.
 
-1. Cloudflare dashboard → `norven.farulivan.com` zone.
+### HSTS — SSL/TLS panel (zone-wide)
+
+1. Cloudflare dashboard → `farulivan.com` zone.
+2. **SSL/TLS → Edge Certificates → HTTP Strict Transport Security (HSTS)** → **Change**.
+3. **Enable HSTS**: on.
+4. **Max Age Header**: `6 months`.
+5. **Include subdomains**: on.
+6. **Preload**: on.
+7. **No-Sniff**: leave default.
+8. **Save**.
+
+This is zone-wide — applies to apex and every subdomain. Don't also set HSTS via a
+Transform Rule; that's what produces the duplicate-header warning.
+
+### Every other header — one combined Transform Rule
+
+1. Cloudflare dashboard → `farulivan.com` zone.
 2. **Rules** → **Transform Rules** → **Modify Response Header** → **Create rule**.
-3. **Rule name**: `set-<header-name>` (kebab-case, e.g. `set-content-security-policy`).
-4. **When incoming requests match**: use the custom filter expression
-   `(http.host eq "norven.farulivan.com")` so the rule applies to every path.
-5. **Then**: **Set static** → header name + value from the table above.
-6. **Save** → **Deploy**.
+3. **Rule name**: `Security Headers` (one rule covers all of them; cleaner than
+   one-rule-per-header and saves quota).
+4. **When incoming requests match**: custom filter expression
+   `(http.host eq "norven.farulivan.com")` so the rule applies only to `norven`,
+   not to apex or any sibling subdomain.
+5. **Then…** — click **+ Add** for each header below and set:
+   - **Action**: `Set static`
+   - **Header name**: as listed in the per-header sections above
+   - **Value**: as listed in the per-header sections above
+6. Headers to add (seven actions inside the one rule):
+   `Content-Security-Policy`, `X-Content-Type-Options`, `X-Frame-Options`,
+   `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`,
+   `Cross-Origin-Resource-Policy`.
+7. **Save** → **Deploy**.
 
-Order doesn't matter (each rule sets a distinct header). Cloudflare currently caps the
-Free plan at 10 Transform Rules per zone — the set above fits inside that cap with one
-slot to spare; if the cap is ever exhausted, collapse Permissions-Policy and the COOP/CORP
-pair into one rule via the "Edit expression" advanced view.
+Cloudflare Free caps Modify Response Header at 10 rules per zone. Combining all
+seven into one named rule uses 1 of 10 — plenty of headroom for future rules.
 
 ## Verification
 
 After deployment:
 
 ```
-curl -sI https://norven.farulivan.com/ | grep -iE 'content-security|strict-transport|x-content|x-frame|referrer-policy|permissions-policy|cross-origin'
+curl -sI "https://norven.farulivan.com/?$(date +%s)" | grep -iE 'content-security|strict-transport|x-content|x-frame|referrer-policy|permissions-policy|cross-origin'
 ```
 
-Should return every header above. Then run the URL through
-<https://securityheaders.com/?q=norven.farulivan.com>. Target grade: **A** or **A+**.
+Should return every header above. The `?$(date +%s)` suffix bypasses any edge cache
+to guarantee the fresh response.
 
-A drop to A (rather than A+) usually means the `Permissions-Policy` value is shorter
-than the scanner expects, or the CSP `'unsafe-inline'` is being flagged — both
-deliberate trade-offs documented above.
+Confirm there's exactly **one** `Strict-Transport-Security` line in the output — two
+would mean both the SSL/TLS panel and a Transform Rule are setting it.
+
+Then run the URL through
+<https://securityheaders.com/?q=norven.farulivan.com&hide=on&followRedirects=on>
+and <https://observatory.mozilla.org/analyze/norven.farulivan.com>. Expected grade:
+**A** on securityheaders, **A** or **A+** on Mozilla Observatory.
+
+**Grade A (not A+) on securityheaders is the deliberate ceiling**, not something
+worth chasing further. The downgrade is the `script-src 'unsafe-inline'` flag,
+required because `BaseLayout.astro` ships small inline `<script>` blocks (the
+progressive-enhancement gate and the JSON-LD blob) and section components carry
+scoped inline scripts. Eliminating `'unsafe-inline'` would require hash-based CSP,
+which means hashing every inline tag on every build and either emitting per-page
+CSPs or unioning hashes across pages — meaningful build complexity for a marginal
+security delta on a static site with no third-party scripts and no XSS surface.
+The trade-off is conscious; A is the senior-eng-defensible outcome here.
 
 ## When to revisit
 
