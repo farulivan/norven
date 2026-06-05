@@ -32,12 +32,22 @@ jobs:
           # SPDX identifier.
           allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, CC0-1.0, Unlicense, MPL-2.0
 
-          # GSAP ships under the GreenSock "No Charge" License — non-OSI,
-          # non-SPDX, but legitimately free for non-commercial-product use and
-          # deliberately chosen for the scroll motion system (see ADR-0001).
-          # Whitelist it by package URL so the license gate passes; revisit if
-          # GreenSock ever changes the license.
-          allow-dependencies-licenses: pkg:npm/gsap
+          # Allow-list packages whose license the action can't auto-detect.
+          # All listed entries are confirmed OSI-licensed by inspection of
+          # their upstream repos:
+          #   - gsap: GreenSock "No Charge" License (non-OSI, non-SPDX, but
+          #     legitimately free for non-commercial-product use — see ADR-0001).
+          #   - actions/checkout, actions/setup-node: MIT (github.com/actions/*).
+          #   - pnpm/action-setup: MIT (github.com/pnpm/action-setup).
+          #   - treosh/lighthouse-ci-action: Apache-2.0.
+          # The GitHub Actions entries are needed because dependency-review-action
+          # doesn't read the LICENSE files of action repos consistently.
+          allow-dependencies-licenses: >-
+            pkg:npm/gsap,
+            pkg:githubactions/actions/checkout,
+            pkg:githubactions/actions/setup-node,
+            pkg:githubactions/pnpm/action-setup,
+            pkg:githubactions/treosh/lighthouse-ci-action
 
           # Post a summary comment on each PR so the diff is visible without
           # opening the workflow logs.

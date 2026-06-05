@@ -2,3 +2,14 @@ allowBuilds:
   esbuild: true
   lefthook: true
   sharp: true
+
+# Force-upgrade transitive deps to versions that fix known CVEs. Both are
+# pulled in by @lhci/cli; upstream lhci hasn't shipped a fix. The advisories
+# are dev-only (lhci runs only in CI), but the dependency-review gate flags
+# them anyway, so we patch the lockfile in place.
+#   - tmp >=0.2.4    : GHSA-52f5-9888-hmc6 (path traversal via unsanitized prefix)
+#   - uuid >=11.1.1  : multiple CVEs in <11.1.1, including the missing-bounds-
+#                      check in v3/v5/v6 and a later weak-randomness fix.
+overrides:
+  tmp: ^0.2.4
+  uuid: ^11.1.1
