@@ -1,14 +1,14 @@
 # Static hosting pipeline: single-CDN S3 + Cloudflare, no managed platform
 
-The site ships to an S3 bucket whose name equals the hostname, fronted by Cloudflare for DNS, TLS, CDN, WAF, and rate-limiting. AWS handles storage only; Cloudflare handles every edge concern. We did this because (a) every managed alternative (Amplify, Vercel, Netlify) bundles its own CDN that would either nest under Cloudflare — double-cache, doubled TLS, fragmented hit rate — or replace Cloudflare, losing its free WAF/DDoS/rate-limiting, and (b) S3 is a commodity API, so origin remains portable to R2 / Backblaze B2 / MinIO with no change to the deploy workflow.
+The site ships to an S3 bucket whose name equals the hostname, fronted by Cloudflare for DNS, TLS, CDN, WAF, and rate-limiting. AWS handles storage only; Cloudflare handles every edge concern. I chose this because (a) every managed alternative (Amplify, Vercel, Netlify) bundles its own CDN that would either nest under Cloudflare — double-cache, doubled TLS, fragmented hit rate — or replace Cloudflare, losing its free WAF/DDoS/rate-limiting, and (b) S3 is a commodity API, so origin remains portable to R2 / Backblaze B2 / MinIO with no change to the deploy workflow.
 
 ## Considered options
 
 - **S3 + Cloudflare** (chosen) — single CDN, cheapest origin, full edge control, bounded ~$0–5/mo across portfolio-to-1-TB scale. Trade-off: no built-in PR previews; deploy is manual until CI is wired.
 - **AWS Amplify Hosting** — managed CI/CD and deploy UX, but $0.15/GB egress on top of S3 and a nested CloudFront that conflicts with Cloudflare. Rejected: pays for features Cloudflare already provides; cache control degraded.
 - **Vercel / Netlify** — best DX in class, but bandwidth-priced ($0.40/GB at Vercel) and CDN-redundant if fronted by Cloudflare. Better fit for dynamic apps (SSR/ISR) than for static. Rejected: same double-CDN problem; pays for runtime features unused by a static site.
-- **Cloudflare Pages** — closest fit (single-vendor edge), would have eliminated the AWS account entirely. Rejected to deepen AWS practice and preserve origin portability; cost difference is negligible at this scale.
-- **CloudFront + OAC + private S3** — AWS-native equivalent. Cleaner security model (IAM-authenticated origin pulls, no IP allowlist), but requires Route 53 zone or CNAME-from-CF setup, ACM cert in `us-east-1`, and gives up Cloudflare's free-tier WAF/DDoS — which beats AWS's at this tier. Rejected unless we commit to an all-AWS edge.
+- **Cloudflare Pages** — closest fit (single-vendor edge), would have eliminated the AWS account entirely. I rejected it to deepen AWS practice and preserve origin portability; cost difference is negligible at this scale.
+- **CloudFront + OAC + private S3** — AWS-native equivalent. Cleaner security model (IAM-authenticated origin pulls, no IP allowlist), but requires Route 53 zone or CNAME-from-CF setup, ACM cert in `us-east-1`, and gives up Cloudflare's free-tier WAF/DDoS — which beats AWS's at this tier. Rejected unless I commit to an all-AWS edge.
 
 ## Consequences
 

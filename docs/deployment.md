@@ -120,12 +120,12 @@ This is an accepted trade-off: deploys propagate globally in <1 second (no edge 
 
 Every managed alternative bundles its own CDN, which would either nest under Cloudflare (double-cache, fragmented hit rates, doubled TLS termination) or replace Cloudflare entirely (losing its free WAF/DDoS/rate-limiting).
 
-| Alternative      | Why rejected                                                                                                                                                                                                                                                          |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AWS Amplify      | $0.15/GB egress on top of S3 storage; nested CloudFront conflicts with Cloudflare; less granular cache control                                                                                                                                                        |
-| Vercel           | Bandwidth-priced ($0.40/GB); excellent for SSR/ISR Next.js but overkill for static; redundant CDN if fronted by Cloudflare                                                                                                                                            |
-| Netlify          | Same shape as Vercel; bandwidth-priced                                                                                                                                                                                                                                |
-| Cloudflare Pages | Closest fit (single-vendor edge), would have eliminated AWS entirely. **Considered seriously.** Chose S3 to deepen AWS practice and preserve origin portability (S3 API is a commodity; can swap to R2, Backblaze B2, or self-hosted MinIO with no workflow changes). |
+| Alternative      | Why rejected                                                                                                                                                                                                                                                            |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AWS Amplify      | $0.15/GB egress on top of S3 storage; nested CloudFront conflicts with Cloudflare; less granular cache control                                                                                                                                                          |
+| Vercel           | Bandwidth-priced ($0.40/GB); excellent for SSR/ISR Next.js but overkill for static; redundant CDN if fronted by Cloudflare                                                                                                                                              |
+| Netlify          | Same shape as Vercel; bandwidth-priced                                                                                                                                                                                                                                  |
+| Cloudflare Pages | Closest fit (single-vendor edge), would have eliminated AWS entirely. **Considered seriously.** I chose S3 to deepen AWS practice and preserve origin portability (S3 API is a commodity; can swap to R2, Backblaze B2, or self-hosted MinIO with no workflow changes). |
 
 ### Why the bucket name equals the hostname
 
@@ -143,7 +143,7 @@ Matching the names is the canonical Cloudflare→S3 pattern, costs nothing, and 
 
 The S3 Website Hosting endpoint is HTTP-only. The HTTPS-capable REST endpoint loses native `index.html` resolution for directory URLs (`/projects/foo/` → 404 instead of serving `/projects/foo/index.html`). Restoring directory resolution on the REST endpoint requires either a Cloudflare Worker or Cloudflare URL Rewrite Transform Rule.
 
-Picked Flexible (HTTPS visitor↔CF, HTTP CF↔S3) because:
+I picked Flexible (HTTPS visitor↔CF, HTTP CF↔S3) because:
 
 - All content is intentionally public; no auth tokens, no PII, no secrets traverse the CF↔S3 hop
 - Bucket policy IP allowlist prevents the broader public from reaching the HTTP endpoint
@@ -204,7 +204,7 @@ Pairing this with the AWS Budget alarm means even a breach is bounded financiall
 | Flexible SSL transmits CF→origin requests in clear text within AWS network                                                  | Content is public; no auth tokens or PII in URLs/bodies                                                                                                                |
 | Cloudflare account compromise                                                                                               | Mitigated by MFA on the CF account; ultimate fallback is reverting NS records at the registrar                                                                         |
 
-For a content site with no users, no PII, and no payments, this posture is appropriate. Higher-stakes workloads would upgrade to Authenticated Origin Pulls or migrate origin to Cloudflare R2 with native authenticated access.
+For a content site with no users, no PII, and no payments, this posture is appropriate. On a higher-stakes workload, I would upgrade to Authenticated Origin Pulls or migrate origin to Cloudflare R2 with native authenticated access.
 
 ### Response headers
 
@@ -295,4 +295,4 @@ The AWS Budget at $5/mo means any cost anomaly produces an alert before it produ
 
 ## Roadmap
 
-Deferred items (PR previews, HTML edge caching, R2 migration, Authenticated Origin Pulls, SRI, plus the cross-cutting CSP reporting endpoint and Cloudflare Web Analytics) live in [docs/roadmap.md](./roadmap.md). Each carries a one-line _why deferred_ so the next "should we ship X?" conversation starts with the trade-off, not the question.
+Deferred items (PR previews, HTML edge caching, R2 migration, Authenticated Origin Pulls, SRI, plus the cross-cutting CSP reporting endpoint and Cloudflare Web Analytics) live in [docs/roadmap.md](./roadmap.md). Each carries a one-line _why deferred_ so future review starts with the trade-off, not the question.

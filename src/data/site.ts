@@ -1,10 +1,9 @@
 import { SITE_URL } from "~/consts";
 
-// Norven is a fictional architecture studio used as a portfolio demonstration.
+// Norven is my fictional architecture studio for this portfolio build.
 // SITE carries the studio's in-fiction identity — email and phone are intentionally
-// non-deliverable placeholders so the demo never falsely advertises the author's real
-// address as a studio endpoint. The real, deliverable contact lives in AUTHOR below
-// and is surfaced only on the /colophon page.
+// non-deliverable placeholders, so I never present my real address as a studio endpoint.
+// My deliverable contact lives in AUTHOR below and is surfaced only on /colophon.
 export const SITE = {
   name: "Norven",
   tagline: "Architecture of consequence.",
@@ -35,7 +34,7 @@ export const SITE = {
 
 export type SiteData = typeof SITE;
 
-// Real author of this portfolio. Surfaced only on /colophon (and through the
+// My real portfolio contact. Surfaced only on /colophon (and through the
 // <meta name="portfolio-of"> + <link rel="author"> in BaseLayout).
 export const AUTHOR = {
   name: "Farul Ivan",

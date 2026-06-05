@@ -7,7 +7,7 @@ This repository is a personal portfolio site. It has no users, no PII, no paymen
 **Please don't open a public issue for a security report.** Use one of the following private channels instead:
 
 1. Open a private security advisory at <https://github.com/farulivan/norven/security/advisories/new>. This is the preferred path — it keeps the report off the public tracker and gives both sides a private place to discuss a fix.
-2. If you can't access the security advisories interface, email the author directly: `farulivan@gmail.com`. Put `[security]` in the subject line.
+2. If you can't access the security advisories interface, email me directly: `farulivan@gmail.com`. Put `[security]` in the subject line.
 
 When reporting, include enough detail to reproduce the issue: the affected URL or commit, repro steps, the expected versus observed behaviour, and any proof-of-concept you have.
 
@@ -35,7 +35,7 @@ If you'd like credit in the fix commit or the relevant ADR, mention it in the re
 
 - Issues in third-party dependencies that don't materially affect this deployment. File those upstream; pnpm audit and `actions/dependency-review-action` already catch them at PR time.
 - DDoS, volumetric, or rate-limit-style reports — Cloudflare's free-tier DDoS protection handles the layer this site cares about.
-- Social-engineering or physical-access reports against the author.
+- Social-engineering or physical-access reports against me.
 
 ## Hardening already in place
 

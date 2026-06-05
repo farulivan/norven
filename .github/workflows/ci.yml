@@ -1,9 +1,9 @@
 name: CI
 
-# Runs the same verify gate developers run locally (format, lint, typecheck, test,
-# build) on every PR and on every push to non-main branches. Push to main is already
-# covered by deploy.yml, which runs `pnpm verify` before shipping — duplicating that
-# here would double CI minutes for zero extra signal.
+# Runs the same verify gate I run locally (format, lint, typecheck, test, build) on
+# every PR and on every push to non-main branches. Push to main is already covered by
+# deploy.yml, which runs `pnpm verify` before shipping — duplicating that here would
+# double CI minutes for zero extra signal.
 on:
   pull_request:
   push:
@@ -13,8 +13,8 @@ permissions:
   contents: read
 
 # Cancel an in-progress run when a new commit lands on the same ref. Opposite of
-# deploy.yml (which serializes), because PR pushes happen often and the latest commit
-# is the only one whose result matters.
+# deploy.yml (which serializes), because PR pushes happen often and only the latest
+# commit matters.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     # Single Node 22 — matches engines.node in package.json. No matrix: this is a
     # static site, not a library, so multi-version coverage adds CI minutes for zero
-    # downstream consumers. Revisit if this ever ships as an npm package.
+    # downstream consumers. I will revisit if this ever ships as an npm package.
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,9 +59,9 @@ jobs:
         # Scans the already-installed dep tree for known CVEs at moderate severity
         # or above. Complements the dependency-review workflow, which only checks
         # newly-introduced deps on a PR. Soft-fails during bootstrap so transient
-        # advisories without a fix don't block PRs; flip `continue-on-error` to
-        # false once the baseline is reliably clean (and once Renovate from a
-        # later commit is keeping the lockfile fresh).
+        # advisories without a fix don't block PRs. I will flip `continue-on-error`
+        # to false once the baseline is reliably clean and Renovate keeps the
+        # lockfile fresh.
         continue-on-error: true
         run: pnpm audit --audit-level=moderate
 
@@ -70,7 +70,7 @@ jobs:
         # via the `?? ""` fallback in src/pages/contact.astro and produces a working
         # bundle. The contact form's POST won't have a usable key in PR builds, but
         # neither `pnpm build` nor any test exercises that surface. Set repo variable
-        # PUBLIC_WEB3FORMS_ACCESS_KEY_CI and pass it through here only if you ever
+        # PUBLIC_WEB3FORMS_ACCESS_KEY_CI and pass it through here only if I ever
         # want PR-built sites to ship a working form.
         run: pnpm verify
 

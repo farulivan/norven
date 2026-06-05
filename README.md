@@ -1,6 +1,6 @@
 # Norven
 
-A photography-led marketing site for a fictional architecture studio, built as a portfolio piece. Static Astro 6 site with restrained scroll motion, deployed to S3 behind Cloudflare. Engineered with the same discipline a production site would receive.
+I built Norven as a photography-led marketing site for a fictional architecture studio. It is a static Astro 6 portfolio piece with restrained scroll motion, deployed to S3 behind Cloudflare, and engineered with the same discipline I would give a production site.
 
 **Live**: <https://norven.farulivan.com> · **About this build**: <https://norven.farulivan.com/colophon>
 
@@ -15,14 +15,14 @@ A photography-led marketing site for a fictional architecture studio, built as a
 
 ## Why this exists
 
-Norven is a fictional studio. The point is the build, not the firm. The codebase demonstrates how I think about:
+Norven is a fictional studio. The point is the build, not the firm. This codebase demonstrates how I think about:
 
 - **Architecture**: static MPA with strict layering, content collections, one-callback motion runtime, image pipeline behind one component.
 - **Quality gates**: a single `pnpm verify` running format, lint, typecheck, unit tests, build, and a bundle budget — plus Playwright E2E, axe a11y, Lighthouse budgets per page, CodeQL, dependency review, and Conventional Commits — all enforced on every PR.
 - **Operations**: S3 + Cloudflare with a single edge, IP-allowlisted origin, OIDC-only deploys, $5/mo AWS Budget as the cost ceiling, edge response headers (CSP, HSTS, Permissions-Policy, …) documented as committed Cloudflare Transform Rules.
 - **Documentation discipline**: ADRs for load-bearing decisions, deployment runbook with cost analysis, security policy, roadmap with explicit non-goals, an architecture overview that fits on one screen.
 
-A hirer skimming this in five minutes should leave knowing what shape the codebase is, what was decided and why, and how it operates in production.
+If you're skimming this as a hirer, I want five minutes to be enough to see the codebase shape, the decisions behind it, and how it operates in production.
 
 ## Stack
 
@@ -51,7 +51,7 @@ The three ADRs in `docs/adr/` cover the load-bearing decisions. Each is short an
 
 ## Architecture
 
-[ARCHITECTURE.md](./ARCHITECTURE.md) is a one-screen orientation: the render model, module layering, the data and content split, the motion lifecycle, the image pipeline, and the build/deploy boundary — with Mermaid diagrams that render on GitHub.
+[ARCHITECTURE.md](./ARCHITECTURE.md) is my one-screen orientation: the render model, module layering, the data and content split, the motion lifecycle, the image pipeline, and the build/deploy boundary — with Mermaid diagrams that render on GitHub.
 
 ## Quick start
 
@@ -84,7 +84,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full local setup, conventional-
 
 ## Deployment
 
-Static build deployed to S3 (`ap-southeast-1`) on every push to `main`, fronted by Cloudflare for DNS, TLS, CDN, WAF, and rate-limiting. GitHub Actions authenticates to AWS via OIDC — no long-lived deploy credentials anywhere. AWS Budget at $5/mo caps cost exposure even in the worst case. Steady-state spend reads ~$0.02/mo.
+I deploy the static build to S3 (`ap-southeast-1`) on every push to `main`, fronted by Cloudflare for DNS, TLS, CDN, WAF, and rate-limiting. GitHub Actions authenticates to AWS via OIDC — no long-lived deploy credentials anywhere. AWS Budget at $5/mo caps cost exposure even in the worst case. Steady-state spend reads ~$0.02/mo.
 
 Architecture diagrams, security model, cost analysis, and runbook live in [docs/deployment.md](./docs/deployment.md). Edge response headers (CSP, HSTS, Permissions-Policy, COOP, CORP, …) are committed as Cloudflare Transform Rules in [docs/security-headers.md](./docs/security-headers.md). Deferred items and explicit non-goals live in [docs/roadmap.md](./docs/roadmap.md).
 
@@ -93,9 +93,9 @@ Architecture diagrams, security model, cost analysis, and runbook live in [docs/
 ```
 .
 ├── ARCHITECTURE.md        # one-screen architecture overview
-├── CONTRIBUTING.md        # local setup, PR conventions, maintainer notes
+├── CONTRIBUTING.md        # local setup, PR conventions, my maintainer notes
 ├── LICENSE.md             # MIT (code) + ARR (brand) + Unsplash (photos)
-├── README.md              # you are here
+├── README.md              # start here
 ├── SECURITY.md            # vulnerability disclosure policy
 ├── astro.config.mjs       # Astro + Tailwind v4 + sitemap
 ├── playwright.config.ts   # chromium only, webServer = astro preview
@@ -136,9 +136,9 @@ Architecture diagrams, security model, cost analysis, and runbook live in [docs/
 
 ## Portfolio note
 
-Norven is a fictional architecture studio. The studio, its three offices in Oslo / Lisbon / Kyoto, its built work, its team, and its testimonials are invented end-to-end. The contact details rendered as the studio's (`studio@norven.example`, a Norwegian dialling code that resolves to nothing) are deliberate non-deliverable placeholders. Form submissions reach the author (Farul Ivan), not a real architecture firm.
+Norven is a fictional architecture studio. I invented the studio, its three offices in Oslo / Lisbon / Kyoto, its built work, its team, and its testimonials end-to-end. The contact details rendered as the studio's (`studio@norven.example`, a Norwegian dialling code that resolves to nothing) are deliberate non-deliverable placeholders. Form submissions reach me (Farul Ivan), not a real architecture firm.
 
-The build itself is the artefact. [/colophon](https://norven.farulivan.com/colophon) lays out the full framing.
+The build itself is the artefact. [/colophon](https://norven.farulivan.com/colophon) lays out how I framed it.
 
 ## License
 

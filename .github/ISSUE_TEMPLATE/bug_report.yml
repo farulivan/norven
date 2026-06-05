@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the report. This repo is a personal portfolio; issues and PRs are welcome but reviewed asynchronously.
+        Thanks for the report. This repo is a personal portfolio; issues and PRs are welcome, but I review them asynchronously.
 
   - type: input
     id: where

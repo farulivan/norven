@@ -1,8 +1,8 @@
 # Roadmap
 
-Documented intent, not built. Each entry below carries a one-line **Why deferred** so future-me (or a hiring reader) can tell which deferrals are temporary holds and which are deliberate non-goals.
+Documented intent, not built. Each entry below carries a one-line **Why deferred** so I — or a hiring reader — can tell which deferrals are temporary holds and which are deliberate non-goals.
 
-Grouped by concern, not strictly ordered — the order would be by next month's actual constraint.
+Grouped by concern, not strictly ordered — I would order implementation by next month's actual constraint.
 
 ## Deployment and infrastructure
 
@@ -54,7 +54,7 @@ Add `integrity="sha384-…"` to any `<script>` or `<link>` loading from a third-
 
 ## Out of scope (deliberate non-goals)
 
-These have been weighed and ruled out, not deferred. They live here so the next "should we add X?" conversation can short-circuit to the ADR or to this note.
+I weighed these and ruled them out; they are not merely deferred. They live here so future review can start from the ADR or this note instead of reopening the same question.
 
 - **Managed hosting CDN** (Vercel, Netlify, Amplify, Cloudflare Pages). [ADR-0003](./adr/0003-static-hosting-pipeline.md) explains the choice.
 - **WebGL / 3D centrepiece.** [ADR-0002](./adr/0002-photography-led-redesign.md) explains the retirement.

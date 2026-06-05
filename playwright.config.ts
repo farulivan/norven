@@ -1,8 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Playwright drives both the E2E smoke tests and the axe-core a11y scans.
-// Single toolchain instead of two — pa11y-ci would duplicate browser runtime in
-// CI for the same coverage. See plan: Phase E.
+// Playwright drives both my E2E smoke tests and the axe-core a11y scans.
+// I keep one toolchain instead of two — pa11y-ci would duplicate browser runtime
+// in CI for the same coverage.
 const isCI = !!process.env.CI;
 
 export default defineConfig({
@@ -28,6 +28,6 @@ export default defineConfig({
     timeout: 60_000,
   },
   // Chromium only in CI: firefox + webkit would triple the runner time for a
-  // static site that ships no browser-specific code. Revisit if that changes.
+  // static site that ships no browser-specific code. I will revisit if that changes.
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });

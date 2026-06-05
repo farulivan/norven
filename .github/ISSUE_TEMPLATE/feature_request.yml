@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Suggestions welcome. The shape below mirrors how decisions are documented in `docs/adr/` so the thinking is portable from issue to ADR.
+        Suggestions welcome. I keep the shape below close to `docs/adr/` so the thinking can move cleanly from issue to ADR.
 
   - type: textarea
     id: problem

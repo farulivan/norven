@@ -1,6 +1,6 @@
 # Architecture
 
-This document is a one-screen overview of how the codebase is shaped: the render model, the module layering, the data and content model, the motion runtime, the image pipeline, and the build/deploy boundary. ADRs in `docs/adr/` explain _why_ each load-bearing choice was made; `docs/deployment.md` is the operational picture for the hosting pipeline. Read those for depth; read this for orientation.
+I keep this as a one-screen overview of how the codebase is shaped: the render model, the module layering, the data and content model, the motion runtime, the image pipeline, and the build/deploy boundary. ADRs in `docs/adr/` explain _why_ I made each load-bearing choice; `docs/deployment.md` is the operational picture for the hosting pipeline. Read those for depth; read this for orientation.
 
 ## Render model
 
@@ -107,7 +107,7 @@ Photography is the primary visual medium. Real photos live in each entry's conte
 
 ## Build and deploy boundary
 
-`pnpm build` is the only command that crosses from source into deploy. It runs Astro's static build, Sharp processes images, and `dist/` becomes a self-contained tree of static files. GitHub Actions on push to `main` runs the same `pnpm verify` developers run locally, then deploys via OIDC-authenticated `aws s3 sync` to a hostname-named bucket fronted by Cloudflare. No long-lived AWS credentials exist anywhere; an AWS Budget at $5/mo caps cost exposure even in the worst case.
+`pnpm build` is the only command that crosses from source into deploy. It runs Astro's static build, Sharp processes images, and `dist/` becomes a self-contained tree of static files. GitHub Actions on push to `main` runs the same `pnpm verify` I run locally, then deploys via OIDC-authenticated `aws s3 sync` to a hostname-named bucket fronted by Cloudflare. No long-lived AWS credentials exist anywhere; an AWS Budget at $5/mo caps cost exposure even in the worst case.
 
 Edge response headers (CSP, HSTS, Permissions-Policy, etc.) live in Cloudflare Transform Rules, not in code, so they apply uniformly across HTML, hashed assets, and errors, and survive an origin migration (S3 → R2) with no re-implementation. The rule set is committed to [docs/security-headers.md](./docs/security-headers.md).
 
@@ -120,4 +120,4 @@ Edge response headers (CSP, HSTS, Permissions-Policy, etc.) live in Cloudflare T
 - **No managed hosting CDN.** [ADR-0003](./docs/adr/0003-static-hosting-pipeline.md) explains why every managed platform (Amplify, Vercel, Netlify, Pages) was rejected in favour of S3 + Cloudflare. Single CDN, cheapest origin, full edge control.
 - **No analytics or error tracking.** Not yet. Cloudflare Web Analytics and a CSP reporting endpoint are on the roadmap (see `docs/roadmap.md`).
 
-This shape is the point. The discipline it lets us hold — one toolchain to learn, one place to look — is the senior-engineering bet.
+This shape is the point. The discipline it lets me hold — one toolchain to learn, one place to look — is the senior-engineering bet.

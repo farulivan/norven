@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Sum the bytes of every .js and .css file in dist/_astro/ and compare against
-// bundle-budget.json. Fails non-zero when over budget. Pass --write to rewrite
-// the budget file to the current totals (use after intentional growth).
+// I sum every .js and .css file in dist/_astro/ and compare the totals against
+// bundle-budget.json. The script fails non-zero when over budget. Pass --write
+// to rewrite the budget file to the current totals after intentional growth.
 //
-// Rejected size-limit, bundlewatch, bundle-stats here: each needs a config
+// I rejected size-limit, bundlewatch, and bundle-stats here: each needs a config
 // language or an account token for an extra check that 60 lines of Node cover.
 // The point of the gate is "did the bundle suddenly bloat?", which compares
-// fine to a committed JSON.
+// cleanly against a committed JSON.
 
 import { readFile, readdir, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";

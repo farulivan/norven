@@ -8,7 +8,7 @@
 
 ## How
 
-<!-- Implementation choices a reviewer would not derive from the diff alone. -->
+<!-- Implementation choices I would not derive from the diff alone. -->
 
 ## Visuals
 

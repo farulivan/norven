@@ -3,14 +3,14 @@ name: CodeQL
 # Static analysis for JS/TS via GitHub-native CodeQL. Free for public repos,
 # results land in the Security → Code scanning tab.
 #
-# Rejected sonarcloud / semgrep / snyk here: each adds an external account, paid
+# I rejected sonarcloud / semgrep / snyk here: each adds an external account, paid
 # tier above trivial usage, and another login to maintain — for one small static
 # site CodeQL covers the same ground with no new vendor.
 on:
   pull_request:
   push:
     branches: [main]
-  # Weekly catches new CodeQL rule packs that flag existing code we'd otherwise
+  # Weekly catches new CodeQL rule packs that flag existing code I would otherwise
   # miss between PRs. Mondays 06:00 UTC = before the work-week starts in EU/SEA.
   schedule:
     - cron: "0 6 * * 1"
@@ -29,7 +29,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    # Keep CodeQL OUT of branch-protection required checks until it's been green
+    # Keep CodeQL OUT of branch-protection required checks until it has been green
     # for a few cycles — first runs can take 5–10 min and would slow PR merges
     # for no proportional safety win on a static portfolio site. Treat findings
     # as informational; promote to required when comfortable.

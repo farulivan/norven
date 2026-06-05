@@ -7,11 +7,11 @@ Norven is a personal portfolio piece, not an actively maintained library. That d
 - **Bug report?** Use the [bug report issue form](https://github.com/farulivan/norven/issues/new?template=bug_report.yml).
 - **Feature request?** Use the [feature request issue form](https://github.com/farulivan/norven/issues/new?template=feature_request.yml). The shape mirrors how decisions are documented in `docs/adr/` so a well-formed feature request can graduate to an ADR with minimal rewriting.
 - **Security issue?** Don't open a public issue. See [SECURITY.md](./SECURITY.md) for the disclosure channel.
-- **Anything else?** Reach the author on GitHub (see `config.yml` in `.github/ISSUE_TEMPLATE/`).
+- **Anything else?** Reach me on GitHub (see `config.yml` in `.github/ISSUE_TEMPLATE/`).
 
 ## Pull requests
 
-PRs are welcome for clear, scoped changes. For anything beyond a small bug fix or typo, **open an issue first** so we can align before code lands.
+PRs are welcome for clear, scoped changes. For anything beyond a small bug fix or typo, **open an issue first** so I can align with you before code lands.
 
 A few things to know:
 
@@ -62,9 +62,9 @@ For an orientation to the codebase shape, read [ARCHITECTURE.md](./ARCHITECTURE.
 - **PR template** prefills with what / why / how / visuals / verification / decisions slots. The verification checklist is real — actually run those gates locally before requesting review.
 - **One concern per PR.** Easier to review, easier to revert.
 
-## Maintainer setup (one-time, for the author)
+## Maintainer setup (one-time, for me)
 
-These are the manual steps a fresh clone can't automate. Captured here so they're not lost.
+These are the manual steps a fresh clone can't automate. I keep them here so they're not lost.
 
 - **Renovate**: install the [Renovate GitHub App](https://github.com/apps/renovate) on `farulivan/norven`. Merge the onboarding PR. The committed `renovate.json` does the rest.
 - **Branch protection on `main`**: require the `CI / Verify` check to pass before merge. Without this, Renovate's auto-merge for dev-dep patches isn't gated on CI.

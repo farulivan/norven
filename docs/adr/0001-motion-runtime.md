@@ -1,6 +1,6 @@
 # Motion runtime: one deep module behind `scrollEffect`
 
-All scroll-driven motion goes through a single runtime (`src/lib/motion/`) that owns gsap-plugin registration, Lenis, the `[data-reveal]` batch, and the Astro view-transition lifecycle. Effects call `scrollEffect((ctx) => teardown)` instead of each re-registering the plugin, re-checking reduced-motion, and binding `astro:page-load` by hand. We did this for locality (the lifecycle contract lives in one place) and leverage (every effect, current and future, reuses one interface).
+All scroll-driven motion goes through a single runtime (`src/lib/motion/`) that owns gsap-plugin registration, Lenis, the `[data-reveal]` batch, and the Astro view-transition lifecycle. Effects call `scrollEffect((ctx) => teardown)` instead of each re-registering the plugin, re-checking reduced-motion, and binding `astro:page-load` by hand. I chose this for locality (the lifecycle contract lives in one place) and leverage (every effect, current and future, reuses one interface).
 
 ## Considered options
 

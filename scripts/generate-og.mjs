@@ -1,6 +1,6 @@
-// Generate the photography-led OG share card: the hero photograph + a legibility
+// I generate the photography-led OG share card: the hero photograph + a legibility
 // gradient + an editorial type overlay, composited into a 1200x630 JPEG. Social
-// platforms don't render SVG share images, so we ship a committed raster. Re-run
+// platforms don't render SVG share images, so I ship a committed raster. Re-run
 // after changing the hero photo or the overlay copy:
 //   node scripts/generate-og.mjs
 import sharp from "sharp";

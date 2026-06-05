@@ -1,10 +1,10 @@
 ---
 import PageLayout from "~/layouts/PageLayout.astro";
 import PageHero from "~/components/sections/PageHero.astro";
-import { SITE } from "~/data/site";
+import { AUTHOR, SITE } from "~/data/site";
 
 // Web3Forms access key (https://web3forms.com) — set PUBLIC_WEB3FORMS_ACCESS_KEY in .env.
-// It only authorises posting to your form, so it is safe to expose to the client.
+// It only authorises posting to this form, so it is safe to expose to the client.
 const WEB3FORMS_ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? "";
 
 // Each studio gets approximate dot coordinates on a 200x100 world map (lon/lat → x/y)
@@ -40,7 +40,7 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
           id="contact-form"
           action="https://api.web3forms.com/submit"
           method="POST"
-          data-contact-email={SITE.email}
+          data-contact-email={AUTHOR.email}
           class="space-y-8"
         >
           <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
@@ -56,8 +56,8 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
             <span class="text-brass-3 font-medium tracking-[0.18em] uppercase"
               >Portfolio note —
             </span>
-            Norven is a fictional studio used for portfolio demonstration. Submissions reach the author
-            (Farul Ivan), not a real architecture firm.
+            I built Norven as a fictional studio for this portfolio. Submissions reach me (Farul Ivan),
+            not a real architecture firm.
           </p>
 
           {
@@ -268,7 +268,7 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
           if (response.ok && result.success) {
             form.reset();
             setStatus(
-              "Thank you — your brief has reached the studio. We reply within fourteen days.",
+              "Thank you — your brief has reached me. I reply within fourteen days.",
               "success",
             );
             submitButton.textContent = "Sent ✓";
