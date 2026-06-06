@@ -136,7 +136,7 @@ Architecture diagrams, security model, cost analysis, and runbook live in [docs/
 
 ## Portfolio note
 
-Norven is a fictional architecture studio. I invented the studio, its three offices in Oslo / Lisbon / Kyoto, its built work, its team, and its testimonials end-to-end. The contact details rendered as the studio's (`studio@norven.example`, a Norwegian dialling code that resolves to nothing) are deliberate non-deliverable placeholders. Form submissions reach me (Farul Ivan), not a real architecture firm.
+Norven is a fictional architecture studio. I invented the studio, its three offices in Oslo / Lisbon / Kyoto, its built work, its team, and its testimonials end-to-end. The contact details rendered as the studio's (`studio@norven.example`, a Norwegian dialling code that resolves to nothing) are deliberate non-deliverable placeholders. Form submissions reach me (Farul), not a real architecture firm.
 
 The build itself is the artefact. [/colophon](https://norven.farulivan.com/colophon) lays out how I framed it.
 
