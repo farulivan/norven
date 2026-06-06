@@ -146,15 +146,36 @@ const isActive = (href: string) =>
   }
 
   function onKeydown(event: KeyboardEvent) {
-    if (event.key !== "Escape") return;
+    if (event.key !== "Escape" && event.key !== "Tab") return;
     const button = document.getElementById("nav-button");
     const menu = document.getElementById("mobile-menu");
     if (!button || !menu || button.getAttribute("aria-expanded") !== "true") return;
-    button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-label", "Open menu");
-    menu.removeAttribute("data-open");
-    document.documentElement.classList.remove("nav-open");
-    button.focus();
+
+    if (event.key === "Escape") {
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-label", "Open menu");
+      menu.removeAttribute("data-open");
+      document.documentElement.classList.remove("nav-open");
+      button.focus();
+      return;
+    }
+
+    // Trap Tab inside the open menu so focus can't escape into the
+    // visually-obscured background DOM.
+    const focusables = menu.querySelectorAll<HTMLElement>(
+      "a, button, [tabindex]:not([tabindex='-1'])",
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0]!;
+    const last = focusables[focusables.length - 1]!;
+    const active = document.activeElement;
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   document.addEventListener("keydown", onKeydown);
