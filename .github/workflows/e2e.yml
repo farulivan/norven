@@ -1,11 +1,12 @@
 name: E2E
 
-# Playwright smoke + axe-core a11y on every PR and push to main. Builds the site
-# in this workflow rather than downloading the ci.yml dist artifact across
-# workflows — cross-workflow artifact wiring adds more friction than a rebuild
-# saves me at this scale (~30s build time).
+# Playwright smoke + axe-core a11y on main-bound PRs and push to main. Builds
+# the site in this workflow rather than downloading the ci.yml dist artifact
+# across workflows — cross-workflow artifact wiring adds more friction than a
+# rebuild saves me at this scale (~30s build time).
 on:
   pull_request:
+    branches: [main]
   push:
     branches: [main]
 

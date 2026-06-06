@@ -1,10 +1,11 @@
 name: Dependency Review
 
-# Reviews the dep diff on every PR for known CVEs and license drift. Complements
-# the `pnpm audit` step (in ci.yml) which scans already-installed deps: this one
-# catches newly-introduced deps before they merge.
+# Reviews the dep diff on PRs targeting main for known CVEs and license drift.
+# Complements the `pnpm audit` step (in ci.yml) which scans already-installed
+# deps: this one catches newly-introduced deps at the main-bound promotion gate.
 on:
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
