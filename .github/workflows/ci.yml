@@ -28,19 +28,19 @@ jobs:
     # downstream consumers. I will revisit if this ever ships as an npm package.
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # commitlint needs git history back to the PR base. fetch-depth: 0
           # is the simplest path; the repo is small so the cost is negligible.
           fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 11
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: package.json
           cache: pnpm
@@ -75,7 +75,7 @@ jobs:
         run: pnpm verify
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/

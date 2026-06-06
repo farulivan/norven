@@ -12,4 +12,4 @@ allowBuilds:
 #                      check in v3/v5/v6 and a later weak-randomness fix.
 overrides:
   tmp: ^0.2.4
-  uuid: ^11.1.1
+  uuid: ^14.0.0

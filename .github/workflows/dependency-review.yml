@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Dependency Review
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5.0.0
         with:
           # Fail the PR when a new dep introduces a CVE at moderate severity or
           # above. Matches the threshold ci.yml's `pnpm audit` step uses, so the
@@ -30,7 +30,7 @@ jobs:
           # in the lockfile except GSAP resolves to one of these; GSAP is handled
           # by `allow-dependencies-licenses` below because its license has no
           # SPDX identifier.
-          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, CC0-1.0, Unlicense, MPL-2.0
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, BlueOak-1.0.0, CC0-1.0, Unlicense, MPL-2.0
 
           # Allow-list packages whose license the action can't auto-detect.
           # I confirmed all listed entries by inspection of
