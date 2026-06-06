@@ -28,6 +28,7 @@ const { projects } = Astro.props;
                   ratio="4/3"
                   seed={i}
                   parallax
+                  widths={[400, 600, 800, 1200]}
                   sizes="(min-width: 1024px) 50vw, 100vw"
                 />
               </a>
@@ -35,7 +36,7 @@ const { projects } = Astro.props;
                 class:list={["lg:sticky lg:top-32 lg:self-start", flip && "lg:order-1"]}
                 data-reveal
               >
-                <p class="eyebrow text-brass mb-5">
+                <p class="eyebrow text-brass-2 mb-5">
                   {p.data.type} · {p.data.year} ·{" "}
                   {p.data.status === "built" ? "Built" : "In Studio"}
                 </p>

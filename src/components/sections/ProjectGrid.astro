@@ -21,9 +21,10 @@ const sorted = [...projects].sort((a, b) => a.data.order - b.data.order);
               alt={p.data.title}
               ratio="4/3"
               seed={i}
+              widths={[320, 400, 480, 560, 640, 768]}
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             />
-            <p class="eyebrow text-brass mt-5">
+            <p class="eyebrow text-brass-2 mt-5">
               {p.data.type} · {p.data.year}
             </p>
             <h3 class="font-display text-ink group-hover:text-brass mt-1 text-2xl transition-colors">

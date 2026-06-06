@@ -1,0 +1,54 @@
+name: Dependency Review
+
+# Reviews the dep diff on every PR for known CVEs and license drift. Complements
+# the `pnpm audit` step (in ci.yml) which scans already-installed deps: this one
+# catches newly-introduced deps before they merge.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    name: Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Fail the PR when a new dep introduces a CVE at moderate severity or
+          # above. Matches the threshold ci.yml's `pnpm audit` step uses, so the
+          # two gates agree.
+          fail-on-severity: moderate
+
+          # SPDX identifiers permitted for newly-added deps. Everything currently
+          # in the lockfile except GSAP resolves to one of these; GSAP is handled
+          # by `allow-dependencies-licenses` below because its license has no
+          # SPDX identifier.
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, CC0-1.0, Unlicense, MPL-2.0
+
+          # Allow-list packages whose license the action can't auto-detect.
+          # I confirmed all listed entries by inspection of
+          # their upstream repos:
+          #   - gsap: GreenSock "No Charge" License (non-OSI, non-SPDX, but
+          #     legitimately free for non-commercial-product use — see ADR-0001).
+          #   - actions/checkout, actions/setup-node: MIT (github.com/actions/*).
+          #   - pnpm/action-setup: MIT (github.com/pnpm/action-setup).
+          #   - treosh/lighthouse-ci-action: Apache-2.0.
+          # The GitHub Actions entries are needed because dependency-review-action
+          # doesn't read the LICENSE files of action repos consistently.
+          allow-dependencies-licenses: >-
+            pkg:npm/gsap,
+            pkg:githubactions/actions/checkout,
+            pkg:githubactions/actions/setup-node,
+            pkg:githubactions/pnpm/action-setup,
+            pkg:githubactions/treosh/lighthouse-ci-action
+
+          # Post a summary comment on each PR so the diff is visible without
+          # opening the workflow logs.
+          comment-summary-in-pr: always

@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a defect on the live site or in the local dev experience.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. This repo is a personal portfolio; issues and PRs are welcome, but I review them asynchronously.
+
+  - type: input
+    id: where
+    attributes:
+      label: Where did this happen?
+      description: URL or local dev step.
+      placeholder: https://norven.farulivan.com/projects/holm-chapel
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      placeholder: A clear description of the unexpected behaviour.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Visit the URL
+        2. Scroll to ...
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser + OS
+      placeholder: Chrome 138 / macOS 15.5
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "1 — site unusable"
+        - "2 — feature broken, workaround exists"
+        - "3 — visual or minor"
+        - "4 — nit"
+    validations:
+      required: true
