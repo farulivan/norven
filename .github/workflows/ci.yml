@@ -58,11 +58,9 @@ jobs:
       - name: Audit dependencies
         # Scans the already-installed dep tree for known CVEs at moderate severity
         # or above. Complements the dependency-review workflow, which only checks
-        # newly-introduced deps on a PR. Soft-fails during bootstrap so transient
-        # advisories without a fix don't block PRs. I will flip `continue-on-error`
-        # to false once the baseline is reliably clean and Renovate keeps the
-        # lockfile fresh.
-        continue-on-error: true
+        # newly-introduced deps on a PR. If a transient advisory ever blocks a PR
+        # without an upstream fix, loosen the threshold to `--audit-level=high`
+        # rather than reintroducing `continue-on-error`.
         run: pnpm audit --audit-level=moderate
 
       - name: Verify (format, lint, typecheck, test, build, bundle budget)
