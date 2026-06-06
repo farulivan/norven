@@ -6,6 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "prepare": "lefthook install",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
@@ -16,7 +17,10 @@
     "format:check": "prettier --check \"**/*.{js,mjs,ts,astro,css,json,md}\"",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build"
+    "test:e2e": "pnpm build && playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium",
+    "check:bundle": "node scripts/check-bundle-budget.mjs",
+    "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build && pnpm check:bundle"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
@@ -33,11 +37,17 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.11.3",
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
     "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.60.0",
     "eslint": "^10.4.0",
     "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "globals": "^17.6.0",
+    "lefthook": "^2.1.9",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.0",

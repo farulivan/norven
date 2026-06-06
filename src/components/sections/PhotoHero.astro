@@ -25,7 +25,8 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
       parallax={titlePlacement === "below"}
       fill={titlePlacement === "overlay"}
       sizes="100vw"
-      widths={[800, 1200, 1600, 2000]}
+      widths={[800, 1024, 1280, 1366, 1600, 1920]}
+      priority
     />
     {
       titlePlacement === "overlay" && (
@@ -65,7 +66,7 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
     titlePlacement === "below" && (
       <div class="mx-auto max-w-[1400px] px-6 pt-12 lg:px-10 lg:pt-16">
         {eyebrow && (
-          <p class="eyebrow text-brass mb-6" data-reveal-lift>
+          <p class="eyebrow text-brass-2 mb-6" data-reveal-lift>
             {eyebrow}
           </p>
         )}

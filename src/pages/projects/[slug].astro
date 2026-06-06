@@ -41,13 +41,14 @@ const projectJsonLd = {
       seed={0}
       parallax
       sizes="100vw"
-      widths={[800, 1200, 1600, 2000]}
+      widths={[800, 1024, 1200, 1366, 1600, 1920]}
+      priority
     />
 
     <!-- TITLE + META -->
     <section class="bg-bone py-16 lg:py-24">
       <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <p class="eyebrow text-brass mb-6" data-reveal>
+        <p class="eyebrow text-brass-2 mb-6" data-reveal>
           {type} · {year} · {status === "built" ? "Built" : "In Studio"}
         </p>
         <h1
@@ -131,7 +132,14 @@ const projectJsonLd = {
           prev && (
             <a href={`/projects/${prev.id}`} class="group flex items-center gap-5">
               <div class="w-24 shrink-0 lg:w-32">
-                <Frame src={prev.data.cover} alt={prev.data.title} ratio="4/3" seed={1} />
+                <Frame
+                  src={prev.data.cover}
+                  alt={prev.data.title}
+                  ratio="4/3"
+                  seed={1}
+                  widths={[200, 300, 400]}
+                  sizes="(min-width: 1024px) 128px, 96px"
+                />
               </div>
               <div>
                 <p class="text-ink-3 font-mono text-[10px] tracking-[0.18em] uppercase">
@@ -157,7 +165,14 @@ const projectJsonLd = {
                 </p>
               </div>
               <div class="w-24 shrink-0 lg:w-32">
-                <Frame src={next.data.cover} alt={next.data.title} ratio="4/3" seed={2} />
+                <Frame
+                  src={next.data.cover}
+                  alt={next.data.title}
+                  ratio="4/3"
+                  seed={2}
+                  widths={[200, 300, 400]}
+                  sizes="(min-width: 1024px) 128px, 96px"
+                />
               </div>
             </a>
           )

@@ -23,7 +23,15 @@ const { gallery } = Astro.props;
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
           {gallery.map((item, i) => (
             <div data-reveal>
-              <Frame src={item.src} alt={item.alt} caption={item.caption} seed={i} parallax />
+              <Frame
+                src={item.src}
+                alt={item.alt}
+                caption={item.caption}
+                seed={i}
+                parallax
+                widths={[400, 640, 800, 1200]}
+                sizes="(min-width: 1024px) 640px, (min-width: 768px) 50vw, 100vw"
+              />
             </div>
           ))}
         </div>

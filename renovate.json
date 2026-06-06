@@ -1,0 +1,49 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits", ":maintainLockFilesWeekly"],
+  "schedule": ["before 4am on monday"],
+  "prConcurrentLimit": 5,
+  "lockFileMaintenance": {
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "description": "Group all @astrojs/* updates into one PR",
+      "matchPackageNames": ["@astrojs/**"],
+      "groupName": "astrojs"
+    },
+    {
+      "description": "Group all @fontsource-variable/* updates into one PR",
+      "matchPackageNames": ["@fontsource-variable/**"],
+      "groupName": "fonts"
+    },
+    {
+      "description": "Group the ESLint + typescript-eslint family into one PR",
+      "matchPackageNames": [
+        "eslint",
+        "typescript-eslint",
+        "@eslint/js",
+        "eslint-plugin-astro",
+        "eslint-plugin-jsx-a11y",
+        "globals"
+      ],
+      "groupName": "eslint"
+    },
+    {
+      "description": "Auto-merge dev-dependency patches and minors after CI passes",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true
+    },
+    {
+      "description": "Never auto-merge majors — they carry real risk and want human review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "Pin visual/perf-load-bearing libs to exact versions so a silent minor can't change behavior unannounced",
+      "matchPackageNames": ["gsap", "lenis", "sharp"],
+      "rangeStrategy": "pin"
+    }
+  ]
+}

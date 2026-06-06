@@ -1,0 +1,5 @@
+{
+  "_comment": "Bundle size budgets in bytes for dist/_astro/*. Re-baseline with `pnpm check:bundle --write`.",
+  "js": 200000,
+  "css": 60000
+}
