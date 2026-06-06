@@ -26,24 +26,18 @@ jobs:
           # two gates agree.
           fail-on-severity: moderate
 
-          # SPDX identifiers permitted for newly-added deps. Everything currently
-          # in the lockfile except GSAP resolves to one of these; GSAP is handled
-          # by `allow-dependencies-licenses` below because its license has no
-          # SPDX identifier.
+          # SPDX identifiers permitted for newly-added deps. Every package in the
+          # lockfile resolves to one of these — GSAP relicensed to MIT in v3.13
+          # (May 2024) and is on ^3.15.0 here.
           allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, BlueOak-1.0.0, CC0-1.0, Unlicense, MPL-2.0
 
-          # Allow-list packages whose license the action can't auto-detect.
-          # I confirmed all listed entries by inspection of
-          # their upstream repos:
-          #   - gsap: GreenSock "No Charge" License (non-OSI, non-SPDX, but
-          #     legitimately free for non-commercial-product use — see ADR-0001).
+          # Allow-list GitHub Actions whose licenses dependency-review-action can't
+          # auto-detect. Confirmed by inspection of their upstream repos:
           #   - actions/checkout, actions/setup-node: MIT (github.com/actions/*).
           #   - pnpm/action-setup: MIT (github.com/pnpm/action-setup).
           #   - treosh/lighthouse-ci-action: Apache-2.0.
-          # The GitHub Actions entries are needed because dependency-review-action
-          # doesn't read the LICENSE files of action repos consistently.
+          # The action doesn't read LICENSE files of action repos consistently.
           allow-dependencies-licenses: >-
-            pkg:npm/gsap,
             pkg:githubactions/actions/checkout,
             pkg:githubactions/actions/setup-node,
             pkg:githubactions/pnpm/action-setup,
