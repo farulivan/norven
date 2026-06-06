@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Dependency Review
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5.0.0
         with:
           # Fail the PR when a new dep introduces a CVE at moderate severity or
           # above. Matches the threshold ci.yml's `pnpm audit` step uses, so the
