@@ -1,0 +1,65 @@
+name: Verify Headers
+
+# Scheduled check that production response headers match the canonical set
+# committed in docs/security-headers.md. A regression in the Cloudflare
+# Transform Rule (or the SSL/TLS HSTS panel) would otherwise be silent until
+# someone manually curl'd; email notifications on a failed run surface the alert.
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-headers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify production headers
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Curl prod and assert security headers
+        run: |
+          set -euo pipefail
+          # Cache-bust query suffix matches docs/security-headers.md so an
+          # intermediate cache can't return stale headers.
+          RESPONSE=$(curl -sI "https://norven.farulivan.com/?$(date +%s)")
+          echo "$RESPONSE"
+          echo "---"
+
+          HEADERS=(
+            "Content-Security-Policy"
+            "X-Content-Type-Options"
+            "X-Frame-Options"
+            "Referrer-Policy"
+            "Permissions-Policy"
+            "Cross-Origin-Opener-Policy"
+            "Cross-Origin-Resource-Policy"
+          )
+
+          FAIL=0
+          for h in "${HEADERS[@]}"; do
+            if grep -qi "^${h}:" <<<"$RESPONSE"; then
+              echo "✓ $h"
+            else
+              echo "::error::Missing header: $h"
+              FAIL=1
+            fi
+          done
+
+          # Strict-Transport-Security gets a count check because two lines mean
+          # both the SSL/TLS panel and a Transform Rule are firing — see the
+          # warning in docs/security-headers.md. Catches missing and duplicates.
+          HSTS_COUNT=$(grep -ci "^strict-transport-security:" <<<"$RESPONSE" || true)
+          if [ "$HSTS_COUNT" -ne 1 ]; then
+            echo "::error::Expected exactly 1 Strict-Transport-Security header, found $HSTS_COUNT"
+            FAIL=1
+          else
+            echo "✓ Strict-Transport-Security (1 instance)"
+          fi
+
+          exit $FAIL

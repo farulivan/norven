@@ -8,10 +8,12 @@ name: CodeQL
 # site CodeQL covers the same ground with no new vendor.
 on:
   pull_request:
+    branches: [main]
   push:
     branches: [main]
   # Weekly catches new CodeQL rule packs that flag existing code I would otherwise
-  # miss between PRs. Mondays 06:00 UTC = before the work-week starts in EU/SEA.
+  # miss between main merges. Mondays 06:00 UTC = before the work-week starts in
+  # EU/SEA.
   schedule:
     - cron: "0 6 * * 1"
 
@@ -29,10 +31,9 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    # Keep CodeQL OUT of branch-protection required checks until it has been green
-    # for a few cycles — first runs can take 5–10 min and would slow PR merges
-    # for no proportional safety win on a static portfolio site. Treat findings
-    # as informational; promote to required when comfortable.
+    # Findings land in Security → Code scanning. Keep informational until a few
+    # green cycles, then promote to a required check on main-bound PRs via
+    # branch protection.
     steps:
       - name: Checkout
         uses: actions/checkout@v6

@@ -2,10 +2,11 @@ name: Lighthouse
 
 # Per-page performance/a11y/best-practices/SEO budgets via Lighthouse CI.
 # Median of 3 runs (configured in .lighthouserc.json) to absorb runner CPU
-# jitter; I tune assertions slightly above the site's current scores so a
-# regression fails the PR, not a routine landed change.
+# jitter; assertions tuned slightly above current scores so a regression fails
+# the PR, not a routine landed change.
 on:
   pull_request:
+    branches: [main]
   push:
     branches: [main]
 
@@ -44,10 +45,8 @@ jobs:
         run: pnpm build
 
       - name: Run Lighthouse CI
-        # treosh's action wraps `lhci autorun`, posts a per-page comment, and
+        # treosh's action wraps `lhci autorun`, posts a per-page PR comment, and
         # uploads the median report to LHCI's temporary public storage.
-        # I rejected Google's lighthouse-ci-action: it needs more wiring for the
-        # PR-comment shape I want.
         uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: ./.lighthouserc.json
