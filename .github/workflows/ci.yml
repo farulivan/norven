@@ -28,7 +28,7 @@ jobs:
     # downstream consumers. I will revisit if this ever ships as an npm package.
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # commitlint needs git history back to the PR base. fetch-depth: 0
           # is the simplest path; the repo is small so the cost is negligible.
