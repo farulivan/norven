@@ -30,7 +30,17 @@ jobs:
           # SPDX identifiers permitted for newly-added deps. Every package in the
           # lockfile resolves to one of these — GSAP relicensed to MIT in v3.13
           # (May 2024) and is on ^3.15.0 here.
-          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, BlueOak-1.0.0, CC0-1.0, Unlicense, MPL-2.0
+          #
+          # Two non-permissive entries, both deliberate:
+          #   - OFL-1.1 covers the three @fontsource-variable/* packages. It is the
+          #     standard open font license; self-hosting is exactly what it permits.
+          #   - LGPL-3.0-or-later covers sharp's @img/sharp-libvips-* binaries. sharp
+          #     runs at build time only — astro:assets generates AVIF/WebP during
+          #     `pnpm build` and the binaries never ship in dist/ — so the copyleft
+          #     terms do not reach the built site. Some @img platform packages carry
+          #     compound expressions (`Apache-2.0 AND LGPL-3.0-or-later`), which the
+          #     action only clears when every operand is listed.
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, BlueOak-1.0.0, CC0-1.0, Unlicense, MPL-2.0, OFL-1.1, LGPL-3.0-or-later
 
           # Allow-list GitHub Actions whose licenses dependency-review-action can't
           # auto-detect. Confirmed by inspection of their upstream repos:
