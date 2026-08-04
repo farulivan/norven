@@ -3,6 +3,13 @@
   "extends": ["config:recommended", ":semanticCommits", ":maintainLockFilesWeekly"],
   "schedule": ["before 4am on monday"],
   "prConcurrentLimit": 5,
+
+  // pnpm 11 refuses to install any lockfile entry younger than 24h
+  // (ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION), so a Renovate PR raised inside
+  // that window fails `pnpm install` in CI and only goes green once the clock
+  // runs out. Holding updates for 3 days clears pnpm's cutoff with margin and
+  // keeps the window where a malicious publish is most likely still unreported.
+  "minimumReleaseAge": "3 days",
   "lockFileMaintenance": {
     "automerge": true
   },
@@ -39,6 +46,12 @@
       "description": "Never auto-merge majors — they carry real risk and want human review",
       "matchUpdateTypes": ["major"],
       "automerge": false
+    },
+    {
+      "description": "Hold typescript majors. typescript-eslint throws at module load on an unsupported TS major, so `pnpm lint` fails before `pnpm check` is even reached — see typescript-eslint/typescript-eslint#10940, which targets TS >=7.1. @astrojs/check also still caps its typescript peer at ^6, so both want to move before this is worth reopening.",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     },
     {
       "description": "Pin visual/perf-load-bearing libs to exact versions so a silent minor can't change behavior unannounced",
