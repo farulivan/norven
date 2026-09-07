@@ -1,8 +1,12 @@
 name: Dependency Review
 
 # Reviews the dep diff on PRs targeting main for known CVEs and license drift.
-# Complements the `pnpm audit` step (in ci.yml) which scans already-installed
-# deps: this one catches newly-introduced deps at the main-bound promotion gate.
+#
+# This is the *blocking* dependency gate, and it is the only one. It is diff-scoped:
+# it asks whether this PR introduces a bad dependency, which is a question whose
+# answer does not change after the fact. The whole-tree `pnpm audit` sweep — whose
+# answer does change, whenever the advisory database moves — runs on a schedule in
+# security-audit.yml instead. See docs/adr/0004-dependency-cve-gates.md.
 on:
   pull_request:
     branches: [main]
@@ -23,8 +27,8 @@ jobs:
         uses: actions/dependency-review-action@v5.0.0
         with:
           # Fail the PR when a new dep introduces a CVE at moderate severity or
-          # above. Matches the threshold ci.yml's `pnpm audit` step uses, so the
-          # two gates agree.
+          # above. Same threshold the scheduled sweep in security-audit.yml uses,
+          # so the blocking gate and the advisory sweep agree on what counts.
           fail-on-severity: moderate
 
           # SPDX identifiers permitted for newly-added deps. Every package in the

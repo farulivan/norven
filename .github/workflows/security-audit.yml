@@ -1,0 +1,144 @@
+name: Security Audit
+
+# `pnpm audit` over the whole installed tree, on a schedule rather than on the
+# merge gate.
+#
+# It used to be a blocking step in ci.yml. The problem is that it is not hermetic:
+# it asks "does the tree contain anything known-bad *today*", and the answer moves
+# when GitHub's advisory database moves, with no commit here. So a PR that changed
+# nothing about dependencies could go red overnight, and did — twice, cleared in
+# #64 and again in #80, the second time wedging all 14 open Renovate PRs behind
+# the one required status check. The gate blocked the dependency bumps that fix
+# CVEs.
+#
+# Same split codeql.yml already uses: the PR gate stays diff-scoped
+# (dependency-review-action checks deps a PR actually introduces), and the
+# whole-tree sweep runs weekly where a new advisory can't wedge anyone's merge.
+# See docs/adr/0004-dependency-cve-gates.md.
+on:
+  schedule:
+    # Mondays 06:00 UTC, alongside codeql.yml — before the work week in EU/SEA,
+    # and just after Renovate's own "before 4am on monday" window, so the sweep
+    # sees whatever Renovate raised that morning.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+# Never run two of these at once — they would race on the tracking issue.
+concurrency:
+  group: security-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies
+        id: audit
+        # Deliberately does not fail the step. The result is routed to the
+        # tracking issue below, and the job's own exit status is decided at the
+        # end, so a failure still surfaces as a red scheduled run and the usual
+        # GitHub notification.
+        run: |
+          set +e
+          pnpm audit --audit-level=moderate > audit.txt 2>&1
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          cat audit.txt
+
+      - name: File or update the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXIT_CODE: ${{ steps.audit.outputs.exit_code }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        # One issue, reused. Labelled `dependency-audit` so this workflow can find
+        # its own issue again next week instead of opening a new one every Monday,
+        # and `needs-triage` per docs/agents/triage-labels.md. Both labels are
+        # created on demand so a fresh clone of this repo needs no manual setup.
+        run: |
+          set -euo pipefail
+
+          gh label create dependency-audit \
+            --color 5319E7 \
+            --description "Open findings from the weekly pnpm audit sweep" 2>/dev/null || true
+          gh label create needs-triage \
+            --color FBCA04 \
+            --description "Maintainer needs to evaluate this issue" 2>/dev/null || true
+
+          existing="$(gh issue list --label dependency-audit --state open \
+            --json number --jq '.[0].number // empty')"
+          today="$(date -u '+%Y-%m-%d')"
+
+          if [ "$EXIT_CODE" = "0" ]; then
+            if [ -n "$existing" ]; then
+              printf 'Cleared as of %s. `pnpm audit --audit-level=moderate` reports no known vulnerabilities — [run](%s). Closing.\n' \
+                "$today" "$RUN_URL" > comment.md
+              gh issue comment "$existing" --body-file comment.md
+              gh issue close "$existing"
+              echo "Closed #$existing — tree is clean."
+            else
+              echo "Clean, and no tracking issue open. Nothing to do."
+            fi
+            exit 0
+          fi
+
+          # Built with redirections rather than a heredoc: this is a YAML block
+          # scalar, so a heredoc terminator at column 0 would end the block early.
+          {
+            echo '`pnpm audit --audit-level=moderate` found advisories in the installed dependency tree.'
+            echo
+            printf 'Swept from `main` by [Security Audit](%s) on %s.\n' "$RUN_URL" "$today"
+            echo
+            echo 'This is **not** blocking any pull request — the whole-tree audit was moved off'
+            echo 'the merge gate in `docs/adr/0004-dependency-cve-gates.md`. Triage on the merits:'
+            echo 'does the advisory reach anything that ships in `dist/`, or is it dev/build-time'
+            echo 'only? A fix usually means a `pnpm-workspace.yaml` override, or dropping a'
+            echo 'dependency that turns out to be unused.'
+            echo
+            echo '<details>'
+            echo '<summary>Audit output</summary>'
+            echo
+            echo '```'
+            # Capped so a long advisory list cannot blow the 65536-byte issue body
+            # limit; the full output is always in the run log.
+            head -c 40000 audit.txt
+            echo '```'
+            echo
+            echo '</details>'
+            echo
+            echo 'This issue is reused by each weekly sweep and closes itself once the tree is clean.'
+          } > body.md
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file body.md
+            echo "Updated #$existing."
+          else
+            gh issue create \
+              --title "Dependency audit: advisories in the installed tree" \
+              --label dependency-audit \
+              --label needs-triage \
+              --body-file body.md
+          fi
+
+          # Red run = the notification. Nothing is blocked by it.
+          exit 1

@@ -62,14 +62,6 @@ jobs:
         if: github.event_name == 'pull_request'
         run: pnpm exec commitlint --from=origin/${{ github.event.pull_request.base.ref }} --to=HEAD
 
-      - name: Audit dependencies
-        # Scans the already-installed dep tree for known CVEs at moderate severity
-        # or above. Complements the dependency-review workflow, which only checks
-        # newly-introduced deps on a PR. If a transient advisory ever blocks a PR
-        # without an upstream fix, loosen the threshold to `--audit-level=high`
-        # rather than reintroducing `continue-on-error`.
-        run: pnpm audit --audit-level=moderate
-
       - name: Verify (format, lint, typecheck, test, build, bundle budget)
         # PUBLIC_WEB3FORMS_ACCESS_KEY is intentionally unset: the build reads it as ""
         # via the `?? ""` fallback in src/pages/contact.astro and produces a working
