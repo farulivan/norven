@@ -33,7 +33,7 @@ If you'd like credit in the fix commit or the relevant ADR, mention it in the re
 
 ## What's out of scope
 
-- Issues in third-party dependencies that don't materially affect this deployment. File those upstream; pnpm audit and `actions/dependency-review-action` already catch them at PR time.
+- Issues in third-party dependencies that don't materially affect this deployment. File those upstream. `actions/dependency-review-action` blocks a PR that introduces one, and a weekly `pnpm audit` sweep (`.github/workflows/security-audit.yml`) files anything already in the tree as an issue. Note that nothing in `node_modules` ships to production — the deployed artefact is static files — so a dependency advisory here is usually a build-pipeline concern rather than a live one. See [ADR-0004](./docs/adr/0004-dependency-cve-gates.md).
 - DDoS, volumetric, or rate-limit-style reports — Cloudflare's free-tier DDoS protection handles the layer this site cares about.
 - Social-engineering or physical-access reports against me.
 
