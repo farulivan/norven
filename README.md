@@ -43,11 +43,12 @@ Node `>=22.12.0`, package manager `pnpm 11`.
 
 ## Key decisions
 
-The three ADRs in `docs/adr/` cover the load-bearing decisions. Each is short and self-contained:
+The four ADRs in `docs/adr/` cover the load-bearing decisions. Each is short and self-contained:
 
 - **[ADR-0001 · Motion runtime](./docs/adr/0001-motion-runtime.md)** — every scroll-driven effect goes through one `scrollEffect` callback. The lifecycle contract lives in one place; the pure core is unit-tested directly.
 - **[ADR-0002 · Photography-led redesign](./docs/adr/0002-photography-led-redesign.md)** — the site retired an earlier WebGL "monolith" identity in favour of photography and restrained motion. Documents what was deleted and what was deliberately kept (the bone/ink/brass palette, Cormorant display type).
 - **[ADR-0003 · Static hosting pipeline](./docs/adr/0003-static-hosting-pipeline.md)** — why every managed-platform alternative (Amplify, Vercel, Netlify, Pages) was rejected in favour of S3 + Cloudflare. Bounded cost, full edge control, portable origin.
+- **[ADR-0004 · Dependency CVE gates](./docs/adr/0004-dependency-cve-gates.md)** — why the blocking dependency check is diff-scoped (`dependency-review-action`) and the whole-tree `pnpm audit` sweep runs weekly instead. A gate whose verdict changes without a commit cannot gate a merge.
 
 ## Architecture
 
