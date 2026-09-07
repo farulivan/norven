@@ -1,13 +1,20 @@
 name: CI
 
 # Runs the same verify gate I run locally (format, lint, typecheck, test, build) on
-# every PR and on every push to non-main branches. Push to main is already covered by
-# deploy.yml, which runs `pnpm verify` before shipping — duplicating that here would
-# double CI minutes for zero extra signal.
+# every main-bound PR. Push to main is already covered by deploy.yml, which runs
+# `pnpm verify` before shipping — duplicating that here would double CI minutes for
+# zero extra signal.
+#
+# PR-only, deliberately. This used to also trigger on `push: branches-ignore: [main]`
+# so a branch got CI before its PR existed. But a branch with an open PR matches both
+# triggers, so every PR ran Verify twice — and since Verify is the required status
+# check on main, two workflows publishing the same check name is a genuinely ambiguous
+# merge state, not just wasted minutes. e2e.yml and lighthouse.yml scope both triggers
+# to main for the same reason. Nothing is lost for Renovate; its branches always have
+# a PR. Open a draft PR to get CI on work in progress.
 on:
   pull_request:
-  push:
-    branches-ignore: [main]
+    branches: [main]
 
 permissions:
   contents: read
