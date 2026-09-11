@@ -13,19 +13,25 @@
   "lockFileMaintenance": {
     "automerge": true
   },
+
+  // Routine updates arrive as at most three PRs a week, plus lockfile maintenance: dev
+  // tooling, runtime dependencies, GitHub Actions. Majors keep a PR of their own, shared
+  // by a package family where its members have to move together.
   "packageRules": [
     {
-      "description": "Group all @astrojs/* updates into one PR",
-      "matchPackageNames": ["@astrojs/**"],
-      "groupName": "astrojs"
+      "description": "Keep Astro and @astrojs/* majors in one PR",
+      "matchPackageNames": ["astro", "@astrojs/**"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "astro"
     },
     {
-      "description": "Group all @fontsource-variable/* updates into one PR",
+      "description": "Keep @fontsource-variable/* majors in one PR",
       "matchPackageNames": ["@fontsource-variable/**"],
+      "matchUpdateTypes": ["major"],
       "groupName": "fonts"
     },
     {
-      "description": "Group the ESLint + typescript-eslint family into one PR",
+      "description": "Keep the ESLint + typescript-eslint family's majors in one PR",
       "matchPackageNames": [
         "eslint",
         "typescript-eslint",
@@ -34,18 +40,40 @@
         "eslint-plugin-jsx-a11y",
         "globals"
       ],
+      "matchUpdateTypes": ["major"],
       "groupName": "eslint"
     },
     {
-      "description": "Auto-merge dev-dependency patches and minors after CI passes",
+      "description": "One weekly PR for every non-major devDependency update, auto-merged after CI passes",
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "dev dependencies (non-major)",
+      "groupSlug": "dev-non-major",
       "automerge": true
+    },
+    {
+      "description": "One weekly PR for every non-major runtime dependency update. These build dist/, so they wait for review",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "runtime dependencies (non-major)",
+      "groupSlug": "runtime-non-major"
+    },
+    {
+      "description": "One PR for every GitHub Actions update, majors included. deploy.yml only runs on push to main, so no PR run exercises these and they always wait for review",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions",
+      "groupSlug": "github-actions",
+      "separateMajorMinor": false
     },
     {
       "description": "Never auto-merge majors — they carry real risk and want human review",
       "matchUpdateTypes": ["major"],
       "automerge": false
+    },
+    {
+      "description": "Leave the pnpm-workspace.yaml overrides alone. Each is a hand-set CVE floor aimed at a vulnerable range, and raising one drags every consumer of that range along with it: #82 and #83 moved fast-uri and nanoid consumers across majors that way",
+      "matchDepTypes": ["pnpm-workspace.overrides"],
+      "enabled": false
     },
     {
       "description": "Hold typescript majors. typescript-eslint throws at module load on an unsupported TS major, so `pnpm lint` fails before `pnpm check` is even reached — see typescript-eslint/typescript-eslint#10940, which targets TS >=7.1. @astrojs/check also still caps its typescript peer at ^6, so both want to move before this is worth reopening.",
