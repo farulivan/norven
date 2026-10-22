@@ -53,23 +53,23 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
             class="border-brass-3/60 bg-brass-2/5 text-ink-2 mb-2 border-l-2 px-5 py-4 font-mono text-[11px] leading-relaxed tracking-[0.04em]"
             data-reveal
           >
-            <span class="text-brass-3 font-medium tracking-[0.18em] uppercase"
-              >Portfolio note —
+            <span class="text-brass-3 font-medium tracking-[0.18em] uppercase">
+              Portfolio note —
             </span>
-            I built Norven as a fictional studio for this portfolio. Submissions reach me (Farul Ivan),
-            not a real architecture firm.
+            I built Norven as a fictional studio for this portfolio. Submissions reach me (Farul
+            Ivan), not a real architecture firm.
           </p>
 
-          {
-            import.meta.env.DEV && !WEB3FORMS_ACCESS_KEY && (
-              <p class="border-ink/40 text-ink-3 border border-dashed px-4 py-3 font-mono text-[11px] leading-relaxed tracking-[0.14em] uppercase">
-                Dev notice — set PUBLIC_WEB3FORMS_ACCESS_KEY in .env to enable delivery.
-              </p>
-            )
-          }
+          {import.meta.env.DEV && !WEB3FORMS_ACCESS_KEY && (
+            <p class="border-ink/40 text-ink-3 border border-dashed px-4 py-3 font-mono text-[11px] leading-relaxed tracking-[0.14em] uppercase">
+              Dev notice — set PUBLIC_WEB3FORMS_ACCESS_KEY in .env to enable delivery.
+            </p>
+          )}
 
           <div data-reveal>
-            <label for="name" class="eyebrow mb-3 block">Name</label>
+            <label for="name" class="eyebrow mb-3 block">
+              Name
+            </label>
             <input
               type="text"
               id="name"
@@ -80,7 +80,9 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
             />
           </div>
           <div data-reveal>
-            <label for="email" class="eyebrow mb-3 block">Email</label>
+            <label for="email" class="eyebrow mb-3 block">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -91,7 +93,9 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
             />
           </div>
           <div data-reveal>
-            <label for="kind" class="eyebrow mb-3 block">Project type</label>
+            <label for="kind" class="eyebrow mb-3 block">
+              Project type
+            </label>
             <select
               id="kind"
               name="Project type"
@@ -106,7 +110,9 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
             </select>
           </div>
           <div data-reveal>
-            <label for="brief" class="eyebrow mb-3 block">A short brief</label>
+            <label for="brief" class="eyebrow mb-3 block">
+              A short brief
+            </label>
             <textarea
               id="brief"
               name="Brief"
@@ -127,8 +133,7 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
             role="status"
             aria-live="polite"
             class="font-mono text-sm leading-relaxed tracking-[0.02em]"
-          >
-          </p>
+          ></p>
         </form>
 
         <!-- DETAILS -->
@@ -151,18 +156,16 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
           <div data-reveal>
             <p class="eyebrow mb-4">Studios</p>
             <ul class="space-y-6">
-              {
-                SITE.studios.map((s) => (
-                  <li>
-                    <h3 class="font-display text-ink text-xl">{s.city}</h3>
-                    <p class="text-ink-3 mt-1 text-sm leading-relaxed">
-                      {s.address}
-                      <br />
-                      {s.country}
-                    </p>
-                  </li>
-                ))
-              }
+              {SITE.studios.map((s) => (
+                <li>
+                  <h3 class="font-display text-ink text-xl">{s.city}</h3>
+                  <p class="text-ink-3 mt-1 text-sm leading-relaxed">
+                    {s.address}
+                    <br />
+                    {s.country}
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
         </aside>
@@ -173,44 +176,42 @@ const dotCandidates = Array.from({ length: 600 }, (_, i) => {
   <!-- DOT MAP -->
   <section class="bg-bone-2 py-20 lg:py-28">
     <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-      <p class="eyebrow mb-10 text-center" data-reveal>Three latitudes</p>
+      <p class="eyebrow mb-10 text-center" data-reveal>
+        Three latitudes
+      </p>
       <svg
         viewBox="0 0 200 100"
         class="mx-auto block h-auto w-full max-w-3xl"
         aria-label="Map of three studios"
       >
         {/* dotted continents — simplified silhouette */}
-        {
-          dotCandidates.map((d) => (
-            <circle cx={d.x} cy={d.y} r="0.3" fill="var(--color-ink-3)" opacity="0.4" />
-          ))
-        }
-        {
-          studioDots.map((d) => (
-            <>
-              <circle cx={d.x} cy={d.y} r="3" fill="var(--color-brass)" />
-              <circle
-                cx={d.x}
-                cy={d.y}
-                r="6"
-                fill="none"
-                stroke="var(--color-brass)"
-                stroke-width="0.4"
-                opacity="0.5"
-              />
-              <text
-                x={d.x}
-                y={d.y - 8}
-                text-anchor="middle"
-                font-size="3.5"
-                font-family="monospace"
-                fill="var(--color-ink)"
-              >
-                {d.city.toUpperCase()}
-              </text>
-            </>
-          ))
-        }
+        {dotCandidates.map((d) => (
+          <circle cx={d.x} cy={d.y} r="0.3" fill="var(--color-ink-3)" opacity="0.4" />
+        ))}
+        {studioDots.map((d) => (
+          <>
+            <circle cx={d.x} cy={d.y} r="3" fill="var(--color-brass)" />
+            <circle
+              cx={d.x}
+              cy={d.y}
+              r="6"
+              fill="none"
+              stroke="var(--color-brass)"
+              stroke-width="0.4"
+              opacity="0.5"
+            />
+            <text
+              x={d.x}
+              y={d.y - 8}
+              text-anchor="middle"
+              font-size="3.5"
+              font-family="monospace"
+              fill="var(--color-ink)"
+            >
+              {d.city.toUpperCase()}
+            </text>
+          </>
+        ))}
       </svg>
     </div>
   </section>

@@ -46,39 +46,35 @@ const {
       role={src ? undefined : "img"}
       aria-label={src ? undefined : alt}
     >
-      {
-        src ? (
-          /*
+      {src ? (
+        /*
             <Picture> emits <picture><source type="image/avif"><source type="image/webp"><img …>,
             so the browser picks AVIF where supported and falls back to WebP otherwise. Using
             <Image> alone produced a single WebP and Lighthouse's `image-delivery-insight`
             scored ~0.5 because AVIF wasn't being served on a photography-led site.
           */
-          <Picture
-            src={src}
-            alt={alt}
-            formats={["avif", "webp"]}
-            widths={widths}
-            sizes={sizes}
-            loading={priority ? "eager" : "lazy"}
-            fetchpriority={priority ? "high" : "auto"}
-            class="image-fade block h-full w-full object-cover"
-          />
-        ) : (
-          import.meta.env.DEV && (
-            <span class="text-ink/70 absolute bottom-2 left-2 font-mono text-[10px] tracking-[0.14em] uppercase">
-              Photo placeholder — {alt}
-            </span>
-          )
+        <Picture
+          src={src}
+          alt={alt}
+          formats={["avif", "webp"]}
+          widths={widths}
+          sizes={sizes}
+          loading={priority ? "eager" : "lazy"}
+          fetchpriority={priority ? "high" : "auto"}
+          class="image-fade block h-full w-full object-cover"
+        />
+      ) : (
+        import.meta.env.DEV && (
+          <span class="text-ink/70 absolute bottom-2 left-2 font-mono text-[10px] tracking-[0.14em] uppercase">
+            Photo placeholder — {alt}
+          </span>
         )
-      }
+      )}
     </div>
   </div>
-  {
-    caption && (
-      <figcaption class="text-ink-3 mt-3 font-mono text-[10px] tracking-[0.18em] uppercase">
-        {caption}
-      </figcaption>
-    )
-  }
+  {caption && (
+    <figcaption class="text-ink-3 mt-3 font-mono text-[10px] tracking-[0.18em] uppercase">
+      {caption}
+    </figcaption>
+  )}
 </figure>

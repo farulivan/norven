@@ -17,9 +17,9 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
   <div class:list={["relative", titlePlacement === "overlay" && "min-h-[88vh]"]} data-hero-scale>
     <Frame
       src={src}
-      alt={eyebrow
-        ? `${eyebrow} — ${title.replace(/<[^>]+>/g, " ")}`
-        : title.replace(/<[^>]+>/g, " ")}
+      alt={
+        eyebrow ? `${eyebrow} — ${title.replace(/<[^>]+>/g, " ")}` : title.replace(/<[^>]+>/g, " ")
+      }
       ratio={titlePlacement === "overlay" ? "16/10" : "16/9"}
       seed={seed}
       parallax={titlePlacement === "below"}
@@ -28,65 +28,56 @@ const { eyebrow, title, subtitle, src, seed = 0, titlePlacement = "overlay" } = 
       widths={[800, 1024, 1280, 1366, 1600, 1920]}
       priority
     />
-    {
-      titlePlacement === "overlay" && (
-        <div class="from-ink/70 via-ink/10 absolute inset-0 bg-linear-to-t to-transparent" />
-      )
-    }
-    {
-      titlePlacement === "overlay" && (
-        <div class="absolute inset-0 mx-auto flex max-w-[1400px] flex-col justify-end px-6 pb-16 lg:px-10 lg:pb-24">
-          {eyebrow && (
-            <p
-              class="text-bone/80 mb-6 font-mono text-[11px] tracking-[0.18em] uppercase"
-              data-reveal-lift
-            >
-              {eyebrow}
-            </p>
-          )}
-          <h1
-            class="font-display text-bone leading-[0.92]"
-            style="font-size: var(--text-display-1)"
-            data-reveal-lift
-            set:html={title}
-          />
-          {subtitle && (
-            <p
-              class="text-bone/85 mt-8 max-w-xl text-base leading-relaxed lg:text-lg"
-              data-reveal-lift
-            >
-              {subtitle}
-            </p>
-          )}
-        </div>
-      )
-    }
-  </div>
-  {
-    titlePlacement === "below" && (
-      <div class="mx-auto max-w-[1400px] px-6 pt-12 lg:px-10 lg:pt-16">
+    {titlePlacement === "overlay" && (
+      <div class="from-ink/70 via-ink/10 absolute inset-0 bg-linear-to-t to-transparent" />
+    )}
+    {titlePlacement === "overlay" && (
+      <div class="absolute inset-0 mx-auto flex max-w-[1400px] flex-col justify-end px-6 pb-16 lg:px-10 lg:pb-24">
         {eyebrow && (
-          <p class="eyebrow text-brass-2 mb-6" data-reveal-lift>
+          <p
+            class="text-bone/80 mb-6 font-mono text-[11px] tracking-[0.18em] uppercase"
+            data-reveal-lift
+          >
             {eyebrow}
           </p>
         )}
         <h1
-          class="font-display text-ink leading-[0.92]"
+          class="font-display text-bone leading-[0.92]"
           style="font-size: var(--text-display-1)"
           data-reveal-lift
           set:html={title}
         />
         {subtitle && (
           <p
-            class="text-ink-3 mt-8 max-w-2xl text-base leading-relaxed lg:text-lg"
+            class="text-bone/85 mt-8 max-w-xl text-base leading-relaxed lg:text-lg"
             data-reveal-lift
           >
             {subtitle}
           </p>
         )}
       </div>
-    )
-  }
+    )}
+  </div>
+  {titlePlacement === "below" && (
+    <div class="mx-auto max-w-[1400px] px-6 pt-12 lg:px-10 lg:pt-16">
+      {eyebrow && (
+        <p class="eyebrow text-brass-2 mb-6" data-reveal-lift>
+          {eyebrow}
+        </p>
+      )}
+      <h1
+        class="font-display text-ink leading-[0.92]"
+        style="font-size: var(--text-display-1)"
+        data-reveal-lift
+        set:html={title}
+      />
+      {subtitle && (
+        <p class="text-ink-3 mt-8 max-w-2xl text-base leading-relaxed lg:text-lg" data-reveal-lift>
+          {subtitle}
+        </p>
+      )}
+    </div>
+  )}
 </section>
 
 <script>

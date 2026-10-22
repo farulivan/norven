@@ -13,13 +13,16 @@ const icons: Record<string, string> = {
   <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
     <div class="mb-20 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
       <div>
-        <p class="eyebrow mb-6" data-reveal>Practice</p>
+        <p class="eyebrow mb-6" data-reveal>
+          Practice
+        </p>
         <h2
           class="font-display text-ink leading-[0.95]"
           style="font-size: var(--text-display-2)"
           data-reveal
         >
-          Four arms<br />
+          Four arms
+          <br />
           <span class="text-ink-3">of a single discipline.</span>
         </h2>
       </div>
@@ -30,28 +33,26 @@ const icons: Record<string, string> = {
     </div>
 
     <div class="bg-line-2 grid grid-cols-1 gap-px sm:grid-cols-2">
-      {
-        SERVICES.map((s, i) => (
-          <article class="bg-bone group relative p-10 lg:p-12" data-reveal>
-            <div class="mb-10 flex items-start justify-between">
-              <p class="text-ink-3 font-mono text-xs tracking-[0.18em] uppercase">
-                {String(i + 1).padStart(2, "0")}
-              </p>
-              <div class="text-ink h-12 w-12 transition-transform duration-500 group-hover:rotate-180">
-                <svg
-                  viewBox="0 0 48 48"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1"
-                  set:html={icons[s.iconKey]}
-                />
-              </div>
+      {SERVICES.map((s, i) => (
+        <article class="bg-bone group relative p-10 lg:p-12" data-reveal>
+          <div class="mb-10 flex items-start justify-between">
+            <p class="text-ink-3 font-mono text-xs tracking-[0.18em] uppercase">
+              {String(i + 1).padStart(2, "0")}
+            </p>
+            <div class="text-ink h-12 w-12 transition-transform duration-500 group-hover:rotate-180">
+              <svg
+                viewBox="0 0 48 48"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                set:html={icons[s.iconKey]}
+              />
             </div>
-            <h3 class="font-display text-ink mb-4 text-2xl lg:text-3xl">{s.title}</h3>
-            <p class="text-ink-3 text-sm leading-relaxed">{s.description}</p>
-          </article>
-        ))
-      }
+          </div>
+          <h3 class="font-display text-ink mb-4 text-2xl lg:text-3xl">{s.title}</h3>
+          <p class="text-ink-3 text-sm leading-relaxed">{s.description}</p>
+        </article>
+      ))}
     </div>
   </div>
 </section>

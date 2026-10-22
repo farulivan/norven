@@ -82,7 +82,9 @@ const decisions = [
   <!-- The fiction -->
   <section class="bg-bone py-24 lg:py-32">
     <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-      <p class="eyebrow mb-8" data-reveal>The fiction</p>
+      <p class="eyebrow mb-8" data-reveal>
+        The fiction
+      </p>
       <h2
         class="font-display text-ink mb-10 leading-[1.05]"
         style="font-size: var(--text-display-3)"
@@ -98,11 +100,11 @@ const decisions = [
           visible.
         </p>
         <p>
-          The contact details rendered as the studio's (<code class="font-mono text-sm"
-            >studio@norven.example</code
-          >, a Norwegian dialling code) are intentional non-deliverable placeholders, so nobody is
-          misled into mailing a real-looking address. The form posts to a real endpoint I control —
-          submissions reach me, not a fictional studio inbox.
+          The contact details rendered as the studio's (
+          <code class="font-mono text-sm">studio@norven.example</code>, a Norwegian dialling code)
+          are intentional non-deliverable placeholders, so nobody is misled into mailing a
+          real-looking address. The form posts to a real endpoint I control — submissions reach me,
+          not a fictional studio inbox.
         </p>
       </div>
     </div>
@@ -111,7 +113,9 @@ const decisions = [
   <!-- About me -->
   <section class="bg-bone-2 py-24 lg:py-32">
     <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-      <p class="eyebrow mb-8" data-reveal>About me</p>
+      <p class="eyebrow mb-8" data-reveal>
+        About me
+      </p>
       <h2
         class="font-display text-ink mb-10 leading-[1.05]"
         style="font-size: var(--text-display-3)"
@@ -153,7 +157,9 @@ const decisions = [
   <!-- Stack -->
   <section class="bg-bone py-24 lg:py-32">
     <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-      <p class="eyebrow mb-8" data-reveal>Stack</p>
+      <p class="eyebrow mb-8" data-reveal>
+        Stack
+      </p>
       <h2
         class="font-display text-ink mb-12 leading-[1.05]"
         style="font-size: var(--text-display-3)"
@@ -162,14 +168,12 @@ const decisions = [
         What I built it with.
       </h2>
       <dl class="divide-line-2 divide-y" data-reveal>
-        {
-          stack.map((item) => (
-            <div class="grid grid-cols-1 gap-2 py-5 md:grid-cols-[260px_1fr] md:gap-8">
-              <dt class="font-display text-ink text-xl">{item.name}</dt>
-              <dd class="text-ink-3 text-sm leading-relaxed lg:text-base">{item.why}</dd>
-            </div>
-          ))
-        }
+        {stack.map((item) => (
+          <div class="grid grid-cols-1 gap-2 py-5 md:grid-cols-[260px_1fr] md:gap-8">
+            <dt class="font-display text-ink text-xl">{item.name}</dt>
+            <dd class="text-ink-3 text-sm leading-relaxed lg:text-base">{item.why}</dd>
+          </div>
+        ))}
       </dl>
     </div>
   </section>
@@ -177,7 +181,9 @@ const decisions = [
   <!-- Decisions -->
   <section class="bg-bone-2 py-24 lg:py-32">
     <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-      <p class="eyebrow mb-8" data-reveal>Decisions</p>
+      <p class="eyebrow mb-8" data-reveal>
+        Decisions
+      </p>
       <h2
         class="font-display text-ink mb-12 leading-[1.05]"
         style="font-size: var(--text-display-3)"
@@ -186,21 +192,19 @@ const decisions = [
         Why I shaped it this way.
       </h2>
       <ul class="space-y-10" data-reveal>
-        {
-          decisions.map((d) => (
-            <li>
-              <a href={d.href} target="_blank" rel="noopener" class="group block">
-                <p class="text-ink-3 mb-2 font-mono text-xs tracking-[0.18em] uppercase">
-                  ADR-{d.id}
-                </p>
-                <h3 class="font-display text-ink group-hover:text-brass-2 text-2xl transition-colors lg:text-3xl">
-                  {d.title}
-                </h3>
-                <p class="text-ink-3 mt-3 text-sm leading-relaxed lg:text-base">{d.note}</p>
-              </a>
-            </li>
-          ))
-        }
+        {decisions.map((d) => (
+          <li>
+            <a href={d.href} target="_blank" rel="noopener" class="group block">
+              <p class="text-ink-3 mb-2 font-mono text-xs tracking-[0.18em] uppercase">
+                ADR-{d.id}
+              </p>
+              <h3 class="font-display text-ink group-hover:text-brass-2 text-2xl transition-colors lg:text-3xl">
+                {d.title}
+              </h3>
+              <p class="text-ink-3 mt-3 text-sm leading-relaxed lg:text-base">{d.note}</p>
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
   </section>
@@ -208,7 +212,9 @@ const decisions = [
   <!-- Deployment -->
   <section class="bg-bone py-24 lg:py-32">
     <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-      <p class="eyebrow mb-8" data-reveal>Deployment</p>
+      <p class="eyebrow mb-8" data-reveal>
+        Deployment
+      </p>
       <h2
         class="font-display text-ink mb-10 leading-[1.05]"
         style="font-size: var(--text-display-3)"
@@ -234,7 +240,8 @@ const decisions = [
             class="text-ink hover:text-brass-2 underline underline-offset-4 transition-colors"
           >
             docs/deployment.md
-          </a>.
+          </a>
+          .
         </p>
       </div>
     </div>

@@ -81,7 +81,9 @@ const projectJsonLd = {
     <!-- BRIEF -->
     <section class="bg-bone py-24 lg:py-32">
       <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-        <p class="eyebrow mb-8" data-reveal>Brief</p>
+        <p class="eyebrow mb-8" data-reveal>
+          Brief
+        </p>
         <p
           class="font-display text-ink leading-[1.18]"
           style="font-size: var(--text-display-3)"
@@ -106,77 +108,69 @@ const projectJsonLd = {
 
     <ProjectGallery gallery={gallery} />
 
-    {
-      testimonial && (
-        <section class="bg-ink text-bone py-24 lg:py-32">
-          <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
-            <blockquote
-              class="font-display leading-[1.15]"
-              style="font-size: var(--text-display-3)"
-              data-reveal
-            >
-              "{testimonial.quote}"
-            </blockquote>
-            <p class="text-bone/70 mt-8 font-mono text-xs tracking-[0.16em] uppercase" data-reveal>
-              {testimonial.author} · {testimonial.role}
-            </p>
-          </div>
-        </section>
-      )
-    }
+    {testimonial && (
+      <section class="bg-ink text-bone py-24 lg:py-32">
+        <div class="mx-auto max-w-[1100px] px-6 lg:px-10">
+          <blockquote
+            class="font-display leading-[1.15]"
+            style="font-size: var(--text-display-3)"
+            data-reveal
+          >
+            "{testimonial.quote}"
+          </blockquote>
+          <p class="text-bone/70 mt-8 font-mono text-xs tracking-[0.16em] uppercase" data-reveal>
+            {testimonial.author} · {testimonial.role}
+          </p>
+        </div>
+      </section>
+    )}
 
     <!-- PREV/NEXT -->
     <nav class="bg-bone border-line-2 border-t py-16" aria-label="Project navigation">
       <div class="mx-auto grid max-w-[1400px] grid-cols-2 gap-8 px-6 lg:px-10">
-        {
-          prev && (
-            <a href={`/projects/${prev.id}`} class="group flex items-center gap-5">
-              <div class="w-24 shrink-0 lg:w-32">
-                <Frame
-                  src={prev.data.cover}
-                  alt={prev.data.title}
-                  ratio="4/3"
-                  seed={1}
-                  widths={[200, 300, 400]}
-                  sizes="(min-width: 1024px) 128px, 96px"
-                />
-              </div>
-              <div>
-                <p class="text-ink-3 font-mono text-[10px] tracking-[0.18em] uppercase">
-                  ← Previous
-                </p>
-                <p class="font-display text-ink group-hover:text-brass mt-2 text-2xl transition-colors">
-                  {prev.data.title}
-                </p>
-              </div>
-            </a>
-          )
-        }
-        {
-          next && (
-            <a
-              href={`/projects/${next.id}`}
-              class="group flex items-center justify-end gap-5 text-right"
-            >
-              <div>
-                <p class="text-ink-3 font-mono text-[10px] tracking-[0.18em] uppercase">Next →</p>
-                <p class="font-display text-ink group-hover:text-brass mt-2 text-2xl transition-colors">
-                  {next.data.title}
-                </p>
-              </div>
-              <div class="w-24 shrink-0 lg:w-32">
-                <Frame
-                  src={next.data.cover}
-                  alt={next.data.title}
-                  ratio="4/3"
-                  seed={2}
-                  widths={[200, 300, 400]}
-                  sizes="(min-width: 1024px) 128px, 96px"
-                />
-              </div>
-            </a>
-          )
-        }
+        {prev && (
+          <a href={`/projects/${prev.id}`} class="group flex items-center gap-5">
+            <div class="w-24 shrink-0 lg:w-32">
+              <Frame
+                src={prev.data.cover}
+                alt={prev.data.title}
+                ratio="4/3"
+                seed={1}
+                widths={[200, 300, 400]}
+                sizes="(min-width: 1024px) 128px, 96px"
+              />
+            </div>
+            <div>
+              <p class="text-ink-3 font-mono text-[10px] tracking-[0.18em] uppercase">← Previous</p>
+              <p class="font-display text-ink group-hover:text-brass mt-2 text-2xl transition-colors">
+                {prev.data.title}
+              </p>
+            </div>
+          </a>
+        )}
+        {next && (
+          <a
+            href={`/projects/${next.id}`}
+            class="group flex items-center justify-end gap-5 text-right"
+          >
+            <div>
+              <p class="text-ink-3 font-mono text-[10px] tracking-[0.18em] uppercase">Next →</p>
+              <p class="font-display text-ink group-hover:text-brass mt-2 text-2xl transition-colors">
+                {next.data.title}
+              </p>
+            </div>
+            <div class="w-24 shrink-0 lg:w-32">
+              <Frame
+                src={next.data.cover}
+                alt={next.data.title}
+                ratio="4/3"
+                seed={2}
+                widths={[200, 300, 400]}
+                sizes="(min-width: 1024px) 128px, 96px"
+              />
+            </div>
+          </a>
+        )}
       </div>
     </nav>
   </article>
