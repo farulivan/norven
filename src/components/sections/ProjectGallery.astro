@@ -13,29 +13,27 @@ interface Props {
 const { gallery } = Astro.props;
 ---
 
-{
-  gallery.length > 0 && (
-    <section class="bg-bone py-24 lg:py-32">
-      <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <h2 class="eyebrow mb-12" data-reveal-lift>
-          Photographs
-        </h2>
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {gallery.map((item, i) => (
-            <div data-reveal>
-              <Frame
-                src={item.src}
-                alt={item.alt}
-                caption={item.caption}
-                seed={i}
-                parallax
-                widths={[400, 640, 800, 1200]}
-                sizes="(min-width: 1024px) 640px, (min-width: 768px) 50vw, 100vw"
-              />
-            </div>
-          ))}
-        </div>
+{gallery.length > 0 && (
+  <section class="bg-bone py-24 lg:py-32">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <h2 class="eyebrow mb-12" data-reveal-lift>
+        Photographs
+      </h2>
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        {gallery.map((item, i) => (
+          <div data-reveal>
+            <Frame
+              src={item.src}
+              alt={item.alt}
+              caption={item.caption}
+              seed={i}
+              parallax
+              widths={[400, 640, 800, 1200]}
+              sizes="(min-width: 1024px) 640px, (min-width: 768px) 50vw, 100vw"
+            />
+          </div>
+        ))}
       </div>
-    </section>
-  )
-}
+    </div>
+  </section>
+)}
