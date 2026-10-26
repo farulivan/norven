@@ -11,7 +11,13 @@
   // keeps the window where a malicious publish is most likely still unreported.
   "minimumReleaseAge": "3 days",
   "lockFileMaintenance": {
-    "automerge": true
+    "automerge": true,
+    // A lockfile refresh carries no release timestamp, and since Renovate 42 a
+    // missing timestamp counts as too new, so the 3-day hold above can never pass
+    // here: renovate/stability-days sat pending on #63 and #93 until they were
+    // merged by hand. pnpm's own 24h cutoff still gates every version the refresh
+    // resolves.
+    "minimumReleaseAge": null
   },
 
   // Routine updates arrive as at most three PRs a week, plus lockfile maintenance: dev
