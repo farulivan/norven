@@ -39,7 +39,7 @@ If you're skimming this as a hirer, I want five minutes to be enough to see the 
 | GitHub Actions + OIDC                                                                            | —                       | Deploy on push to `main` with no long-lived AWS credentials.                                                                         | `.github/workflows/`                                                                                |
 | AWS S3 + Cloudflare                                                                              | Free tiers              | Single-CDN edge over the cheapest static origin. ~$0.02/mo steady state.                                                             | [ADR-0003](./docs/adr/0003-static-hosting-pipeline.md) · [docs/deployment.md](./docs/deployment.md) |
 
-Node `>=22.12.0`, package manager `pnpm 11`.
+Node `>=22.23.4`, package manager `pnpm 11`.
 
 ## Key decisions
 

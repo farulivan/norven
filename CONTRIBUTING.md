@@ -23,7 +23,7 @@ A few things to know:
 
 Prerequisites:
 
-- Node `>=22.12.0` (the version in `package.json` `engines.node`).
+- Node `>=22.23.4` (the version in `package.json` `engines.node`).
 - `pnpm 11`. The CI workflows use exactly this — staying matched keeps reproductions clean.
 
 Setup:
